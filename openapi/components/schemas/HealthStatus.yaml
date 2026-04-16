@@ -1,0 +1,10 @@
+type: string
+description: |
+  Overall or per-component health status. Ordered worst-to-best for
+  aggregation: if any component is `unhealthy`, the top-level status
+  is `unhealthy`; else if any is `degraded`, the top-level is
+  `degraded`; otherwise `healthy`.
+enum:
+  - healthy
+  - degraded
+  - unhealthy

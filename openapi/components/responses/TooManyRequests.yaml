@@ -1,0 +1,16 @@
+description: Rate limit exceeded. Retry after the interval in `Retry-After`.
+headers:
+  Retry-After:
+    description: Seconds to wait before retrying.
+    schema:
+      type: integer
+      minimum: 1
+content:
+  application/problem+json:
+    schema:
+      $ref: "../schemas/Problem.yaml"
+    example:
+      type: https://homelab.local/problems/too-many-requests
+      title: Too Many Requests
+      status: 429
+      detail: Rate limit exceeded. Retry after 30s.

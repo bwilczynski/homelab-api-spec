@@ -1,0 +1,40 @@
+openapi: 3.0.3
+info:
+  title: Homelab API
+  version: 0.1.0
+  description: |
+    Contract-first API exposing homelab operations to AI agents and
+    tooling. The Homelab API provides a unified surface over
+    heterogeneous homelab backends (UniFi, Synology, Docker, Immich,
+    Hue, Sonos, UPS). The API acts as a credential broker: clients
+    authenticate with a bearer token against an IdP, and the server
+    exchanges that token for whatever credentials each backend needs.
+
+    This document is the source of truth. Server stubs, CLI, and MCP
+    tools are generated or validated against the bundled spec.
+  contact:
+    name: Bartlomiej Wilczynski
+    url: https://github.com/bwilczynski/homelab-api-spec
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://homelab.local/api
+    description: Homelab gateway (default deployment).
+
+tags:
+  - name: system
+    description: Aggregate health, UPS, and other cross-cutting system checks.
+
+security:
+  - bearerAuth: []
+
+paths:
+  /system/health:
+    $ref: "./paths/system-health.yaml"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      $ref: "./components/securitySchemes/BearerAuth.yaml"

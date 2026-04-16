@@ -1,0 +1,151 @@
+extends:
+  - spectral:oas
+
+# Rules encode the conventions from the 002-api-patterns decisions
+# doc: camelCase JSON fields, kebab-case paths, plural nouns, cursor
+# pagination, RFC 9457 problem responses, operationId + description
+# on every operation, no inline schemas.
+
+aliases:
+  PathItem:
+    - "$.paths[*]"
+  OperationObject:
+    - "$.paths[*][get,put,post,delete,patch,options,head,trace]"
+  ParameterObject:
+    - "$.paths[*][get,put,post,delete,patch,options,head,trace].parameters[*]"
+    - "$.paths[*].parameters[*]"
+    - "$.components.parameters[*]"
+  SchemaPropertyName:
+    - "$.components.schemas[*].properties"
+    - "$.components.schemas[*].allOf[*].properties"
+    - "$.components.schemas[*].oneOf[*].properties"
+    - "$.components.schemas[*].anyOf[*].properties"
+
+functions: []
+
+rules:
+  # --- built-in tightening ------------------------------------------------
+  operation-operationId: error
+  operation-operationId-unique: error
+  operation-description: error
+  operation-tag-defined: error
+  oas3-unused-component: warn
+  no-$ref-siblings: error
+  duplicated-entry-in-enum: error
+
+  # --- naming -------------------------------------------------------------
+  operation-id-camelcase:
+    description: operationId must be camelCase (agents use these as tool names).
+    message: "operationId '{{value}}' must be camelCase."
+    severity: error
+    given: "#OperationObject"
+    then:
+      field: operationId
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  path-kebab-case:
+    description: |
+      URL path segments must be kebab-case. Path parameters (`{id}`) and
+      custom actions (`:action`) are exempt from this rule.
+    message: "Path '{{value}}' uses non-kebab-case segments."
+    severity: error
+    given: "$.paths"
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^(/([a-z][a-z0-9-]*|\\{[a-zA-Z0-9_]+\\}|:[a-z][a-zA-Z0-9]*))+$"
+
+  schema-property-camelcase:
+    description: JSON property names must be camelCase.
+    message: "Property '{{property}}' must be camelCase."
+    severity: error
+    given: "#SchemaPropertyName"
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  parameter-name-camelcase:
+    description: Query and header parameter names must be camelCase.
+    message: "Parameter name '{{value}}' must be camelCase."
+    severity: error
+    given: "#ParameterObject"
+    then:
+      field: name
+      function: pattern
+      functionOptions:
+        match: "^[a-zA-Z][a-zA-Z0-9-]*$"
+
+  # --- descriptions -------------------------------------------------------
+  operation-description-required:
+    description: Every operation needs a description (agents use it to pick tools).
+    message: Operation is missing a description.
+    severity: error
+    given: "#OperationObject"
+    then:
+      field: description
+      function: truthy
+
+  parameter-description-required:
+    description: Every parameter needs a description.
+    message: Parameter '{{value}}' is missing a description.
+    severity: error
+    given: "#ParameterObject"
+    then:
+      field: description
+      function: truthy
+
+  # --- response discipline ------------------------------------------------
+  operation-has-401:
+    description: Protected operations must declare a 401 response.
+    message: Operation is missing a 401 Unauthorized response.
+    severity: error
+    given: "#OperationObject"
+    then:
+      field: responses.401
+      function: truthy
+
+  operation-has-500:
+    description: Every operation must declare a 500 response.
+    message: Operation is missing a 500 Internal Server Error response.
+    severity: error
+    given: "#OperationObject"
+    then:
+      field: responses.500
+      function: truthy
+
+  problem-json-content-type:
+    description: Error responses must use application/problem+json (RFC 9457).
+    message: Error response must use media type 'application/problem+json'.
+    severity: error
+    given: "$.paths[*][*].responses[?(@property >= '400' && @property < '600')].content"
+    then:
+      field: "application/problem+json"
+      function: truthy
+
+  # --- inline schemas -----------------------------------------------------
+  no-inline-response-schemas:
+    description: |
+      Response schemas must live in components/schemas, not inline. Use
+      $ref. Keeps generated code stable and prevents schema duplication.
+    message: Response schema must be a $ref, not inline.
+    severity: warn
+    resolved: false
+    given: "$.paths[*][*].responses[*].content[*].schema"
+    then:
+      function: truthy
+      field: $ref
+
+  no-inline-request-schemas:
+    description: Request-body schemas must live in components/schemas, not inline.
+    message: Request body schema must be a $ref, not inline.
+    severity: warn
+    resolved: false
+    given: "$.paths[*][*].requestBody.content[*].schema"
+    then:
+      function: truthy
+      field: $ref

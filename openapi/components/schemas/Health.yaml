@@ -1,0 +1,18 @@
+type: object
+description: Aggregate health snapshot across all homelab components.
+properties:
+  status:
+    $ref: "./HealthStatus.yaml"
+  checkedAt:
+    type: string
+    format: date-time
+    description: Timestamp when this snapshot was assembled.
+  components:
+    type: array
+    description: Per-component health entries. Empty array, never null.
+    items:
+      $ref: "./ComponentHealth.yaml"
+required:
+  - status
+  - checkedAt
+  - components

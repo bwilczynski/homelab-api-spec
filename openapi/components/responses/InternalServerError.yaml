@@ -1,0 +1,13 @@
+description: |
+  An unexpected error occurred on the server or a backend adapter
+  failed in a way the API could not translate to a more specific
+  status.
+content:
+  application/problem+json:
+    schema:
+      $ref: "../schemas/Problem.yaml"
+    example:
+      type: https://homelab.local/problems/internal-server-error
+      title: Internal Server Error
+      status: 500
+      detail: An unexpected error occurred.

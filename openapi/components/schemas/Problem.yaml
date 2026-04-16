@@ -1,0 +1,33 @@
+type: object
+description: |
+  RFC 9457 Problem Details object. Returned as
+  `application/problem+json` for all error responses. The `type` URI
+  is the machine-readable error code; clients should key off `type`,
+  not `title` (which is human-readable and may change).
+properties:
+  type:
+    type: string
+    format: uri
+    description: URI reference identifying the problem type.
+    example: https://homelab.local/problems/unauthorized
+  title:
+    type: string
+    description: Short, human-readable summary of the problem.
+    example: Unauthorized
+  status:
+    type: integer
+    minimum: 100
+    maximum: 599
+    description: HTTP status code echoed for convenience.
+    example: 401
+  detail:
+    type: string
+    description: Human-readable explanation specific to this occurrence.
+  instance:
+    type: string
+    format: uri
+    description: URI reference identifying the specific occurrence.
+required:
+  - type
+  - title
+  - status

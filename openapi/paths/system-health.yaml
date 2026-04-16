@@ -1,0 +1,57 @@
+get:
+  operationId: getSystemHealth
+  summary: Get aggregate system health
+  description: |
+    Returns an aggregate health snapshot of the homelab. The top-level
+    `status` is the worst status across individual components (gateway,
+    switches, storage, containers, UPS, etc.). Use this as a single
+    entry point for dashboards or agent "is everything OK?" checks;
+    drill into component-specific endpoints for details.
+
+    This endpoint is read-only and cheap. It does not actively probe
+    backends beyond their cached health state.
+  tags:
+    - system
+  security:
+    - bearerAuth: [read:system]
+  responses:
+    "200":
+      description: Current health snapshot.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/Health.yaml"
+          examples:
+            healthy:
+              summary: All components healthy.
+              value:
+                status: healthy
+                checkedAt: "2026-04-16T10:15:00Z"
+                components:
+                  - name: gateway
+                    status: healthy
+                  - name: unifiController
+                    status: healthy
+                  - name: dockerHost
+                    status: healthy
+            degraded:
+              summary: One component degraded, overall degraded.
+              value:
+                status: degraded
+                checkedAt: "2026-04-16T10:15:00Z"
+                components:
+                  - name: gateway
+                    status: healthy
+                  - name: unifiController
+                    status: degraded
+                    message: Controller reachable but 1 AP offline.
+                  - name: dockerHost
+                    status: healthy
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

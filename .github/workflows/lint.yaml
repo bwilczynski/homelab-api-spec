@@ -1,0 +1,66 @@
+name: lint
+
+on:
+  pull_request:
+    paths:
+      - "openapi/**"
+      - ".spectral.yaml"
+      - "redocly.yaml"
+      - ".github/workflows/lint.yaml"
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  spectral:
+    name: spectral
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Spectral lint (source)
+        run: make lint-spectral
+      - name: Spectral lint (bundled)
+        run: make lint-spectral-bundled
+
+  redocly:
+    name: redocly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Redocly lint
+        run: make lint-redocly
+      - name: Bundle (smoke test)
+        run: make bundle
+
+  breaking-changes:
+    name: breaking-changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Bundle head spec
+        run: make bundle
+      - name: Bundle base spec
+        run: |
+          git worktree add /tmp/base "${{ github.event.pull_request.base.sha }}"
+          cd /tmp/base
+          npx --yes @redocly/cli@1.25.15 bundle openapi/openapi.yaml -o /tmp/base.bundled.yaml
+      - name: oasdiff breaking changes
+        uses: oasdiff/oasdiff-action/breaking@v0.0.20
+        with:
+          base: /tmp/base.bundled.yaml
+          revision: dist/openapi.bundled.yaml
+          fail-on: ERR

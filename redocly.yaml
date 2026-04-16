@@ -1,0 +1,14 @@
+apis:
+  homelab@v0:
+    root: openapi/openapi.yaml
+
+extends:
+  - recommended
+
+rules:
+  # Redocly overlaps with Spectral on many checks. Keep Redocly lint
+  # lightweight here and treat Spectral as the primary linter; Redocly
+  # is used mainly for bundle/build-docs.
+  operation-operationId: error
+  operation-summary: error
+  no-unused-components: warn

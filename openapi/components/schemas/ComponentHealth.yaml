@@ -1,0 +1,17 @@
+type: object
+description: Health snapshot for a single homelab component.
+properties:
+  name:
+    type: string
+    description: Stable component identifier (camelCase).
+    example: unifiController
+  status:
+    $ref: "./HealthStatus.yaml"
+  message:
+    type: string
+    description: |
+      Optional human-readable note. Populated when `status` is not
+      `healthy` to explain the degradation.
+required:
+  - name
+  - status

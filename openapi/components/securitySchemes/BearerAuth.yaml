@@ -1,0 +1,22 @@
+type: oauth2
+description: |
+  OAuth 2.0 bearer token issued by the homelab IdP (e.g. Pocket ID,
+  Authelia). Agents obtain a token via the client-credentials flow
+  and present it in the `Authorization: Bearer <token>` header. The
+  homelab API validates the token, checks scopes, and exchanges it
+  internally for whatever credentials each backend needs.
+
+  Scopes follow the `<access>:<resource>` convention.
+flows:
+  clientCredentials:
+    tokenUrl: https://idp.homelab.local/oauth/token
+    scopes:
+      "read:system": Read aggregate health, UPS state, and cross-cutting system info.
+      "read:devices": List and inspect devices, VLANs, network clients.
+      "write:devices": Provision and decommission devices.
+      "read:services": List and inspect service status.
+      "write:services": Restart services.
+      "read:storage": Read NAS health, volumes, and shares.
+      "read:media": Read media library albums and photo metadata.
+      "read:home": Read home-automation state (lights, speakers).
+      "write:home": Control home-automation devices (toggle lights, playback).

@@ -1,0 +1,12 @@
+description: |
+  The bearer token is valid but lacks a required scope for this
+  operation.
+content:
+  application/problem+json:
+    schema:
+      $ref: "../schemas/Problem.yaml"
+    example:
+      type: https://homelab.local/problems/forbidden
+      title: Forbidden
+      status: 403
+      detail: Token is missing required scope 'read:system'.
