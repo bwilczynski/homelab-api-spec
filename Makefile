@@ -16,12 +16,12 @@ DOCS_HTML   := $(BUNDLE_DIR)/index.html
 DOCKER_IMAGE ?= homelab-api-docs
 DOCKER_TAG   ?= dev
 
-.PHONY: help lint lint-spectral lint-spectral-bundled lint-redocly bundle \
+.PHONY: help lint lint-spectral-bundled lint-redocly bundle \
         build preview docs-image breaking clean
 
 help:
 	@echo "Targets:"
-	@echo "  lint          Run spectral + redocly lint (source and bundled)"
+	@echo "  lint          Run redocly lint (source) + spectral lint (bundled)"
 	@echo "  bundle        Produce $(BUNDLE_YAML) and $(BUNDLE_JSON)"
 	@echo "  build         Build static docs site at $(DOCS_HTML)"
 	@echo "  preview       Live-reload docs preview on http://localhost:8080"
@@ -29,14 +29,10 @@ help:
 	@echo "  breaking BASE=<ref>  Run oasdiff breaking-change check against BASE"
 	@echo "  clean         Remove $(BUNDLE_DIR)"
 
-# `lint` runs the source-level check first (fast feedback) and then a
-# second pass over the bundled file. Some Spectral rules (notably
-# `oas3-operation-security-defined`) can't follow external `$ref`s to
-# security schemes and only resolve correctly after bundling.
-lint: lint-spectral lint-redocly lint-spectral-bundled
-
-lint-spectral:
-	npx --yes @stoplight/spectral-cli@$(SPECTRAL_VERSION) lint $(SPEC)
+# Redocly validates the source spec, then Spectral lints the bundled
+# artifact where all `$ref`s are resolved (avoids false positives from
+# cross-file references).
+lint: lint-redocly lint-spectral-bundled
 
 lint-spectral-bundled: bundle
 	npx --yes @stoplight/spectral-cli@$(SPECTRAL_VERSION) lint $(BUNDLE_YAML)

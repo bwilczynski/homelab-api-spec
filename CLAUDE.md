@@ -34,9 +34,9 @@ All API design conventions are in [`API_GUIDELINES.md`](API_GUIDELINES.md). Read
 6. Path files reference component files via relative `$ref` paths (e.g. `$ref: "../components/responses/Unauthorized.yaml"`), not through `#/components/...` in the root doc.
 7. Run `make lint` to verify.
 
-## Lint quirks
+## Lint pipeline
 
-Spectral's source-level lint can't follow cross-file `$ref`s for some checks (e.g. `oas3-operation-security-defined` for scope names). The bundled lint (`lint-spectral-bundled`) catches these. Both run as part of `make lint`. The authoritative check is the bundled pass.
+`make lint` runs Redocly on the source spec (validates structure and references), then Spectral on the bundled artifact (where all `$ref`s are resolved). This avoids false positives from cross-file references that Spectral can't follow in multi-file mode.
 
 ## OpenAPI version
 
