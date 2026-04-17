@@ -15,7 +15,7 @@ architecture, phased plan, and rationale.
 openapi/
 ├── openapi.yaml                  # Root document; refs everything else
 ├── paths/                        # One file per resource
-│   └── system-health.yaml
+│   └── *.yaml
 └── components/
     ├── schemas/                  # Reusable schemas (Problem, Health, …)
     ├── parameters/               # Shared params (Cursor, Limit)
@@ -38,7 +38,7 @@ Makefile                          # lint / bundle / build / preview / breaking
 ## Common commands
 
 ```sh
-make lint          # Spectral (source + bundled) + Redocly lint
+make lint          # Redocly (source) + Spectral (bundled) lint
 make bundle        # Emit dist/openapi.bundled.{yaml,json}
 make build         # Build static Redoc site → dist/index.html
 make preview       # Live-reload docs preview on http://localhost:8080
@@ -69,9 +69,14 @@ one-line change once the tooling chain (Spectral, oapi-codegen,
 oasdiff, Redocly) has stable 3.1 support for features this project
 actually needs.
 
-## Status
+## Current API surface
 
-Skeleton. Currently only `GET /system/health` is defined — enough to
-validate the full pipeline (spec → lint → bundle → docs → deploy) end
-to end. See the project idea doc for the planned API surface and
-phased roadmap (HTTP API → CLI → MCP server).
+| Group | Endpoints |
+|-------|-----------|
+| System | `GET /system/health`, `/system/info`, `/system/utilization` |
+| Storage | `GET /storage/volumes`, `GET /storage/volumes/{volumeId}` |
+| Containers | `GET /containers`, `GET /containers/{containerId}`, `POST :start`, `:stop`, `:restart` |
+| Backups | `GET /backup/tasks`, `GET /backup/tasks/{taskId}` |
+
+See the project idea doc for the full planned API surface and phased
+roadmap (HTTP API → CLI → MCP server).
