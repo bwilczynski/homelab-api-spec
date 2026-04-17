@@ -1,0 +1,49 @@
+get:
+  operationId: getBackupTask
+  summary: Get a backup task
+  description: |
+    Returns a single backup task by its composite identifier
+    (`{deviceId}:{taskId}`, e.g. `nas-1:1`). The response includes
+    current status, the outcome of the most recent run, and scheduling
+    information.
+  tags:
+    - backups
+  security:
+    - bearerAuth: [read:backups]
+  parameters:
+    - name: taskId
+      in: path
+      required: true
+      description: |
+        Composite backup task identifier in the form `{deviceId}:{taskId}`
+        (e.g. `nas-1:1`). The device prefix disambiguates tasks across
+        multiple backends.
+      schema:
+        type: string
+      example: "nas-1:1"
+  responses:
+    "200":
+      description: The requested backup task.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/BackupTask.yaml"
+          example:
+            id: "nas-1:1"
+            name: "Daily NAS Backup"
+            device: nas-1
+            type: hyperBackup
+            status: idle
+            lastResult: success
+            lastRunAt: "2026-04-16T03:00:00Z"
+            nextRunAt: "2026-04-17T03:00:00Z"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

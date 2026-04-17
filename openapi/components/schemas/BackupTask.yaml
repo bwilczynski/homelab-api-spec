@@ -1,0 +1,47 @@
+type: object
+description: |
+  A backup task from a NAS backup service (e.g. Hyper Backup,
+  Glacier Backup). Represents a configured backup job and the
+  outcome of its most recent run.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique backup task identifier in the form
+      `{device}:{taskId}`. Use this value directly in path parameters.
+    example: "nas-1:1"
+  name:
+    type: string
+    description: Human-readable task name as configured in the backup service.
+    example: "Daily NAS Backup"
+  device:
+    type: string
+    description: Identifier of the backend device that owns this task.
+    example: nas-1
+  type:
+    type: string
+    description: |
+      Backup service type. Values depend on the backend (e.g.
+      `hyperBackup`, `glacierBackup`).
+    example: hyperBackup
+  status:
+    $ref: "./BackupTaskStatus.yaml"
+  lastResult:
+    $ref: "./BackupTaskResult.yaml"
+  lastRunAt:
+    type: string
+    format: date-time
+    description: Timestamp of the most recent backup run completion.
+    example: "2026-04-16T03:00:00Z"
+  nextRunAt:
+    type: string
+    format: date-time
+    description: Scheduled time of the next backup run.
+    example: "2026-04-17T03:00:00Z"
+required:
+  - id
+  - name
+  - device
+  - type
+  - status
+  - lastResult

@@ -30,6 +30,8 @@ tags:
     description: Storage volumes and disk health across NAS backends.
   - name: containers
     description: Docker containers and their resource usage across backends.
+  - name: backups
+    description: Backup task status and scheduling across NAS backends.
 
 security:
   - bearerAuth: []
@@ -51,6 +53,10 @@ paths:
     $ref: "./paths/containers-id-stop.yaml"
   "/containers/{containerId}:restart":
     $ref: "./paths/containers-id-restart.yaml"
+  /backup/tasks:
+    $ref: "./paths/backup-tasks.yaml"
+  /backup/tasks/{taskId}:
+    $ref: "./paths/backup-tasks-id.yaml"
 
 components:
   securitySchemes:

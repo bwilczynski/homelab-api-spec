@@ -1,0 +1,8 @@
+type: string
+description: Current state of a backup task.
+enum:
+  - idle
+  - running
+  - suspended
+  - error
+example: idle

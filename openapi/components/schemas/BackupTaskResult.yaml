@@ -1,0 +1,8 @@
+type: string
+description: Outcome of the most recent backup run.
+enum:
+  - success
+  - failed
+  - skipped
+  - unknown
+example: success

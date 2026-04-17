@@ -18,6 +18,7 @@ flows:
       "write:services": Restart services.
       "read:containers": List and inspect containers and their resource usage.
       "write:containers": Start, stop, and restart containers.
+      "read:backups": Read backup task status and history.
       "read:storage": Read NAS health, volumes, and shares.
       "read:media": Read media library albums and photo metadata.
       "read:home": Read home-automation state (lights, speakers).

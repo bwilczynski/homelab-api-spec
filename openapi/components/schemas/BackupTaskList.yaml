@@ -1,0 +1,10 @@
+type: object
+description: List of backup tasks.
+properties:
+  items:
+    type: array
+    description: Backup tasks matching the query. Empty array, never null.
+    items:
+      $ref: "./BackupTask.yaml"
+required:
+  - items
