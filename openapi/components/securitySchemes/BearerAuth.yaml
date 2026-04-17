@@ -16,6 +16,8 @@ flows:
       "write:devices": Provision and decommission devices.
       "read:services": List and inspect service status.
       "write:services": Restart services.
+      "read:containers": List and inspect containers and their resource usage.
+      "write:containers": Start, stop, and restart containers.
       "read:storage": Read NAS health, volumes, and shares.
       "read:media": Read media library albums and photo metadata.
       "read:home": Read home-automation state (lights, speakers).

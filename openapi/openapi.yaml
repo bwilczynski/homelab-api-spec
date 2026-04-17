@@ -28,6 +28,8 @@ tags:
     description: Aggregate health, UPS, and other cross-cutting system checks.
   - name: storage
     description: Storage volumes and disk health across NAS backends.
+  - name: containers
+    description: Docker containers and their resource usage across backends.
 
 security:
   - bearerAuth: []
@@ -39,6 +41,16 @@ paths:
     $ref: "./paths/storage-volumes.yaml"
   /storage/volumes/{volumeId}:
     $ref: "./paths/storage-volumes-id.yaml"
+  /containers:
+    $ref: "./paths/containers.yaml"
+  /containers/{containerId}:
+    $ref: "./paths/containers-id.yaml"
+  "/containers/{containerId}:start":
+    $ref: "./paths/containers-id-start.yaml"
+  "/containers/{containerId}:stop":
+    $ref: "./paths/containers-id-stop.yaml"
+  "/containers/{containerId}:restart":
+    $ref: "./paths/containers-id-restart.yaml"
 
 components:
   securitySchemes:

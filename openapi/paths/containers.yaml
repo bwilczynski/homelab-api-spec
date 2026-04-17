@@ -1,0 +1,70 @@
+get:
+  operationId: listContainers
+  summary: List containers
+  description: |
+    Returns containers from all configured Docker-compatible backends.
+    Each container includes its current status, image, and live resource
+    usage (CPU, memory).
+
+    Use the `device` query parameter to filter containers from a specific
+    backend (e.g. `?device=nas-1`). Omit it to get containers across all
+    devices.
+
+    A homelab typically has a manageable number of containers, so this
+    endpoint returns all matching results without pagination.
+  tags:
+    - containers
+  security:
+    - bearerAuth: [read:containers]
+  parameters:
+    - $ref: "../components/parameters/DeviceFilter.yaml"
+  responses:
+    "200":
+      description: List of containers.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/ContainerList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A few containers on a single NAS.
+              value:
+                items:
+                  - id: "nas-1:homeassistant"
+                    name: homeassistant
+                    device: nas-1
+                    status: running
+                    image: "ghcr.io/home-assistant/home-assistant:2025.4"
+                    restartCount: 0
+                    resources:
+                      cpuPercent: 2.5
+                      memoryBytes: 268435456
+                      memoryPercent: 6.4
+                  - id: "nas-1:immich-server"
+                    name: immich-server
+                    device: nas-1
+                    status: running
+                    image: "ghcr.io/immich-app/immich-server:v1.120.0"
+                    restartCount: 1
+                    resources:
+                      cpuPercent: 0.8
+                      memoryBytes: 536870912
+                      memoryPercent: 12.8
+                  - id: "nas-1:caddy"
+                    name: caddy
+                    device: nas-1
+                    status: stopped
+                    image: "caddy:2.9-alpine"
+                    restartCount: 0
+                    resources:
+                      cpuPercent: 0
+                      memoryBytes: 0
+                      memoryPercent: 0
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

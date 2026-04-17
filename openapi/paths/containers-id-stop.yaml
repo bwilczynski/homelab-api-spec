@@ -1,0 +1,40 @@
+post:
+  operationId: stopContainer
+  summary: Stop a container
+  description: |
+    Stops a running container gracefully. If the container is already
+    stopped this is a no-op and still returns 204.
+  tags:
+    - containers
+  security:
+    - bearerAuth: [write:containers]
+  parameters:
+    - name: containerId
+      in: path
+      required: true
+      description: |
+        Composite container identifier in the form `{deviceId}:{name}`
+        (e.g. `nas-1:homeassistant`).
+      schema:
+        type: string
+      example: "nas-1:homeassistant"
+    - name: Idempotency-Key
+      in: header
+      required: false
+      description: Client-generated key to ensure the request is processed at most once.
+      schema:
+        type: string
+      example: "b4f3c2a1-7e8d-4f5a-9c0b-1d2e3f4a5b6c"
+  responses:
+    "204":
+      description: Container stopped (or was already stopped).
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

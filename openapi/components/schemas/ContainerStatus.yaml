@@ -1,0 +1,9 @@
+type: string
+description: Current state of a container.
+enum:
+  - running
+  - stopped
+  - restarting
+  - paused
+  - dead
+example: running

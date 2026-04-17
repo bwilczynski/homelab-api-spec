@@ -1,0 +1,22 @@
+type: object
+description: Live resource usage for a container.
+properties:
+  cpuPercent:
+    type: number
+    format: double
+    description: CPU usage as a percentage of total host CPU.
+    example: 2.5
+  memoryBytes:
+    type: integer
+    format: int64
+    description: Current memory usage in bytes.
+    example: 268435456
+  memoryPercent:
+    type: number
+    format: double
+    description: Memory usage as a percentage of total host memory.
+    example: 6.4
+required:
+  - cpuPercent
+  - memoryBytes
+  - memoryPercent

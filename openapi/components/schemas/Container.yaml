@@ -1,0 +1,37 @@
+type: object
+description: A container running on a Docker-compatible backend.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique container identifier in the form `{device}:{name}`.
+      Use this value directly in path parameters.
+    example: "nas-1:homeassistant"
+  name:
+    type: string
+    description: Container name as reported by the backend.
+    example: homeassistant
+  device:
+    type: string
+    description: Identifier of the backend device running this container.
+    example: nas-1
+  status:
+    $ref: "./ContainerStatus.yaml"
+  image:
+    type: string
+    description: Container image reference including tag or digest.
+    example: "ghcr.io/home-assistant/home-assistant:2025.4"
+  restartCount:
+    type: integer
+    description: Number of times the container has been restarted.
+    example: 0
+  resources:
+    $ref: "./ContainerResources.yaml"
+required:
+  - id
+  - name
+  - device
+  - status
+  - image
+  - restartCount
+  - resources

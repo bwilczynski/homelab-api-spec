@@ -1,0 +1,50 @@
+get:
+  operationId: getContainer
+  summary: Get a container
+  description: |
+    Returns a single container by its composite identifier
+    (`{deviceId}:{name}`, e.g. `nas-1:homeassistant`). The response
+    includes current status, image, and live resource usage.
+  tags:
+    - containers
+  security:
+    - bearerAuth: [read:containers]
+  parameters:
+    - name: containerId
+      in: path
+      required: true
+      description: |
+        Composite container identifier in the form `{deviceId}:{name}`
+        (e.g. `nas-1:homeassistant`). The device prefix disambiguates
+        containers across multiple backends that may use the same name.
+      schema:
+        type: string
+      example: "nas-1:homeassistant"
+  responses:
+    "200":
+      description: The requested container.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/Container.yaml"
+          example:
+            id: "nas-1:homeassistant"
+            name: homeassistant
+            device: nas-1
+            status: running
+            image: "ghcr.io/home-assistant/home-assistant:2025.4"
+            restartCount: 0
+            resources:
+              cpuPercent: 2.5
+              memoryBytes: 268435456
+              memoryPercent: 6.4
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

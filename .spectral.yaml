@@ -56,7 +56,7 @@ rules:
       field: "@key"
       function: pattern
       functionOptions:
-        match: "^(/([a-z][a-z0-9-]*|\\{[a-zA-Z0-9_]+\\}|:[a-z][a-zA-Z0-9]*))+$"
+        match: "^(/([a-z][a-z0-9-]*|\\{[a-zA-Z0-9_]+\\}(:[a-z][a-zA-Z0-9]*)?|:[a-z][a-zA-Z0-9]*))+$"
 
   schema-property-camelcase:
     description: JSON property names must be camelCase.

@@ -1,0 +1,10 @@
+type: object
+description: List of containers.
+properties:
+  items:
+    type: array
+    description: Containers matching the query. Empty array, never null.
+    items:
+      $ref: "./Container.yaml"
+required:
+  - items
