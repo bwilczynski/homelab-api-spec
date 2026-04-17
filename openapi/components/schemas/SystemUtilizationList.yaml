@@ -1,0 +1,10 @@
+type: object
+description: List of system utilization snapshots.
+properties:
+  items:
+    type: array
+    description: Utilization per backend device. Empty array, never null.
+    items:
+      $ref: "./SystemUtilization.yaml"
+required:
+  - items

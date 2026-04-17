@@ -39,6 +39,10 @@ security:
 paths:
   /system/health:
     $ref: "./paths/system-health.yaml"
+  /system/info:
+    $ref: "./paths/system-info.yaml"
+  /system/utilization:
+    $ref: "./paths/system-utilization.yaml"
   /storage/volumes:
     $ref: "./paths/storage-volumes.yaml"
   /storage/volumes/{volumeId}:

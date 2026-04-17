@@ -1,0 +1,19 @@
+type: object
+description: CPU usage breakdown.
+properties:
+  userPercent:
+    type: integer
+    description: CPU percentage consumed by user-space processes.
+    example: 12
+  systemPercent:
+    type: integer
+    description: CPU percentage consumed by kernel / system processes.
+    example: 5
+  totalPercent:
+    type: integer
+    description: Combined CPU usage (user + system).
+    example: 17
+required:
+  - userPercent
+  - systemPercent
+  - totalPercent

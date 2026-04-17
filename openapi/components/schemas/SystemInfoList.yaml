@@ -1,0 +1,10 @@
+type: object
+description: List of system info entries.
+properties:
+  items:
+    type: array
+    description: System info per backend device. Empty array, never null.
+    items:
+      $ref: "./SystemInfo.yaml"
+required:
+  - items

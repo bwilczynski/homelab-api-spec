@@ -1,0 +1,63 @@
+get:
+  operationId: listSystemUtilization
+  summary: List system utilization
+  description: |
+    Returns a live resource-utilization snapshot for all configured
+    backends. Each entry includes CPU load, memory and swap usage,
+    per-interface network throughput, and per-disk I/O counters.
+
+    Use the `device` query parameter to retrieve utilization for a
+    specific backend (e.g. `?device=nas-1`). Omit it to get
+    utilization across all devices.
+
+    Values are point-in-time samples, not averages. Call periodically
+    for trend analysis.
+  tags:
+    - system
+  security:
+    - bearerAuth: [read:system]
+  parameters:
+    - $ref: "../components/parameters/DeviceFilter.yaml"
+  responses:
+    "200":
+      description: Utilization snapshot per backend device.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/SystemUtilizationList.yaml"
+          example:
+            items:
+              - device: nas-1
+                sampledAt: "2026-04-17T10:30:00Z"
+                cpu:
+                  userPercent: 12
+                  systemPercent: 5
+                  totalPercent: 17
+                memory:
+                  totalBytes: 4294967296
+                  availableBytes: 2147483648
+                  usedPercent: 50
+                  swapTotalBytes: 4294967296
+                  swapUsedBytes: 104857600
+                network:
+                  - name: eth0
+                    rxBytesPerSec: 125000
+                    txBytesPerSec: 50000
+                  - name: eth1
+                    rxBytesPerSec: 0
+                    txBytesPerSec: 0
+                disks:
+                  - name: sda
+                    readOpsPerSec: 42
+                    writeOpsPerSec: 18
+                  - name: sdb
+                    readOpsPerSec: 38
+                    writeOpsPerSec: 15
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

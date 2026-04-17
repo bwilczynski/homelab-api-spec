@@ -1,0 +1,30 @@
+type: object
+description: Static information about a backend device.
+properties:
+  device:
+    type: string
+    description: Identifier of the backend device.
+    example: nas-1
+  model:
+    type: string
+    description: Hardware model name as reported by the device.
+    example: DS920+
+  firmware:
+    type: string
+    description: Firmware or OS version string.
+    example: "DSM 7.2.2-72806 Update 2"
+  uptimeSeconds:
+    type: integer
+    format: int64
+    description: Device uptime in seconds since last boot.
+    example: 1209600
+  ramMb:
+    type: integer
+    description: Total physical RAM in megabytes.
+    example: 4096
+required:
+  - device
+  - model
+  - firmware
+  - uptimeSeconds
+  - ramMb

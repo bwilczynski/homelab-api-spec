@@ -1,0 +1,33 @@
+type: object
+description: Live resource utilization snapshot for a backend device.
+properties:
+  device:
+    type: string
+    description: Identifier of the backend device.
+    example: nas-1
+  sampledAt:
+    type: string
+    format: date-time
+    description: Timestamp when this snapshot was sampled.
+    example: "2026-04-17T10:30:00Z"
+  cpu:
+    $ref: "./CpuUsage.yaml"
+  memory:
+    $ref: "./MemoryUsage.yaml"
+  network:
+    type: array
+    description: Per-interface network throughput. Empty array, never null.
+    items:
+      $ref: "./NetworkInterfaceUsage.yaml"
+  disks:
+    type: array
+    description: Per-disk I/O counters. Empty array, never null.
+    items:
+      $ref: "./DiskIo.yaml"
+required:
+  - device
+  - sampledAt
+  - cpu
+  - memory
+  - network
+  - disks

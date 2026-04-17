@@ -1,0 +1,33 @@
+type: object
+description: Memory and swap usage.
+properties:
+  totalBytes:
+    type: integer
+    format: int64
+    description: Total physical memory in bytes.
+    example: 4294967296
+  availableBytes:
+    type: integer
+    format: int64
+    description: Available physical memory in bytes.
+    example: 2147483648
+  usedPercent:
+    type: integer
+    description: Memory usage as a percentage.
+    example: 50
+  swapTotalBytes:
+    type: integer
+    format: int64
+    description: Total swap space in bytes.
+    example: 4294967296
+  swapUsedBytes:
+    type: integer
+    format: int64
+    description: Used swap space in bytes.
+    example: 104857600
+required:
+  - totalBytes
+  - availableBytes
+  - usedPercent
+  - swapTotalBytes
+  - swapUsedBytes

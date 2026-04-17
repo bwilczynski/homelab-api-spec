@@ -1,0 +1,21 @@
+type: object
+description: Network throughput for a single interface.
+properties:
+  name:
+    type: string
+    description: Interface name as reported by the OS.
+    example: eth0
+  rxBytesPerSec:
+    type: integer
+    format: int64
+    description: Receive throughput in bytes per second.
+    example: 125000
+  txBytesPerSec:
+    type: integer
+    format: int64
+    description: Transmit throughput in bytes per second.
+    example: 50000
+required:
+  - name
+  - rxBytesPerSec
+  - txBytesPerSec

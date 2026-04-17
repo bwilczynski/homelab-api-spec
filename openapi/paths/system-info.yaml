@@ -1,0 +1,39 @@
+get:
+  operationId: listSystemInfo
+  summary: List system info
+  description: |
+    Returns static device information for all configured backends.
+    Each entry includes the hardware model, firmware version, uptime,
+    and total RAM.
+
+    Use the `device` query parameter to retrieve info for a specific
+    backend (e.g. `?device=nas-1`). Omit it to get info across all
+    devices.
+  tags:
+    - system
+  security:
+    - bearerAuth: [read:system]
+  parameters:
+    - $ref: "../components/parameters/DeviceFilter.yaml"
+  responses:
+    "200":
+      description: System info per backend device.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/SystemInfoList.yaml"
+          example:
+            items:
+              - device: nas-1
+                model: DS920+
+                firmware: "DSM 7.2.2-72806 Update 2"
+                uptimeSeconds: 1209600
+                ramMb: 4096
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"
