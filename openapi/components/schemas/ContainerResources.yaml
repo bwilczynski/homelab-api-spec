@@ -7,8 +7,8 @@ properties:
     description: CPU usage as a percentage of total host CPU.
     example: 2.5
   memoryBytes:
-    type: integer
-    format: int64
+    allOf:
+      - $ref: "./units/Bytes.yaml"
     description: Current memory usage in bytes.
     example: 268435456
   memoryPercent:

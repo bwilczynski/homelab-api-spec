@@ -25,34 +25,37 @@ get:
         application/json:
           schema:
             $ref: "../components/schemas/SystemUtilizationList.yaml"
-          example:
-            items:
-              - device: nas-1
-                sampledAt: "2026-04-17T10:30:00Z"
-                cpu:
-                  userPercent: 12
-                  systemPercent: 5
-                  totalPercent: 17
-                memory:
-                  totalBytes: 4294967296
-                  availableBytes: 2147483648
-                  usedPercent: 50
-                  swapTotalBytes: 4294967296
-                  swapUsedBytes: 104857600
-                network:
-                  - name: eth0
-                    rxBytesPerSec: 125000
-                    txBytesPerSec: 50000
-                  - name: eth1
-                    rxBytesPerSec: 0
-                    txBytesPerSec: 0
-                disks:
-                  - name: sda
-                    readOpsPerSec: 42
-                    writeOpsPerSec: 18
-                  - name: sdb
-                    readOpsPerSec: 38
-                    writeOpsPerSec: 15
+          examples:
+            singleNas:
+              summary: Utilization snapshot for a single NAS.
+              value:
+                items:
+                  - device: nas-1
+                    sampledAt: "2026-04-17T10:30:00Z"
+                    cpu:
+                      userPercent: 12
+                      systemPercent: 5
+                      totalPercent: 17
+                    memory:
+                      totalBytes: 4294967296
+                      availableBytes: 2147483648
+                      usedPercent: 50
+                      swapTotalBytes: 4294967296
+                      swapUsedBytes: 104857600
+                    network:
+                      - name: eth0
+                        rxBytesPerSec: 125000
+                        txBytesPerSec: 50000
+                      - name: eth1
+                        rxBytesPerSec: 0
+                        txBytesPerSec: 0
+                    disks:
+                      - name: sda
+                        readOpsPerSec: 42
+                        writeOpsPerSec: 18
+                      - name: sdb
+                        readOpsPerSec: 38
+                        writeOpsPerSec: 15
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

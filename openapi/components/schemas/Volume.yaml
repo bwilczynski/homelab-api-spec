@@ -26,13 +26,13 @@ properties:
     description: Filesystem type of the volume.
     example: btrfs
   totalBytes:
-    type: integer
-    format: int64
+    allOf:
+      - $ref: "./units/Bytes.yaml"
     description: Total capacity of the volume in bytes.
     example: 7672186060800
   usedBytes:
-    type: integer
-    format: int64
+    allOf:
+      - $ref: "./units/Bytes.yaml"
     description: Used space on the volume in bytes.
     example: 3221225472000
   disks:

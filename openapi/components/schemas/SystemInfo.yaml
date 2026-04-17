@@ -19,7 +19,8 @@ properties:
     description: Device uptime in seconds since last boot.
     example: 1209600
   ramMb:
-    type: integer
+    allOf:
+      - $ref: "./units/Megabytes.yaml"
     description: Total physical RAM in megabytes.
     example: 4096
 required:

@@ -22,13 +22,16 @@ get:
         application/json:
           schema:
             $ref: "../components/schemas/SystemInfoList.yaml"
-          example:
-            items:
-              - device: nas-1
-                model: DS920+
-                firmware: "DSM 7.2.2-72806 Update 2"
-                uptimeSeconds: 1209600
-                ramMb: 4096
+          examples:
+            singleNas:
+              summary: System info for a single NAS.
+              value:
+                items:
+                  - device: nas-1
+                    model: DS920+
+                    firmware: "DSM 7.2.2-72806 Update 2"
+                    uptimeSeconds: 1209600
+                    ramMb: 4096
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
