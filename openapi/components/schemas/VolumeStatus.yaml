@@ -1,0 +1,9 @@
+type: string
+description: |
+  Health status of a storage volume. Maps to backend-reported states
+  (e.g. Synology DSM volume status).
+enum:
+  - normal
+  - degraded
+  - crashed
+  - repairing

@@ -1,0 +1,10 @@
+type: object
+description: List of storage volumes.
+properties:
+  items:
+    type: array
+    description: Storage volumes matching the query. Empty array, never null.
+    items:
+      $ref: "./Volume.yaml"
+required:
+  - items

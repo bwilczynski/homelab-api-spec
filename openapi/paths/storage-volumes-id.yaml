@@ -1,0 +1,58 @@
+get:
+  operationId: getStorageVolume
+  summary: Get a storage volume
+  description: |
+    Returns a single storage volume by its composite identifier
+    (`{deviceId}:{volumeId}`, e.g. `nas-1:volume_1`). The response
+    includes capacity, filesystem type, health status, and the
+    physical disks backing the volume.
+  tags:
+    - storage
+  security:
+    - bearerAuth: [read:storage]
+  parameters:
+    - name: volumeId
+      in: path
+      required: true
+      description: |
+        Composite volume identifier in the form `{deviceId}:{volumeId}`
+        (e.g. `nas-1:volume_1`). The device prefix disambiguates volumes
+        across multiple backends that may use the same local ID.
+      schema:
+        type: string
+      example: "nas-1:volume_1"
+  responses:
+    "200":
+      description: The requested volume.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/Volume.yaml"
+          example:
+            id: "nas-1:volume_1"
+            name: volume_1
+            device: nas-1
+            status: normal
+            raidType: SHR
+            fileSystem: btrfs
+            totalBytes: 7672186060800
+            usedBytes: 3221225472000
+            disks:
+              - id: disk_1
+                model: WDC WD40EFPX-68C6CN0
+                status: normal
+                temperatureCelsius: 34
+              - id: disk_2
+                model: WDC WD40EFPX-68C6CN0
+                status: normal
+                temperatureCelsius: 36
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

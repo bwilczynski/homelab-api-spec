@@ -1,0 +1,52 @@
+type: object
+description: A storage volume reported by a NAS or storage backend.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique volume identifier in the form `{device}:{name}`.
+      Use this value directly in path parameters.
+    example: "nas-1:volume_1"
+  name:
+    type: string
+    description: Original volume name as reported by the backend.
+    example: volume_1
+  device:
+    type: string
+    description: Identifier of the backend device that owns this volume.
+    example: nas-1
+  status:
+    $ref: "./VolumeStatus.yaml"
+  raidType:
+    type: string
+    description: RAID level or storage pool type (e.g. SHR, RAID 1, RAID 5, basic).
+    example: SHR
+  fileSystem:
+    type: string
+    description: Filesystem type of the volume.
+    example: btrfs
+  totalBytes:
+    type: integer
+    format: int64
+    description: Total capacity of the volume in bytes.
+    example: 7672186060800
+  usedBytes:
+    type: integer
+    format: int64
+    description: Used space on the volume in bytes.
+    example: 3221225472000
+  disks:
+    type: array
+    description: Physical disks backing this volume. Empty array, never null.
+    items:
+      $ref: "./VolumeDisk.yaml"
+required:
+  - id
+  - name
+  - device
+  - status
+  - raidType
+  - fileSystem
+  - totalBytes
+  - usedBytes
+  - disks

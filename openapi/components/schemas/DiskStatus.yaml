@@ -1,0 +1,9 @@
+type: string
+description: |
+  Health status of a physical disk based on SMART diagnostics and
+  backend health checks.
+enum:
+  - normal
+  - warning
+  - critical
+  - failing

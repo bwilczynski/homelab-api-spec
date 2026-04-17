@@ -1,0 +1,9 @@
+name: device
+in: query
+required: false
+description: |
+  Filter results to a specific backend device by its identifier.
+  Omit to return results from all devices.
+schema:
+  type: string
+example: nas-1

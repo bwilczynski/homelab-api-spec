@@ -26,6 +26,8 @@ servers:
 tags:
   - name: system
     description: Aggregate health, UPS, and other cross-cutting system checks.
+  - name: storage
+    description: Storage volumes and disk health across NAS backends.
 
 security:
   - bearerAuth: []
@@ -33,6 +35,10 @@ security:
 paths:
   /system/health:
     $ref: "./paths/system-health.yaml"
+  /storage/volumes:
+    $ref: "./paths/storage-volumes.yaml"
+  /storage/volumes/{volumeId}:
+    $ref: "./paths/storage-volumes-id.yaml"
 
 components:
   securitySchemes:

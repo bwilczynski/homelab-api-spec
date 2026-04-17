@@ -1,0 +1,91 @@
+get:
+  operationId: listStorageVolumes
+  summary: List storage volumes
+  description: |
+    Returns storage volumes from all configured NAS backends. Each volume
+    includes capacity, filesystem type, health status, and the physical
+    disks that back it.
+
+    Use the `device` query parameter to filter volumes from a specific
+    backend (e.g. `?device=nas-1`). Omit it to get volumes across all
+    devices.
+
+    A homelab typically has a handful of volumes, so this endpoint
+    returns all matching results without pagination.
+  tags:
+    - storage
+  security:
+    - bearerAuth: [read:storage]
+  parameters:
+    - $ref: "../components/parameters/DeviceFilter.yaml"
+  responses:
+    "200":
+      description: List of storage volumes.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/VolumeList.yaml"
+          examples:
+            singleNas:
+              summary: Two volumes on a single NAS.
+              value:
+                items:
+                  - id: "nas-1:volume_1"
+                    name: volume_1
+                    device: nas-1
+                    status: normal
+                    raidType: SHR
+                    fileSystem: btrfs
+                    totalBytes: 7672186060800
+                    usedBytes: 3221225472000
+                    disks:
+                      - id: disk_1
+                        model: WDC WD40EFPX-68C6CN0
+                        status: normal
+                        temperatureCelsius: 34
+                      - id: disk_2
+                        model: WDC WD40EFPX-68C6CN0
+                        status: normal
+                        temperatureCelsius: 36
+                  - id: "nas-1:volume_2"
+                    name: volume_2
+                    device: nas-1
+                    status: normal
+                    raidType: basic
+                    fileSystem: ext4
+                    totalBytes: 500107862016
+                    usedBytes: 214748364800
+                    disks:
+                      - id: disk_3
+                        model: Samsung SSD 870 EVO 500GB
+                        status: normal
+                        temperatureCelsius: 29
+            degradedVolume:
+              summary: A volume with a failing disk.
+              value:
+                items:
+                  - id: "nas-1:volume_1"
+                    name: volume_1
+                    device: nas-1
+                    status: degraded
+                    raidType: SHR
+                    fileSystem: btrfs
+                    totalBytes: 7672186060800
+                    usedBytes: 3221225472000
+                    disks:
+                      - id: disk_1
+                        model: WDC WD40EFPX-68C6CN0
+                        status: normal
+                        temperatureCelsius: 34
+                      - id: disk_2
+                        model: WDC WD40EFPX-68C6CN0
+                        status: failing
+                        temperatureCelsius: 48
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

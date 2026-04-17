@@ -1,0 +1,22 @@
+type: object
+description: Physical disk that backs a storage volume.
+properties:
+  id:
+    type: string
+    description: Disk slot identifier as reported by the backend.
+    example: disk_1
+  model:
+    type: string
+    description: Hardware model name of the disk.
+    example: WDC WD40EFPX-68C6CN0
+  status:
+    $ref: "./DiskStatus.yaml"
+  temperatureCelsius:
+    type: integer
+    description: Current disk temperature in degrees Celsius.
+    example: 34
+required:
+  - id
+  - model
+  - status
+  - temperatureCelsius
