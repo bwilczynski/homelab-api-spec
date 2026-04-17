@@ -22,8 +22,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Spectral lint (source)
-        run: make lint-spectral
       - name: Spectral lint (bundled)
         run: make lint-spectral-bundled
 
