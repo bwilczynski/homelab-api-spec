@@ -3,7 +3,7 @@ get:
   summary: Get a backup task
   description: |
     Returns a single backup task by its composite identifier
-    (`{deviceId}:{taskId}`, e.g. `nas-1:1`). The response includes
+    (`{deviceId}.{taskId}`, e.g. `nas-1.1`). The response includes
     current status, the outcome of the most recent run, and scheduling
     information.
   tags:
@@ -15,12 +15,12 @@ get:
       in: path
       required: true
       description: |
-        Composite backup task identifier in the form `{deviceId}:{taskId}`
-        (e.g. `nas-1:1`). The device prefix disambiguates tasks across
+        Composite backup task identifier in the form `{deviceId}.{taskId}`
+        (e.g. `nas-1.1`). The device prefix disambiguates tasks across
         multiple backends.
       schema:
         type: string
-      example: "nas-1:1"
+      example: "nas-1.1"
   responses:
     "200":
       description: The requested backup task.
@@ -29,7 +29,7 @@ get:
           schema:
             $ref: "../components/schemas/BackupTask.yaml"
           example:
-            id: "nas-1:1"
+            id: "nas-1.1"
             name: "Daily NAS Backup"
             device: nas-1
             type: hyperBackup

@@ -55,10 +55,10 @@ jobs:
         run: |
           git worktree add /tmp/base "${{ github.event.pull_request.base.sha }}"
           cd /tmp/base
-          npx --yes @redocly/cli@1.25.15 bundle openapi/openapi.yaml -o /tmp/base.bundled.yaml
+          npx --yes @redocly/cli@1.25.15 bundle openapi/openapi.yaml -o $GITHUB_WORKSPACE/dist/base.bundled.yaml
       - name: oasdiff breaking changes
-        uses: oasdiff/oasdiff-action/breaking@v0.0.20
+        uses: oasdiff/oasdiff-action/breaking@v0.0.39
         with:
-          base: /tmp/base.bundled.yaml
+          base: dist/base.bundled.yaml
           revision: dist/openapi.bundled.yaml
           fail-on: ERR

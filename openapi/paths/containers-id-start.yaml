@@ -13,11 +13,11 @@ post:
       in: path
       required: true
       description: |
-        Composite container identifier in the form `{deviceId}:{name}`
-        (e.g. `nas-1:homeassistant`).
+        Composite container identifier in the form `{deviceId}.{name}`
+        (e.g. `nas-1.homeassistant`).
       schema:
         type: string
-      example: "nas-1:homeassistant"
+      example: "nas-1.homeassistant"
     - name: Idempotency-Key
       in: header
       required: false

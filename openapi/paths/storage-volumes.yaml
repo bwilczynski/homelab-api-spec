@@ -30,7 +30,7 @@ get:
               summary: Two volumes on a single NAS.
               value:
                 items:
-                  - id: "nas-1:volume_1"
+                  - id: "nas-1.volume_1"
                     name: volume_1
                     device: nas-1
                     status: normal
@@ -47,7 +47,7 @@ get:
                         model: WDC WD40EFPX-68C6CN0
                         status: normal
                         temperatureCelsius: 36
-                  - id: "nas-1:volume_2"
+                  - id: "nas-1.volume_2"
                     name: volume_2
                     device: nas-1
                     status: normal
@@ -64,7 +64,7 @@ get:
               summary: A volume with a failing disk.
               value:
                 items:
-                  - id: "nas-1:volume_1"
+                  - id: "nas-1.volume_1"
                     name: volume_1
                     device: nas-1
                     status: degraded

@@ -30,7 +30,7 @@ get:
               summary: A few containers on a single NAS.
               value:
                 items:
-                  - id: "nas-1:homeassistant"
+                  - id: "nas-1.homeassistant"
                     name: homeassistant
                     device: nas-1
                     status: running
@@ -40,7 +40,7 @@ get:
                       cpuPercent: 2.5
                       memoryBytes: 268435456
                       memoryPercent: 6.4
-                  - id: "nas-1:immich-server"
+                  - id: "nas-1.immich-server"
                     name: immich-server
                     device: nas-1
                     status: running
@@ -50,7 +50,7 @@ get:
                       cpuPercent: 0.8
                       memoryBytes: 536870912
                       memoryPercent: 12.8
-                  - id: "nas-1:caddy"
+                  - id: "nas-1.caddy"
                     name: caddy
                     device: nas-1
                     status: stopped

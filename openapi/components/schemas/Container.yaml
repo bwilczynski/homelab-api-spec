@@ -4,9 +4,9 @@ properties:
   id:
     type: string
     description: |
-      Globally unique container identifier in the form `{device}:{name}`.
+      Globally unique container identifier in the form `{device}.{name}`.
       Use this value directly in path parameters.
-    example: "nas-1:homeassistant"
+    example: "nas-1.homeassistant"
   name:
     type: string
     description: Container name as reported by the backend.
