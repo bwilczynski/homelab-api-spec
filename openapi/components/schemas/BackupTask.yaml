@@ -8,8 +8,8 @@ properties:
     type: string
     description: |
       Globally unique backup task identifier in the form
-      `{device}:{taskId}`. Use this value directly in path parameters.
-    example: "nas-1:1"
+      `{device}.{taskId}`. Use this value directly in path parameters.
+    example: "nas-1.1"
   name:
     type: string
     description: Human-readable task name as configured in the backup service.

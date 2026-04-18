@@ -12,6 +12,7 @@ the spec.
 
 ## Resources and operations
 
+- **Composite IDs:** `{device}.{name}` — dot-separated, URL-safe, no encoding required (e.g. `nas-1.homeassistant`)
 - **Custom actions:** `POST /resources/{id}:action` (colon style, Azure/Google convention)
 - **Partial updates:** `PATCH` with JSON Merge Patch (`application/merge-patch+json`)
 - **Idempotency:** Mutating operations accept an `Idempotency-Key` header

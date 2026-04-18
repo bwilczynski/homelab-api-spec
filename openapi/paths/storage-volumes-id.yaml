@@ -3,7 +3,7 @@ get:
   summary: Get a storage volume
   description: |
     Returns a single storage volume by its composite identifier
-    (`{deviceId}:{volumeId}`, e.g. `nas-1:volume_1`). The response
+    (`{deviceId}.{volumeId}`, e.g. `nas-1.volume_1`). The response
     includes capacity, filesystem type, health status, and the
     physical disks backing the volume.
   tags:
@@ -15,12 +15,12 @@ get:
       in: path
       required: true
       description: |
-        Composite volume identifier in the form `{deviceId}:{volumeId}`
-        (e.g. `nas-1:volume_1`). The device prefix disambiguates volumes
+        Composite volume identifier in the form `{deviceId}.{volumeId}`
+        (e.g. `nas-1.volume_1`). The device prefix disambiguates volumes
         across multiple backends that may use the same local ID.
       schema:
         type: string
-      example: "nas-1:volume_1"
+      example: "nas-1.volume_1"
   responses:
     "200":
       description: The requested volume.
@@ -29,7 +29,7 @@ get:
           schema:
             $ref: "../components/schemas/Volume.yaml"
           example:
-            id: "nas-1:volume_1"
+            id: "nas-1.volume_1"
             name: volume_1
             device: nas-1
             status: normal
