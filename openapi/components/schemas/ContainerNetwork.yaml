@@ -1,0 +1,14 @@
+type: object
+description: Network a container is attached to.
+properties:
+  name:
+    type: string
+    description: Network name.
+    example: immich_default
+  driver:
+    type: string
+    description: Network driver.
+    example: bridge
+required:
+  - name
+  - driver

@@ -62,3 +62,4 @@ jobs:
           base: dist/base.bundled.yaml
           revision: dist/openapi.bundled.yaml
           fail-on: ERR
+          flatten-allof: true

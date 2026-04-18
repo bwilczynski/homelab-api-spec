@@ -1,0 +1,14 @@
+type: object
+description: An environment variable set in a container.
+properties:
+  key:
+    type: string
+    description: Environment variable name.
+    example: TZ
+  value:
+    type: string
+    description: Environment variable value.
+    example: Europe/Warsaw
+required:
+  - key
+  - value

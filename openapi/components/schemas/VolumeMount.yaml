@@ -1,0 +1,20 @@
+type: object
+description: Bind mount or volume mapping for a container.
+properties:
+  source:
+    type: string
+    description: Host path or volume name.
+    example: /volume1/docker/immich/upload
+  destination:
+    type: string
+    description: Mount path inside the container.
+    example: /data
+  mode:
+    type: string
+    enum: [ro, rw]
+    description: Mount access mode — read-only or read-write.
+    example: rw
+required:
+  - source
+  - destination
+  - mode

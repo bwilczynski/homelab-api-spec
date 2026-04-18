@@ -1,0 +1,90 @@
+allOf:
+  - $ref: "./Container.yaml"
+  - type: object
+    description: Detailed information about a container, including configuration, networking, and mounts.
+    properties:
+      startedAt:
+        type: string
+        format: date-time
+        description: Time the container last started.
+        example: "2026-04-08T19:46:34Z"
+      finishedAt:
+        type: string
+        format: date-time
+        description: Time the container last stopped. Omitted if the container is still running.
+        example: "2026-04-07T10:00:00Z"
+      exitCode:
+        type: integer
+        description: Exit code of the last process. Only meaningful when status is not 'running'.
+        example: 0
+      oomKilled:
+        type: boolean
+        description: Whether the container was killed due to an out-of-memory condition.
+        example: false
+      restartPolicy:
+        type: string
+        enum: [always, unless-stopped, on-failure, no]
+        description: Container restart policy.
+        example: always
+      privileged:
+        type: boolean
+        description: Whether the container runs in privileged mode.
+        example: false
+      memoryLimit:
+        allOf:
+          - $ref: "./units/Bytes.yaml"
+        description: Configured memory limit in bytes. 0 means unlimited.
+        example: 0
+      portBindings:
+        type: array
+        description: Published port mappings between host and container.
+        items:
+          $ref: "./PortBinding.yaml"
+      networks:
+        type: array
+        description: Networks this container is attached to.
+        items:
+          $ref: "./ContainerNetwork.yaml"
+      volumeBindings:
+        type: array
+        description: Bind mounts and volume mappings.
+        items:
+          $ref: "./VolumeMount.yaml"
+      envVariables:
+        type: array
+        description: Environment variables set in the container.
+        items:
+          $ref: "./EnvVariable.yaml"
+      entrypoint:
+        type: array
+        description: Container entrypoint command.
+        items:
+          type: string
+        example: ["tini", "--", "/bin/bash", "-c"]
+      cmd:
+        type: array
+        description: Default command arguments passed to the entrypoint.
+        items:
+          type: string
+        example: ["start.sh"]
+      labels:
+        type: object
+        description: Container labels as key-value pairs.
+        additionalProperties:
+          type: string
+        example:
+          com.docker.compose.project: immich
+          com.docker.compose.service: immich-server
+    required:
+      - startedAt
+      - exitCode
+      - oomKilled
+      - restartPolicy
+      - privileged
+      - memoryLimit
+      - portBindings
+      - networks
+      - volumeBindings
+      - envVariables
+      - entrypoint
+      - cmd
