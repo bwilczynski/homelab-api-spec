@@ -1,0 +1,20 @@
+type: object
+description: Port mapping between a container and the host.
+properties:
+  containerPort:
+    type: integer
+    description: Port exposed by the container.
+    example: 2283
+  hostPort:
+    type: integer
+    description: Port bound on the host.
+    example: 12080
+  protocol:
+    type: string
+    enum: [tcp, udp]
+    description: Transport protocol.
+    example: tcp
+required:
+  - containerPort
+  - hostPort
+  - protocol

@@ -26,7 +26,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/Container.yaml"
+            $ref: "../components/schemas/ContainerDetail.yaml"
           example:
             id: "nas-1.homeassistant"
             name: homeassistant
@@ -38,6 +38,31 @@ get:
               cpuPercent: 2.5
               memoryBytes: 268435456
               memoryPercent: 6.4
+            startedAt: "2026-04-08T19:46:34Z"
+            exitCode: 0
+            oomKilled: false
+            restartPolicy: always
+            privileged: false
+            memoryLimit: 0
+            portBindings:
+              - containerPort: 8123
+                hostPort: 8123
+                protocol: tcp
+            networks:
+              - name: homeassistant_default
+                driver: bridge
+            volumeBindings:
+              - source: /volume1/docker/homeassistant/config
+                destination: /config
+                mode: rw
+            envVariables:
+              - key: TZ
+                value: Europe/Warsaw
+            entrypoint: ["/init"]
+            cmd: []
+            labels:
+              com.docker.compose.project: homeassistant
+              com.docker.compose.service: homeassistant
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
