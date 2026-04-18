@@ -1,0 +1,16 @@
+allOf:
+  - $ref: "./Volume.yaml"
+  - type: object
+    description: Detailed information about a storage volume, including mount path and pool health.
+    properties:
+      mountPath:
+        type: string
+        description: Filesystem mount point of the volume on the backend host.
+        example: /volume1
+      poolStatus:
+        allOf:
+          - $ref: "./VolumeStatus.yaml"
+        description: Health status of the underlying storage pool. May differ from the volume status during a rebuild or repair.
+    required:
+      - mountPath
+      - poolStatus

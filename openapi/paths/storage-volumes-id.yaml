@@ -23,11 +23,11 @@ get:
       example: "nas-1.volume_1"
   responses:
     "200":
-      description: The requested volume.
+      description: The requested volume with extended detail.
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/Volume.yaml"
+            $ref: "../components/schemas/VolumeDetail.yaml"
           example:
             id: "nas-1.volume_1"
             name: volume_1
@@ -37,6 +37,8 @@ get:
             fileSystem: btrfs
             totalBytes: 7672186060800
             usedBytes: 3221225472000
+            mountPath: /volume1
+            poolStatus: normal
             disks:
               - id: disk_1
                 model: WDC WD40EFPX-68C6CN0
