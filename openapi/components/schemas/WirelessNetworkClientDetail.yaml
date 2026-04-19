@@ -1,0 +1,27 @@
+allOf:
+  - $ref: "./NetworkClient.yaml"
+  - type: object
+    description: Detail for a wireless network client, including signal and SSID.
+    properties:
+      connectionType:
+        type: string
+        enum: [wireless]
+      ssid:
+        type: string
+        description: SSID the client is associated with.
+        example: "HomeNetwork"
+      signalStrength:
+        type: integer
+        description: |
+          Received signal strength in dBm.
+          Typical range: -30 (excellent) to -90 (poor).
+        example: -62
+      uptime:
+        type: integer
+        description: Seconds since the client's current session started.
+        example: 7200
+    required:
+      - connectionType
+      - ssid
+      - signalStrength
+      - uptime

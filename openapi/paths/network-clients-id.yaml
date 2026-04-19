@@ -5,8 +5,10 @@ get:
   description: |
     Returns a single connected client by its composite identifier
     (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-3c`). The response
-    includes connection type, session uptime, and — for wireless
-    clients — the associated SSID and signal strength.
+    includes connection type and session uptime. The shape of the
+    response varies by connection type: wired clients include switch
+    name and port number; wireless clients include SSID and signal
+    strength.
 
     Only currently connected clients can be retrieved; requesting an
     offline client returns 404.
@@ -33,15 +35,29 @@ get:
         application/json:
           schema:
             $ref: "../components/schemas/NetworkClientDetail.yaml"
-          example:
-            id: "unifi.macbook-pro-3c"
-            name: "MacBook Pro"
-            mac: "3c:22:fb:09:aa:b1"
-            ip: "192.168.1.101"
-            connectionType: wireless
-            ssid: "HomeNetwork"
-            signalStrength: -62
-            uptime: 7200
+          examples:
+            wirelessClient:
+              summary: A wireless client with SSID and signal strength.
+              value:
+                id: "unifi.macbook-pro-3c"
+                name: "MacBook Pro"
+                mac: "3c:22:fb:09:aa:b1"
+                ip: "192.168.1.101"
+                connectionType: wireless
+                ssid: "HomeNetwork"
+                signalStrength: -62
+                uptime: 7200
+            wiredClient:
+              summary: A wired client with switch and port info.
+              value:
+                id: "unifi.nas-1-68"
+                name: "nas-1"
+                mac: "68:d7:9a:12:bb:c2"
+                ip: "192.168.1.10"
+                connectionType: wired
+                switchName: "Switch Living Room"
+                switchPort: 8
+                uptime: 604800
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

@@ -1,23 +1,8 @@
-allOf:
-  - $ref: "./NetworkClient.yaml"
-  - type: object
-    description: Detailed information about a network client, including wireless details and session uptime.
-    properties:
-      ssid:
-        type: string
-        description: |
-          SSID the client is associated with. Present only for wireless clients;
-          omitted for wired clients.
-        example: "HomeNetwork"
-      signalStrength:
-        type: integer
-        description: |
-          Received signal strength in dBm. Present only for wireless clients;
-          omitted for wired clients. Typical range: -30 (excellent) to -90 (poor).
-        example: -65
-      uptime:
-        type: integer
-        description: Seconds since the client's current session started.
-        example: 3600
-    required:
-      - uptime
+anyOf:
+  - $ref: "./WiredNetworkClientDetail.yaml"
+  - $ref: "./WirelessNetworkClientDetail.yaml"
+discriminator:
+  propertyName: connectionType
+  mapping:
+    wired: "./WiredNetworkClientDetail.yaml"
+    wireless: "./WirelessNetworkClientDetail.yaml"
