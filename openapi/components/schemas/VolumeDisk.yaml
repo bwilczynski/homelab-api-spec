@@ -11,6 +11,11 @@ properties:
     example: WDC WD40EFPX-68C6CN0
   status:
     $ref: "./DiskStatus.yaml"
+  totalBytes:
+    allOf:
+      - $ref: "./units/Bytes.yaml"
+    description: Total physical capacity of the disk in bytes.
+    example: 4000787030016
   temperatureCelsius:
     type: integer
     description: Current disk temperature in degrees Celsius.
@@ -19,4 +24,5 @@ required:
   - id
   - model
   - status
+  - totalBytes
   - temperatureCelsius

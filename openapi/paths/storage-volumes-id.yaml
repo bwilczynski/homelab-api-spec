@@ -44,10 +44,12 @@ get:
               - id: disk_1
                 model: WDC WD40EFPX-68C6CN0
                 status: normal
+                totalBytes: 4000787030016
                 temperatureCelsius: 34
               - id: disk_2
                 model: WDC WD40EFPX-68C6CN0
                 status: normal
+                totalBytes: 4000787030016
                 temperatureCelsius: 36
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
