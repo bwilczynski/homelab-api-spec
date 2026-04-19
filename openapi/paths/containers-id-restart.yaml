@@ -1,5 +1,6 @@
 post:
   operationId: restartContainer
+  x-stability-level: draft
   summary: Restart a container
   description: |
     Restarts a container by stopping and then starting it. Works

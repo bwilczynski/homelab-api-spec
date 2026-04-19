@@ -35,11 +35,6 @@ properties:
       - $ref: "./units/Bytes.yaml"
     description: Used space on the volume in bytes.
     example: 3221225472000
-  disks:
-    type: array
-    description: Physical disks backing this volume. Empty array, never null.
-    items:
-      $ref: "./VolumeDisk.yaml"
 required:
   - id
   - name
@@ -49,4 +44,3 @@ required:
   - fileSystem
   - totalBytes
   - usedBytes
-  - disks

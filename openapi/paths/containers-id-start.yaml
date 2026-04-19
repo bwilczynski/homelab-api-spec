@@ -1,5 +1,6 @@
 post:
   operationId: startContainer
+  x-stability-level: draft
   summary: Start a container
   description: |
     Starts a stopped or paused container. If the container is already

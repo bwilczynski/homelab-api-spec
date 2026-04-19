@@ -1,5 +1,6 @@
 get:
   operationId: getStorageVolume
+  x-stability-level: draft
   summary: Get a storage volume
   description: |
     Returns a single storage volume by its composite identifier

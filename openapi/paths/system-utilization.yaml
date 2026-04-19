@@ -1,5 +1,6 @@
 get:
   operationId: listSystemUtilization
+  x-stability-level: draft
   summary: List system utilization
   description: |
     Returns a live resource-utilization snapshot for all configured

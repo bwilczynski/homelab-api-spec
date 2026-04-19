@@ -1,10 +1,10 @@
 get:
   operationId: listStorageVolumes
+  x-stability-level: draft
   summary: List storage volumes
   description: |
     Returns storage volumes from all configured NAS backends. Each volume
-    includes capacity, filesystem type, health status, and the physical
-    disks that back it.
+    includes capacity, filesystem type, and health status.
 
     Use the `device` query parameter to filter volumes from a specific
     backend (e.g. `?device=nas-1`). Omit it to get volumes across all
@@ -38,15 +38,6 @@ get:
                     fileSystem: btrfs
                     totalBytes: 7672186060800
                     usedBytes: 3221225472000
-                    disks:
-                      - id: disk_1
-                        model: WDC WD40EFPX-68C6CN0
-                        status: normal
-                        temperatureCelsius: 34
-                      - id: disk_2
-                        model: WDC WD40EFPX-68C6CN0
-                        status: normal
-                        temperatureCelsius: 36
                   - id: "nas-1.volume_2"
                     name: volume_2
                     device: nas-1
@@ -55,11 +46,6 @@ get:
                     fileSystem: ext4
                     totalBytes: 500107862016
                     usedBytes: 214748364800
-                    disks:
-                      - id: disk_3
-                        model: Samsung SSD 870 EVO 500GB
-                        status: normal
-                        temperatureCelsius: 29
             degradedVolume:
               summary: A volume with a failing disk.
               value:
@@ -72,15 +58,6 @@ get:
                     fileSystem: btrfs
                     totalBytes: 7672186060800
                     usedBytes: 3221225472000
-                    disks:
-                      - id: disk_1
-                        model: WDC WD40EFPX-68C6CN0
-                        status: normal
-                        temperatureCelsius: 34
-                      - id: disk_2
-                        model: WDC WD40EFPX-68C6CN0
-                        status: failing
-                        temperatureCelsius: 48
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
