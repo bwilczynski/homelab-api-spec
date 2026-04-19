@@ -1,0 +1,53 @@
+get:
+  operationId: getNetworkClient
+  x-stability-level: draft
+  summary: Get a network client
+  description: |
+    Returns a single connected client by its composite identifier
+    (`{controller}.{mac}`, e.g. `unifi.112233445566`). The response
+    includes connection type, session uptime, and — for wireless
+    clients — the associated SSID and signal strength.
+
+    Only currently connected clients can be retrieved; requesting an
+    offline client returns 404.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: clientId
+      in: path
+      required: true
+      description: |
+        Composite client identifier in the form `{controller}.{mac}`
+        (e.g. `unifi.112233445566`). The controller prefix disambiguates
+        clients across multiple UniFi controllers.
+      schema:
+        type: string
+      example: "unifi.112233445566"
+  responses:
+    "200":
+      description: The requested network client.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkClientDetail.yaml"
+          example:
+            id: "unifi.112233445566"
+            name: "MacBook Pro"
+            mac: "11:22:33:44:55:66"
+            ip: "192.168.1.101"
+            connectionType: wireless
+            ssid: "HomeNetwork"
+            signalStrength: -62
+            uptime: 7200
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

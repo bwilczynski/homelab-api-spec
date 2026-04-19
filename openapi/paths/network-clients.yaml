@@ -6,9 +6,8 @@ get:
     Returns currently connected client devices from all configured UniFi
     controllers.
 
-    Each client includes its MAC address, IP address, connection type (wired
-    or wireless), and session uptime. Wireless clients additionally include
-    the associated SSID and received signal strength.
+    Each client includes its MAC address, IP address, and connection type
+    (wired or wireless).
 
     Only active clients are returned — historically seen but currently
     offline clients are excluded.
@@ -36,23 +35,16 @@ get:
                     mac: "11:22:33:44:55:01"
                     ip: "192.168.1.101"
                     connectionType: wireless
-                    ssid: "HomeNetwork"
-                    signalStrength: -62
-                    uptime: 7200
                   - id: "unifi.112233445502"
                     name: "nas-1"
                     mac: "11:22:33:44:55:02"
                     ip: "192.168.1.10"
                     connectionType: wired
-                    uptime: 604800
                   - id: "unifi.112233445503"
                     name: "iPhone"
                     mac: "11:22:33:44:55:03"
                     ip: "192.168.1.102"
                     connectionType: wireless
-                    ssid: "HomeNetwork"
-                    signalStrength: -71
-                    uptime: 1800
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

@@ -23,25 +23,8 @@ properties:
     example: "192.168.1.100"
   connectionType:
     $ref: "./NetworkClientConnectionType.yaml"
-  ssid:
-    type: string
-    description: |
-      SSID the client is associated with. Present only for wireless clients;
-      omitted for wired clients.
-    example: "HomeNetwork"
-  signalStrength:
-    type: integer
-    description: |
-      Received signal strength in dBm. Present only for wireless clients;
-      omitted for wired clients. Typical range: -30 (excellent) to -90 (poor).
-    example: -65
-  uptime:
-    type: integer
-    description: Seconds since the client's current session started.
-    example: 3600
 required:
   - id
   - name
   - mac
   - connectionType
-  - uptime

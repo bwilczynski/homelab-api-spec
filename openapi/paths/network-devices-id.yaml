@@ -1,0 +1,53 @@
+get:
+  operationId: getNetworkDevice
+  x-stability-level: draft
+  summary: Get a network device
+  description: |
+    Returns a single network device by its composite identifier
+    (`{controller}.{mac}`, e.g. `unifi.aabbccddeeff`). The response
+    includes model, firmware version, connectivity status, and uptime.
+    Access points additionally include the number of currently associated
+    wireless clients.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: deviceId
+      in: path
+      required: true
+      description: |
+        Composite device identifier in the form `{controller}.{mac}`
+        (e.g. `unifi.aabbccddeeff`). The controller prefix disambiguates
+        devices across multiple UniFi controllers.
+      schema:
+        type: string
+      example: "unifi.aabbccddeeff"
+  responses:
+    "200":
+      description: The requested network device.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkDeviceDetail.yaml"
+          example:
+            id: "unifi.aabbccddeeff"
+            name: "AP Living Room"
+            mac: "aa:bb:cc:dd:ee:ff"
+            ip: "192.168.1.3"
+            type: accessPoint
+            status: connected
+            numClients: 5
+            model: "U6-Lite"
+            firmwareVersion: "6.6.77.14522"
+            uptime: 86400
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

@@ -65,8 +65,12 @@ paths:
     $ref: "./paths/backup-tasks-id.yaml"
   /network/devices:
     $ref: "./paths/network-devices.yaml"
+  /network/devices/{deviceId}:
+    $ref: "./paths/network-devices-id.yaml"
   /network/clients:
     $ref: "./paths/network-clients.yaml"
+  /network/clients/{clientId}:
+    $ref: "./paths/network-clients-id.yaml"
 
 components:
   securitySchemes:

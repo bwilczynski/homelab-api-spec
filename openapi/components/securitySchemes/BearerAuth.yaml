@@ -12,9 +12,7 @@ flows:
     tokenUrl: https://idp.homelab.local/oauth/token
     scopes:
       "read:system": Read aggregate health, UPS state, and cross-cutting system info.
-      "read:network": List network devices (APs, switches, gateways) and connected clients.
-      "read:devices": List and inspect devices, VLANs, network clients.
-      "write:devices": Provision and decommission devices.
+      "read:network": List and inspect network devices (APs, switches, gateways) and connected clients.
       "read:services": List and inspect service status.
       "write:services": Restart services.
       "read:containers": List and inspect containers and their resource usage.

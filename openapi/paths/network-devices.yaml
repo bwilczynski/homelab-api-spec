@@ -6,9 +6,8 @@ get:
     Returns managed network devices (access points, switches, gateways) from
     all configured UniFi controllers.
 
-    Each device includes its type, model, firmware version, connectivity
-    status, and uptime. Access points additionally include the number of
-    currently associated wireless clients.
+    Each device includes its type, connectivity status, and — for access
+    points — the number of currently associated wireless clients.
 
     A homelab typically has a small number of network devices, so this
     endpoint returns all results without pagination.
@@ -33,38 +32,26 @@ get:
                     mac: "aa:bb:cc:dd:00:01"
                     ip: "192.168.1.1"
                     type: gateway
-                    model: "USG"
-                    firmwareVersion: "4.4.57.5578372"
                     status: connected
-                    uptime: 604800
                   - id: "unifi.aabbccdd0002"
                     name: "Switch Living Room"
                     mac: "aa:bb:cc:dd:00:02"
                     ip: "192.168.1.2"
                     type: switch
-                    model: "USW-24-PoE"
-                    firmwareVersion: "6.6.61.14178"
                     status: connected
-                    uptime: 604800
                   - id: "unifi.aabbccdd0003"
                     name: "AP Living Room"
                     mac: "aa:bb:cc:dd:00:03"
                     ip: "192.168.1.3"
                     type: accessPoint
-                    model: "U6-Lite"
-                    firmwareVersion: "6.6.77.14522"
                     status: connected
-                    uptime: 86400
                     numClients: 5
                   - id: "unifi.aabbccdd0004"
                     name: "AP Office"
                     mac: "aa:bb:cc:dd:00:04"
                     ip: "192.168.1.4"
                     type: accessPoint
-                    model: "U6-Pro"
-                    firmwareVersion: "6.6.77.14522"
                     status: connected
-                    uptime: 86400
                     numClients: 2
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
