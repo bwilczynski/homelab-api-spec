@@ -1,0 +1,54 @@
+type: object
+description: A managed network device reported by a UniFi controller.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique device identifier in the form `{controller}.{mac}`,
+      where `mac` is the device MAC address without separators.
+      Use this value directly in path parameters.
+    example: "unifi.aabbccddeeff"
+  name:
+    type: string
+    description: Human-readable device name as configured in the controller.
+    example: "AP Living Room"
+  mac:
+    type: string
+    description: Device MAC address in lowercase colon-separated notation.
+    example: "aa:bb:cc:dd:ee:ff"
+  ip:
+    type: string
+    description: Management IP address of the device.
+    example: "192.168.1.5"
+  type:
+    $ref: "./NetworkDeviceType.yaml"
+  model:
+    type: string
+    description: Device model identifier as reported by the controller.
+    example: "U6-Lite"
+  firmwareVersion:
+    type: string
+    description: Installed firmware version.
+    example: "6.6.77.14522"
+  status:
+    $ref: "./NetworkDeviceStatus.yaml"
+  uptime:
+    type: integer
+    description: Seconds since the device last (re)connected to the controller.
+    example: 86400
+  numClients:
+    type: integer
+    description: |
+      Number of wireless clients currently associated with this device.
+      Present only for access points; omitted for switches and gateways.
+    example: 5
+required:
+  - id
+  - name
+  - mac
+  - ip
+  - type
+  - model
+  - firmwareVersion
+  - status
+  - uptime

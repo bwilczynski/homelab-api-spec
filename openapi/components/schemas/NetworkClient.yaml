@@ -1,0 +1,47 @@
+type: object
+description: A client device currently connected to the network.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique client identifier in the form `{controller}.{mac}`,
+      where `mac` is the client MAC address without separators.
+    example: "unifi.112233445566"
+  name:
+    type: string
+    description: |
+      Display name for the client: the user-assigned alias when set,
+      otherwise the DHCP hostname.
+    example: "MacBook Pro"
+  mac:
+    type: string
+    description: Client MAC address in lowercase colon-separated notation.
+    example: "11:22:33:44:55:66"
+  ip:
+    type: string
+    description: Current IP address of the client.
+    example: "192.168.1.100"
+  connectionType:
+    $ref: "./NetworkClientConnectionType.yaml"
+  ssid:
+    type: string
+    description: |
+      SSID the client is associated with. Present only for wireless clients;
+      omitted for wired clients.
+    example: "HomeNetwork"
+  signalStrength:
+    type: integer
+    description: |
+      Received signal strength in dBm. Present only for wireless clients;
+      omitted for wired clients. Typical range: -30 (excellent) to -90 (poor).
+    example: -65
+  uptime:
+    type: integer
+    description: Seconds since the client's current session started.
+    example: 3600
+required:
+  - id
+  - name
+  - mac
+  - connectionType
+  - uptime

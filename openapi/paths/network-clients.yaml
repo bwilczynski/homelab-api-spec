@@ -1,0 +1,63 @@
+get:
+  operationId: listNetworkClients
+  x-stability-level: draft
+  summary: List network clients
+  description: |
+    Returns currently connected client devices from all configured UniFi
+    controllers.
+
+    Each client includes its MAC address, IP address, connection type (wired
+    or wireless), and session uptime. Wireless clients additionally include
+    the associated SSID and received signal strength.
+
+    Only active clients are returned — historically seen but currently
+    offline clients are excluded.
+
+    A homelab typically has a manageable number of active clients, so this
+    endpoint returns all results without pagination.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  responses:
+    "200":
+      description: List of connected network clients.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkClientList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A mix of wired and wireless clients.
+              value:
+                items:
+                  - id: "unifi.112233445501"
+                    name: "MacBook Pro"
+                    mac: "11:22:33:44:55:01"
+                    ip: "192.168.1.101"
+                    connectionType: wireless
+                    ssid: "HomeNetwork"
+                    signalStrength: -62
+                    uptime: 7200
+                  - id: "unifi.112233445502"
+                    name: "nas-1"
+                    mac: "11:22:33:44:55:02"
+                    ip: "192.168.1.10"
+                    connectionType: wired
+                    uptime: 604800
+                  - id: "unifi.112233445503"
+                    name: "iPhone"
+                    mac: "11:22:33:44:55:03"
+                    ip: "192.168.1.102"
+                    connectionType: wireless
+                    ssid: "HomeNetwork"
+                    signalStrength: -71
+                    uptime: 1800
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"
