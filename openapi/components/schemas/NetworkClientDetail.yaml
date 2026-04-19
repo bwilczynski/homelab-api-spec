@@ -1,0 +1,8 @@
+anyOf:
+  - $ref: "./WiredNetworkClientDetail.yaml"
+  - $ref: "./WirelessNetworkClientDetail.yaml"
+discriminator:
+  propertyName: connectionType
+  mapping:
+    wired: "./WiredNetworkClientDetail.yaml"
+    wireless: "./WirelessNetworkClientDetail.yaml"

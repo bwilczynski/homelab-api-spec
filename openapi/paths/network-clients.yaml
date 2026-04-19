@@ -1,0 +1,55 @@
+get:
+  operationId: listNetworkClients
+  x-stability-level: draft
+  summary: List network clients
+  description: |
+    Returns currently connected client devices from all configured UniFi
+    controllers.
+
+    Each client includes its MAC address, IP address, and connection type
+    (wired or wireless).
+
+    Only active clients are returned — historically seen but currently
+    offline clients are excluded.
+
+    A homelab typically has a manageable number of active clients, so this
+    endpoint returns all results without pagination.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  responses:
+    "200":
+      description: List of connected network clients.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkClientList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A mix of wired and wireless clients.
+              value:
+                items:
+                  - id: "unifi.macbook-pro-3c"
+                    name: "MacBook Pro"
+                    mac: "3c:22:fb:09:aa:b1"
+                    ip: "192.168.1.101"
+                    connectionType: wireless
+                  - id: "unifi.nas-1-68"
+                    name: "nas-1"
+                    mac: "68:d7:9a:12:bb:c2"
+                    ip: "192.168.1.10"
+                    connectionType: wired
+                  - id: "unifi.iphone-a4"
+                    name: "iPhone"
+                    mac: "a4:83:e7:5f:cc:d3"
+                    ip: "192.168.1.102"
+                    connectionType: wireless
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

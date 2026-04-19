@@ -1,0 +1,33 @@
+type: object
+description: A client device currently connected to the network.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique client identifier in the form
+      `{controller}.{hostname}-{macPrefix}`, where `hostname` is the
+      client's name in kebab-case and `macPrefix` is the first two
+      characters of the MAC address for disambiguation. The
+      implementation ensures uniqueness across controllers.
+    example: "unifi.macbook-pro-3c"
+  name:
+    type: string
+    description: |
+      Display name for the client: the user-assigned alias when set,
+      otherwise the DHCP hostname.
+    example: "MacBook Pro"
+  mac:
+    type: string
+    description: Client MAC address in lowercase colon-separated notation.
+    example: "3c:22:fb:09:aa:b1"
+  ip:
+    type: string
+    description: Current IP address of the client.
+    example: "192.168.1.100"
+  connectionType:
+    $ref: "./NetworkClientConnectionType.yaml"
+required:
+  - id
+  - name
+  - mac
+  - connectionType

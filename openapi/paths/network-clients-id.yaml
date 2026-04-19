@@ -1,0 +1,70 @@
+get:
+  operationId: getNetworkClient
+  x-stability-level: draft
+  summary: Get a network client
+  description: |
+    Returns a single connected client by its composite identifier
+    (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-3c`). The response
+    includes connection type and session uptime. The shape of the
+    response varies by connection type: wired clients include switch
+    name and port number; wireless clients include SSID and signal
+    strength.
+
+    Only currently connected clients can be retrieved; requesting an
+    offline client returns 404.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: clientId
+      in: path
+      required: true
+      description: |
+        Composite client identifier in the form
+        `{controller}.{hostname}-{macPrefix}`
+        (e.g. `unifi.macbook-pro-3c`). The controller prefix disambiguates
+        clients across multiple UniFi controllers.
+      schema:
+        type: string
+      example: "unifi.macbook-pro-3c"
+  responses:
+    "200":
+      description: The requested network client.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkClientDetail.yaml"
+          examples:
+            wirelessClient:
+              summary: A wireless client with SSID and signal strength.
+              value:
+                id: "unifi.macbook-pro-3c"
+                name: "MacBook Pro"
+                mac: "3c:22:fb:09:aa:b1"
+                ip: "192.168.1.101"
+                connectionType: wireless
+                ssid: "HomeNetwork"
+                signalStrength: -62
+                uptime: 7200
+            wiredClient:
+              summary: A wired client with switch and port info.
+              value:
+                id: "unifi.nas-1-68"
+                name: "nas-1"
+                mac: "68:d7:9a:12:bb:c2"
+                ip: "192.168.1.10"
+                connectionType: wired
+                switchName: "Switch Living Room"
+                switchPort: 8
+                uptime: 604800
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

@@ -1,0 +1,10 @@
+type: object
+description: List of network clients.
+properties:
+  items:
+    type: array
+    description: Connected network clients matching the query. Empty array, never null.
+    items:
+      $ref: "./NetworkClient.yaml"
+required:
+  - items

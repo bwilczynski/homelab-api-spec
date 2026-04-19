@@ -1,0 +1,8 @@
+type: string
+description: |
+  Connectivity state of a network device as reported by the controller.
+  - `connected` — device is online and managed
+  - `disconnected` — device is offline or unreachable
+enum:
+  - connected
+  - disconnected

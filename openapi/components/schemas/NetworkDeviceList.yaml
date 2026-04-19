@@ -1,0 +1,10 @@
+type: object
+description: List of network devices.
+properties:
+  items:
+    type: array
+    description: Network devices matching the query. Empty array, never null.
+    items:
+      $ref: "./NetworkDevice.yaml"
+required:
+  - items

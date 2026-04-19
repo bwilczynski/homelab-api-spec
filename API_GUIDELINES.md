@@ -17,6 +17,21 @@ the spec.
 - **Partial updates:** `PATCH` with JSON Merge Patch (`application/merge-patch+json`)
 - **Idempotency:** Mutating operations accept an `Idempotency-Key` header
 
+## List vs Detail schemas
+
+Every resource that has both a collection (`GET /resources`) and a single-item
+(`GET /resources/{id}`) endpoint uses two schemas:
+
+- **`Resource`** (list) — the compact representation returned inside `items`.
+  Keep only the fields needed to identify, label, and show status at a glance.
+- **`ResourceDetail`** (detail) — extends the list schema via `allOf` and adds
+  fields that are only useful when inspecting a single resource (e.g. config,
+  firmware, scheduling, nested sub-resources).
+
+This keeps list payloads lean and makes it clear which fields are available at
+each level. When adding a new resource, decide the split up front — moving
+fields from list to detail later is a breaking change.
+
 ## Collections and pagination
 
 - **Collection root key:** `"items": [...]`

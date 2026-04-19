@@ -1,0 +1,63 @@
+get:
+  operationId: listNetworkDevices
+  x-stability-level: draft
+  summary: List network devices
+  description: |
+    Returns managed network devices (access points, switches, gateways) from
+    all configured UniFi controllers.
+
+    Each device includes its type, connectivity status, and — for access
+    points — the number of currently associated wireless clients.
+
+    A homelab typically has a small number of network devices, so this
+    endpoint returns all results without pagination.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  responses:
+    "200":
+      description: List of network devices.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkDeviceList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A gateway, a switch, and two access points.
+              value:
+                items:
+                  - id: "unifi.usg"
+                    name: "USG"
+                    mac: "aa:bb:cc:dd:00:01"
+                    ip: "192.168.1.1"
+                    type: gateway
+                    status: connected
+                  - id: "unifi.switch-living-room"
+                    name: "Switch Living Room"
+                    mac: "aa:bb:cc:dd:00:02"
+                    ip: "192.168.1.2"
+                    type: switch
+                    status: connected
+                  - id: "unifi.ap-living-room"
+                    name: "AP Living Room"
+                    mac: "aa:bb:cc:dd:00:03"
+                    ip: "192.168.1.3"
+                    type: accessPoint
+                    status: connected
+                    numClients: 5
+                  - id: "unifi.ap-office"
+                    name: "AP Office"
+                    mac: "aa:bb:cc:dd:00:04"
+                    ip: "192.168.1.4"
+                    type: accessPoint
+                    status: connected
+                    numClients: 2
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

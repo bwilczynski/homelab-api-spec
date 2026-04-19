@@ -1,0 +1,8 @@
+type: string
+description: |
+  How the client is connected to the network.
+  - `wired` — connected via Ethernet
+  - `wireless` — connected via Wi-Fi
+enum:
+  - wired
+  - wireless

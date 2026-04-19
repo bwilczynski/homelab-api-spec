@@ -1,0 +1,12 @@
+type: string
+description: |
+  Functional role of a network device.
+  - `accessPoint` — wireless access point
+  - `switch` — managed network switch
+  - `gateway` — security gateway / router
+  - `unknown` — unrecognised device type
+enum:
+  - accessPoint
+  - switch
+  - gateway
+  - unknown

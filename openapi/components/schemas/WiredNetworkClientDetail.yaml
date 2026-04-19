@@ -1,0 +1,25 @@
+allOf:
+  - $ref: "./NetworkClient.yaml"
+  - type: object
+    description: Detail for a wired network client, including switch and port information.
+    properties:
+      connectionType:
+        type: string
+        enum: [wired]
+      switchName:
+        type: string
+        description: Name of the switch this client is connected to.
+        example: "Switch Living Room"
+      switchPort:
+        type: integer
+        description: Physical port number on the switch.
+        example: 8
+      uptime:
+        type: integer
+        description: Seconds since the client's current session started.
+        example: 604800
+    required:
+      - connectionType
+      - switchName
+      - switchPort
+      - uptime
