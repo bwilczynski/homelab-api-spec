@@ -11,6 +11,12 @@ allOf:
         allOf:
           - $ref: "./VolumeStatus.yaml"
         description: Health status of the underlying storage pool. May differ from the volume status during a rebuild or repair.
+      disks:
+        type: array
+        description: Physical disks backing this volume. Empty array, never null.
+        items:
+          $ref: "./VolumeDisk.yaml"
     required:
       - mountPath
       - poolStatus
+      - disks

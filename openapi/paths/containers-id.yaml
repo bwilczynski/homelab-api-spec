@@ -1,5 +1,6 @@
 get:
   operationId: getContainer
+  x-stability-level: draft
   summary: Get a container
   description: |
     Returns a single container by its composite identifier

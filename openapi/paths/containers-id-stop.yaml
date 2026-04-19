@@ -1,5 +1,6 @@
 post:
   operationId: stopContainer
+  x-stability-level: draft
   summary: Stop a container
   description: |
     Stops a running container gracefully. If the container is already

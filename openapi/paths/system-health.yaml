@@ -1,5 +1,6 @@
 get:
   operationId: getSystemHealth
+  x-stability-level: draft
   summary: Get aggregate system health
   description: |
     Returns an aggregate health snapshot of the homelab. The top-level

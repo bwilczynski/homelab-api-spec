@@ -1,11 +1,12 @@
 get:
   operationId: getBackupTask
+  x-stability-level: draft
   summary: Get a backup task
   description: |
     Returns a single backup task by its composite identifier
     (`{deviceId}.{taskId}`, e.g. `nas-1.1`). The response includes
     current status, the outcome of the most recent run, and scheduling
-    information.
+    information (last and next run times).
   tags:
     - backups
   security:
@@ -27,7 +28,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/BackupTask.yaml"
+            $ref: "../components/schemas/BackupTaskDetail.yaml"
           example:
             id: "nas-1.1"
             name: "Daily NAS Backup"

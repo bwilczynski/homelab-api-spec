@@ -1,5 +1,6 @@
 get:
   operationId: listSystemInfo
+  x-stability-level: draft
   summary: List system info
   description: |
     Returns static device information for all configured backends.

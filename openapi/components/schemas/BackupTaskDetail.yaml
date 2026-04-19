@@ -1,0 +1,15 @@
+allOf:
+  - $ref: "./BackupTask.yaml"
+  - type: object
+    description: Detailed information about a backup task, including scheduling information.
+    properties:
+      lastRunAt:
+        type: string
+        format: date-time
+        description: Timestamp of the most recent backup run completion.
+        example: "2026-04-16T03:00:00Z"
+      nextRunAt:
+        type: string
+        format: date-time
+        description: Scheduled time of the next backup run.
+        example: "2026-04-17T03:00:00Z"

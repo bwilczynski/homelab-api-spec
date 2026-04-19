@@ -1,5 +1,6 @@
 get:
   operationId: listContainers
+  x-stability-level: draft
   summary: List containers
   description: |
     Returns containers from all configured Docker-compatible backends.
