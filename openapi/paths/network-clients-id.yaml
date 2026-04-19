@@ -4,7 +4,7 @@ get:
   summary: Get a network client
   description: |
     Returns a single connected client by its composite identifier
-    (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-11`). The response
+    (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-3c`). The response
     includes connection type, session uptime, and — for wireless
     clients — the associated SSID and signal strength.
 
@@ -21,11 +21,11 @@ get:
       description: |
         Composite client identifier in the form
         `{controller}.{hostname}-{macPrefix}`
-        (e.g. `unifi.macbook-pro-11`). The controller prefix disambiguates
+        (e.g. `unifi.macbook-pro-3c`). The controller prefix disambiguates
         clients across multiple UniFi controllers.
       schema:
         type: string
-      example: "unifi.macbook-pro-11"
+      example: "unifi.macbook-pro-3c"
   responses:
     "200":
       description: The requested network client.
@@ -34,9 +34,9 @@ get:
           schema:
             $ref: "../components/schemas/NetworkClientDetail.yaml"
           example:
-            id: "unifi.macbook-pro-11"
+            id: "unifi.macbook-pro-3c"
             name: "MacBook Pro"
-            mac: "11:22:33:44:55:66"
+            mac: "3c:22:fb:09:aa:b1"
             ip: "192.168.1.101"
             connectionType: wireless
             ssid: "HomeNetwork"

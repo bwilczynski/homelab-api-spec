@@ -9,7 +9,7 @@ properties:
       client's name in kebab-case and `macPrefix` is the first two
       characters of the MAC address for disambiguation. The
       implementation ensures uniqueness across controllers.
-    example: "unifi.macbook-pro-11"
+    example: "unifi.macbook-pro-3c"
   name:
     type: string
     description: |
@@ -19,7 +19,7 @@ properties:
   mac:
     type: string
     description: Client MAC address in lowercase colon-separated notation.
-    example: "11:22:33:44:55:66"
+    example: "3c:22:fb:09:aa:b1"
   ip:
     type: string
     description: Current IP address of the client.
