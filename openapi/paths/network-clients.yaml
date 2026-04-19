@@ -30,17 +30,17 @@ get:
               summary: A mix of wired and wireless clients.
               value:
                 items:
-                  - id: "unifi.112233445501"
+                  - id: "unifi.macbook-pro-11"
                     name: "MacBook Pro"
                     mac: "11:22:33:44:55:01"
                     ip: "192.168.1.101"
                     connectionType: wireless
-                  - id: "unifi.112233445502"
+                  - id: "unifi.nas-1-11"
                     name: "nas-1"
                     mac: "11:22:33:44:55:02"
                     ip: "192.168.1.10"
                     connectionType: wired
-                  - id: "unifi.112233445503"
+                  - id: "unifi.iphone-11"
                     name: "iPhone"
                     mac: "11:22:33:44:55:03"
                     ip: "192.168.1.102"

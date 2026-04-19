@@ -4,9 +4,12 @@ properties:
   id:
     type: string
     description: |
-      Globally unique client identifier in the form `{controller}.{mac}`,
-      where `mac` is the client MAC address without separators.
-    example: "unifi.112233445566"
+      Globally unique client identifier in the form
+      `{controller}.{hostname}-{macPrefix}`, where `hostname` is the
+      client's name in kebab-case and `macPrefix` is the first two
+      characters of the MAC address for disambiguation. The
+      implementation ensures uniqueness across controllers.
+    example: "unifi.macbook-pro-11"
   name:
     type: string
     description: |

@@ -4,7 +4,7 @@ get:
   summary: Get a network device
   description: |
     Returns a single network device by its composite identifier
-    (`{controller}.{mac}`, e.g. `unifi.aabbccddeeff`). The response
+    (`{controller}.{name}`, e.g. `unifi.ap-living-room`). The response
     includes model, firmware version, connectivity status, and uptime.
     Access points additionally include the number of currently associated
     wireless clients.
@@ -17,12 +17,12 @@ get:
       in: path
       required: true
       description: |
-        Composite device identifier in the form `{controller}.{mac}`
-        (e.g. `unifi.aabbccddeeff`). The controller prefix disambiguates
+        Composite device identifier in the form `{controller}.{name}`
+        (e.g. `unifi.ap-living-room`). The controller prefix disambiguates
         devices across multiple UniFi controllers.
       schema:
         type: string
-      example: "unifi.aabbccddeeff"
+      example: "unifi.ap-living-room"
   responses:
     "200":
       description: The requested network device.
@@ -31,7 +31,7 @@ get:
           schema:
             $ref: "../components/schemas/NetworkDeviceDetail.yaml"
           example:
-            id: "unifi.aabbccddeeff"
+            id: "unifi.ap-living-room"
             name: "AP Living Room"
             mac: "aa:bb:cc:dd:ee:ff"
             ip: "192.168.1.3"

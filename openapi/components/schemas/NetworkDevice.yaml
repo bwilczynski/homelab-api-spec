@@ -4,10 +4,11 @@ properties:
   id:
     type: string
     description: |
-      Globally unique device identifier in the form `{controller}.{mac}`,
-      where `mac` is the device MAC address without separators.
+      Globally unique device identifier in the form `{controller}.{name}`,
+      where `name` is the device name in kebab-case. The implementation
+      ensures uniqueness across controllers.
       Use this value directly in path parameters.
-    example: "unifi.aabbccddeeff"
+    example: "unifi.ap-living-room"
   name:
     type: string
     description: Human-readable device name as configured in the controller.
