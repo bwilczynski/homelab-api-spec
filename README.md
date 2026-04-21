@@ -46,6 +46,28 @@ make docs-image    # Build the docs container image
 make breaking BASE=origin/main   # oasdiff breaking-change check vs BASE
 ```
 
+## Running the docs container
+
+The docs image is published to GHCR on every merge to `main`. It serves
+the rendered Redoc site and the bundled spec via nginx.
+
+```sh
+# Pull and run the latest image
+docker run --rm -p 8080:80 ghcr.io/bwilczynski/homelab-api-spec-docs:latest
+
+# Browse docs at    http://localhost:8080
+# Fetch bundled spec http://localhost:8080/openapi.yaml
+```
+
+To run a specific build, replace `latest` with `sha-<commit-sha>`.
+
+You can also build the image locally:
+
+```sh
+make docs-image
+docker run --rm -p 8080:80 homelab-api-docs:dev
+```
+
 ## Conventions
 
 All design conventions and lint-enforced invariants are documented in
