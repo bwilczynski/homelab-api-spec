@@ -3,6 +3,7 @@ description: Outcome of the most recent backup run.
 enum:
   - success
   - failed
+  - warning
   - skipped
   - unknown
 example: success
