@@ -27,6 +27,10 @@ properties:
     type: string
     description: Latest version available from the upstream source.
     example: "1.34.0"
+  device:
+    type: string
+    description: Identifier of the backend device this component runs on.
+    example: "nas-1"
   checkedAt:
     type: string
     format: date-time
@@ -37,6 +41,7 @@ required:
   - name
   - type
   - status
+  - device
   - currentVersion
   - latestVersion
   - checkedAt

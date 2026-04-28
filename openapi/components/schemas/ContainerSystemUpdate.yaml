@@ -22,11 +22,6 @@ allOf:
         type: string
         description: Full container image reference (without tag) being tracked.
         example: "ghcr.io/dani-garcia/vaultwarden"
-      device:
-        type: string
-        description: Identifier of the backend device running this container.
-        example: "nas-1"
     required:
       - type
       - image
-      - device
