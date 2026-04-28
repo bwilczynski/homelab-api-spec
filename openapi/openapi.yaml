@@ -49,6 +49,8 @@ paths:
     $ref: "./paths/system-updates.yaml"
   /system/updates/{updateId}:
     $ref: "./paths/system-updates-id.yaml"
+  "/system/updates:check":
+    $ref: "./paths/system-updates-check.yaml"
   /storage/volumes:
     $ref: "./paths/storage-volumes.yaml"
   /storage/volumes/{volumeId}:
