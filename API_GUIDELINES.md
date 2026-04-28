@@ -32,6 +32,36 @@ This keeps list payloads lean and makes it clear which fields are available at
 each level. When adding a new resource, decide the split up front — moving
 fields from list to detail later is a breaking change.
 
+## Polymorphism (type-specific variants)
+
+When a resource has multiple variants distinguished by a shared field (e.g.
+`type` or `connectionType`), use the `anyOf` + `discriminator` pattern:
+
+- **Base schema** — defines all fields common to every variant. Variant
+  schemas extend it via `allOf`.
+- **Discriminator property** — a required enum field on the base schema that
+  identifies the variant (e.g. `type: container`). Each variant pins the enum
+  to a single value.
+- **Polymorphic wrapper** — a schema that lists variants under `anyOf` and
+  declares the `discriminator` with an explicit `mapping` to file paths.
+
+```yaml
+# SystemUpdateDetail.yaml (polymorphic wrapper)
+anyOf:
+  - $ref: "./ContainerSystemUpdateDetail.yaml"
+discriminator:
+  propertyName: type
+  mapping:
+    container: "./ContainerSystemUpdateDetail.yaml"
+```
+
+Apply polymorphism at the **detail** level only when variants share a common
+list representation. The list schema can reference the base type directly,
+keeping collection payloads uniform and simple.
+
+To add a new variant: add the enum value, create the variant schema extending
+the base via `allOf`, and register it in the wrapper's `anyOf`/`mapping`.
+
 ## Collections and pagination
 
 - **Collection root key:** `"items": [...]`
