@@ -8,8 +8,9 @@ properties:
     type: string
     description: |
       Stable identifier for this tracked component.
-      Format varies by type (e.g. container name for container updates).
-    example: "vaultwarden"
+      Format is type-specific — see the concrete type schema for details.
+      For container updates the format is `{device}.{name}`.
+    example: "nas-1.vaultwarden"
   name:
     type: string
     description: Human-readable display name.
