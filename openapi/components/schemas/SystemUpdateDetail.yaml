@@ -1,0 +1,6 @@
+anyOf:
+  - $ref: "./ContainerSystemUpdateDetail.yaml"
+discriminator:
+  propertyName: type
+  mapping:
+    container: "./ContainerSystemUpdateDetail.yaml"

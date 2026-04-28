@@ -1,0 +1,55 @@
+get:
+  operationId: getSystemUpdate
+  x-stability-level: draft
+  summary: Get update details for a tracked component
+  description: |
+    Returns detailed update information for a single tracked component,
+    including upstream source URL, release link, and publication date.
+
+    The response schema varies by `type` — each component type includes
+    type-specific fields alongside the common update fields.
+  tags:
+    - system
+  security:
+    - bearerAuth: [read:system]
+  parameters:
+    - name: updateId
+      in: path
+      required: true
+      description: Identifier of the tracked component (e.g. `vaultwarden`, `grafana`).
+      schema:
+        type: string
+      example: vaultwarden
+  responses:
+    "200":
+      description: Detailed update information for the component.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/SystemUpdateDetail.yaml"
+          examples:
+            containerWithUpdate:
+              summary: A container with an update available.
+              value:
+                id: "vaultwarden"
+                name: "Vaultwarden"
+                type: container
+                status: updateAvailable
+                currentVersion: "1.32.7"
+                latestVersion: "1.34.0"
+                checkedAt: "2026-04-28T08:30:00Z"
+                image: "ghcr.io/dani-garcia/vaultwarden"
+                device: "nas-1"
+                source: "https://github.com/dani-garcia/vaultwarden"
+                releaseUrl: "https://github.com/dani-garcia/vaultwarden/releases/tag/1.34.0"
+                publishedAt: "2026-04-25T14:00:00Z"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

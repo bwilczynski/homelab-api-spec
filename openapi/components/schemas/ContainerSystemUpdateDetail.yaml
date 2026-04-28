@@ -1,0 +1,26 @@
+allOf:
+  - $ref: "./ContainerSystemUpdate.yaml"
+  - type: object
+    description: |
+      Detailed update information for a container, including upstream
+      source and release metadata.
+    properties:
+      source:
+        type: string
+        format: uri
+        description: Upstream source used for version checks (e.g. GitHub repository URL).
+        example: "https://github.com/dani-garcia/vaultwarden"
+      releaseUrl:
+        type: string
+        format: uri
+        description: Direct URL to the latest release page.
+        example: "https://github.com/dani-garcia/vaultwarden/releases/tag/1.34.0"
+      publishedAt:
+        type: string
+        format: date-time
+        description: When the latest version was published upstream.
+        example: "2026-04-25T14:00:00Z"
+    required:
+      - source
+      - releaseUrl
+      - publishedAt
