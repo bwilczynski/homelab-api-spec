@@ -1,0 +1,7 @@
+type: string
+description: Whether an update is available for this component.
+enum:
+  - upToDate
+  - updateAvailable
+  - unknown
+example: updateAvailable

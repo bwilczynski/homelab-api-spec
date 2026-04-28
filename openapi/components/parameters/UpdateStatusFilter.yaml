@@ -1,0 +1,9 @@
+name: status
+in: query
+required: false
+description: |
+  Filter updates by their status. Only components matching the given
+  status are returned. Omit to get all tracked components regardless
+  of status.
+schema:
+  $ref: "../schemas/SystemUpdateStatus.yaml"

@@ -1,0 +1,5 @@
+type: string
+description: The kind of component being tracked for updates.
+enum:
+  - container
+example: container

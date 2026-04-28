@@ -1,0 +1,41 @@
+type: object
+description: |
+  Base schema for a tracked software component and its update status.
+  All update types share these common fields; type-specific schemas
+  extend this via allOf.
+properties:
+  id:
+    type: string
+    description: |
+      Stable identifier for this tracked component.
+      Format varies by type (e.g. container name for container updates).
+    example: "vaultwarden"
+  name:
+    type: string
+    description: Human-readable display name.
+    example: "Vaultwarden"
+  type:
+    $ref: "./SystemUpdateType.yaml"
+  status:
+    $ref: "./SystemUpdateStatus.yaml"
+  currentVersion:
+    type: string
+    description: Version currently running or installed.
+    example: "1.32.7"
+  latestVersion:
+    type: string
+    description: Latest version available from the upstream source.
+    example: "1.34.0"
+  checkedAt:
+    type: string
+    format: date-time
+    description: When the upstream source was last checked for updates.
+    example: "2026-04-28T08:30:00Z"
+required:
+  - id
+  - name
+  - type
+  - status
+  - currentVersion
+  - latestVersion
+  - checkedAt
