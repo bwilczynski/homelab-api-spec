@@ -1,0 +1,10 @@
+description: The request is malformed or contains invalid parameter values.
+content:
+  application/problem+json:
+    schema:
+      $ref: "../schemas/Problem.yaml"
+    example:
+      type: https://homelab.local/problems/bad-request
+      title: Bad Request
+      status: 400
+      detail: "Invalid value for parameter 'status': must be one of upToDate, updateAvailable, unknown."

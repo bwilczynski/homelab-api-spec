@@ -55,6 +55,8 @@ get:
                     currentVersion: "11.4.0"
                     latestVersion: "11.5.2"
                     checkedAt: "2026-04-28T08:30:00Z"
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
