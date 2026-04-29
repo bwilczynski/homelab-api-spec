@@ -1,8 +1,20 @@
 allOf:
   - $ref: "./SystemUpdate.yaml"
   - type: object
-    description: Update status for a Docker container image tracked via a GitHub repository.
+    description: |
+      Update status for a Docker container image tracked via a GitHub repository.
+
+      The `id` field follows the `{device}.{name}` pattern, matching the identifier
+      used by the `/containers` endpoints. Use this value directly in the
+      `updateId` path parameter.
     properties:
+      id:
+        type: string
+        description: |
+          Globally unique identifier for this tracked container in the form
+          `{device}.{name}`. Consistent with the container `id` used across
+          `/containers` endpoints.
+        example: "nas-1.vaultwarden"
       type:
         type: string
         enum: [container]
@@ -10,11 +22,6 @@ allOf:
         type: string
         description: Full container image reference (without tag) being tracked.
         example: "ghcr.io/dani-garcia/vaultwarden"
-      device:
-        type: string
-        description: Identifier of the backend device running this container.
-        example: "nas-1"
     required:
       - type
       - image
-      - device

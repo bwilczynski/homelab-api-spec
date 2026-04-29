@@ -16,10 +16,13 @@ get:
     - name: updateId
       in: path
       required: true
-      description: Identifier of the tracked component (e.g. `vaultwarden`, `grafana`).
+      description: |
+        Identifier of the tracked component. For container updates this is
+        `{device}.{name}`, matching the container `id` used across `/containers`
+        endpoints (e.g. `nas-1.vaultwarden`).
       schema:
         type: string
-      example: vaultwarden
+      example: nas-1.vaultwarden
   responses:
     "200":
       description: Detailed update information for the component.
@@ -31,8 +34,8 @@ get:
             containerWithUpdate:
               summary: A container with an update available.
               value:
-                id: "vaultwarden"
-                name: "Vaultwarden"
+                id: "nas-1.vaultwarden"
+                name: "vaultwarden"
                 type: container
                 status: updateAvailable
                 currentVersion: "1.32.7"
