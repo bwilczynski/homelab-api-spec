@@ -34,6 +34,17 @@ All API design conventions are in [`API_GUIDELINES.md`](API_GUIDELINES.md). Read
 6. Path files reference component files via relative `$ref` paths (e.g. `$ref: "../components/responses/Unauthorized.yaml"`), not through `#/components/...` in the root doc.
 7. Run `make lint` to verify.
 
+## Unit schemas
+
+Numeric quantity fields must reference an existing schema from `openapi/components/schemas/units/` via `allOf + $ref` rather than inlining `type: integer` with a description.
+
+Current unit schemas:
+- `units/Bytes.yaml` — `int64`, storage sizes
+- `units/BytesPerSec.yaml` — `int64`, throughput
+- `units/Megabytes.yaml` — `integer`, megabyte quantities
+
+If the same raw numeric type+description would appear in two or more places and no matching unit schema exists, propose creating one before writing it inline.
+
 ## Lint pipeline
 
 `make lint` runs Redocly on the source spec (validates structure and references), then Spectral on the bundled artifact (where all `$ref`s are resolved). This avoids false positives from cross-file references that Spectral can't follow in multi-file mode.

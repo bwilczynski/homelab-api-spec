@@ -13,3 +13,16 @@ allOf:
         format: date-time
         description: Scheduled time of the next backup run.
         example: "2026-04-17T03:00:00Z"
+      size:
+        allOf:
+          - $ref: "./units/Bytes.yaml"
+        description: Total size of the most recent backup.
+        example: 10737418240
+      folders:
+        type: array
+        description: List of source folder paths included in this backup task.
+        items:
+          type: string
+        example:
+          - /volume1/photos
+          - /volume1/documents
