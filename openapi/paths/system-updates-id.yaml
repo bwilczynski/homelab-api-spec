@@ -46,6 +46,8 @@ get:
                 source: "https://github.com/dani-garcia/vaultwarden"
                 releaseUrl: "https://github.com/dani-garcia/vaultwarden/releases/tag/1.34.0"
                 publishedAt: "2026-04-25T14:00:00Z"
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

@@ -58,6 +58,8 @@ get:
                 switchName: "Switch Living Room"
                 switchPort: 8
                 uptime: 604800
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

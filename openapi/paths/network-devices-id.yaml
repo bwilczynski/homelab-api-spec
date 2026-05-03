@@ -41,6 +41,8 @@ get:
             model: "U6-Lite"
             firmwareVersion: "6.6.77.14522"
             uptime: 86400
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

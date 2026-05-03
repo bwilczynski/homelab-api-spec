@@ -38,6 +38,8 @@ get:
             lastResult: success
             lastRunAt: "2026-04-16T03:00:00Z"
             nextRunAt: "2026-04-17T03:00:00Z"
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

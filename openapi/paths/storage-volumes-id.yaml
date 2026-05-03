@@ -51,6 +51,8 @@ get:
                 status: normal
                 totalBytes: 4000787030016
                 temperatureCelsius: 36
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

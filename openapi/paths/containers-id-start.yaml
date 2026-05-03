@@ -29,6 +29,8 @@ post:
   responses:
     "204":
       description: Container started (or was already running).
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

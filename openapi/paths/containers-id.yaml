@@ -64,6 +64,8 @@ get:
             labels:
               com.docker.compose.project: homeassistant
               com.docker.compose.service: homeassistant
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
