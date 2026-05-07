@@ -3,12 +3,12 @@ info:
   title: Homelab API
   version: 0.1.0
   description: |
-    Contract-first API exposing homelab operations to AI agents and
-    tooling. The Homelab API provides a unified surface over
-    heterogeneous homelab backends (UniFi, Synology, Docker, Immich,
-    Hue, Sonos, UPS). The API acts as a credential broker: clients
-    authenticate with a bearer token against an IdP, and the server
-    exchanges that token for whatever credentials each backend needs.
+    Contract-first API exposing homelab infrastructure operations to AI
+    agents and tooling. The Homelab API provides a unified surface over
+    heterogeneous homelab backends (UniFi, Synology, Docker). The API
+    acts as a credential broker: clients authenticate with a bearer token
+    against an IdP, and the server exchanges that token for whatever
+    credentials each backend needs.
 
     This document is the source of truth. Server stubs, CLI, and MCP
     tools are generated or validated against the bundled spec.
@@ -25,13 +25,11 @@ servers:
 
 tags:
   - name: system
-    description: Aggregate health, UPS, and other cross-cutting system checks.
-  - name: storage
-    description: Storage volumes and disk health across NAS backends.
-  - name: containers
+    description: System health, info, utilization, and software updates.
+  - name: docker
     description: Docker containers and their resource usage across backends.
-  - name: backups
-    description: Backup task status and scheduling across NAS backends.
+  - name: storage
+    description: Storage volumes, disk health, and backups across NAS backends.
   - name: network
     description: Network devices and connected clients from UniFi controllers.
 
@@ -55,20 +53,20 @@ paths:
     $ref: "./paths/storage-volumes.yaml"
   /storage/volumes/{volumeId}:
     $ref: "./paths/storage-volumes-id.yaml"
-  /containers:
-    $ref: "./paths/containers.yaml"
-  /containers/{containerId}:
-    $ref: "./paths/containers-id.yaml"
-  "/containers/{containerId}:start":
-    $ref: "./paths/containers-id-start.yaml"
-  "/containers/{containerId}:stop":
-    $ref: "./paths/containers-id-stop.yaml"
-  "/containers/{containerId}:restart":
-    $ref: "./paths/containers-id-restart.yaml"
-  /backup/tasks:
-    $ref: "./paths/backup-tasks.yaml"
-  /backup/tasks/{taskId}:
-    $ref: "./paths/backup-tasks-id.yaml"
+  /docker/containers:
+    $ref: "./paths/docker-containers.yaml"
+  /docker/containers/{containerId}:
+    $ref: "./paths/docker-containers-id.yaml"
+  "/docker/containers/{containerId}:start":
+    $ref: "./paths/docker-containers-id-start.yaml"
+  "/docker/containers/{containerId}:stop":
+    $ref: "./paths/docker-containers-id-stop.yaml"
+  "/docker/containers/{containerId}:restart":
+    $ref: "./paths/docker-containers-id-restart.yaml"
+  /storage/backups:
+    $ref: "./paths/storage-backups.yaml"
+  /storage/backups/{backupId}:
+    $ref: "./paths/storage-backups-id.yaml"
   /network/devices:
     $ref: "./paths/network-devices.yaml"
   /network/devices/{deviceId}:

@@ -1,27 +1,27 @@
 get:
-  operationId: listBackupTasks
+  operationId: listBackups
   x-stability-level: draft
-  summary: List backup tasks
+  summary: List backups
   description: |
-    Returns backup tasks from all configured NAS backends. Each task
+    Returns backups from all configured NAS backends. Each backup
     includes its current status, the outcome of the most recent run,
     and when it last ran and is next scheduled to run.
 
-    Use the `device` query parameter to filter tasks from a specific
-    backend (e.g. `?device=nas-1`). Omit it to get tasks across all
+    Use the `device` query parameter to filter backups from a specific
+    backend (e.g. `?device=nas-1`). Omit it to get backups across all
     devices.
 
-    A homelab typically has a handful of backup tasks, so this endpoint
+    A homelab typically has a handful of backups, so this endpoint
     returns all matching results without pagination.
   tags:
-    - backups
+    - storage
   security:
-    - bearerAuth: [read:backups]
+    - bearerAuth: [read:storage]
   parameters:
     - $ref: "../components/parameters/DeviceFilter.yaml"
   responses:
     "200":
-      description: List of backup tasks.
+      description: List of backups.
       content:
         application/json:
           schema:

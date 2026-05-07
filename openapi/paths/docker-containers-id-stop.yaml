@@ -6,9 +6,9 @@ post:
     Stops a running container gracefully. If the container is already
     stopped this is a no-op and still returns 204.
   tags:
-    - containers
+    - docker
   security:
-    - bearerAuth: [write:containers]
+    - bearerAuth: [write:docker]
   parameters:
     - name: containerId
       in: path

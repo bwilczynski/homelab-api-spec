@@ -14,9 +14,9 @@ get:
     A homelab typically has a manageable number of containers, so this
     endpoint returns all matching results without pagination.
   tags:
-    - containers
+    - docker
   security:
-    - bearerAuth: [read:containers]
+    - bearerAuth: [read:docker]
   parameters:
     - $ref: "../components/parameters/DeviceFilter.yaml"
   responses:

@@ -4,11 +4,26 @@ Design conventions for the Homelab API. These are enforced by Spectral
 rules in `.spectral.yaml` and must be followed when adding or modifying
 the spec.
 
+## URL structure
+
+All paths follow a two-level hierarchy:
+
+```
+/{group}/{resource}
+/{group}/{resource}/{id}
+/{group}/{resource}/{id}:action
+```
+
+- **Groups** are singular and fixed: `system`, `docker`, `storage`, `network`
+- **Resources** within a group are plural nouns in `kebab-case` (e.g. `containers`, `backups`, `volumes`, `devices`, `clients`)
+
+Examples: `/docker/containers`, `/storage/backups`, `/network/devices`
+
 ## Naming
 
 - **JSON properties, enum values, operationIds, parameter names:** `camelCase`
-- **URL path segments:** `kebab-case`, plural nouns for collections (e.g. `/network-clients`)
-- **Scopes:** `<access>:<resource>` (e.g. `read:devices`, `write:services`)
+- **URL path segments:** `kebab-case` (see URL structure above)
+- **Scopes:** `<access>:<group>` where group matches the URL group segment (e.g. `read:docker`, `write:storage`, `read:system`, `read:network`)
 
 ## Resources and operations
 
@@ -76,7 +91,7 @@ the base via `allOf`, and register it in the wrapper's `anyOf`/`mapping`.
 ## Authentication
 
 - **Mechanism:** OAuth 2.0 bearer token (client credentials flow)
-- **Scope format:** `<access>:<resource>` (e.g. `read:devices`)
+- **Scope format:** `<access>:<group>` (e.g. `read:docker`, `write:storage`)
 
 ## Spec-level invariants
 

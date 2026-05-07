@@ -1,14 +1,14 @@
 post:
-  operationId: startContainer
+  operationId: restartContainer
   x-stability-level: draft
-  summary: Start a container
+  summary: Restart a container
   description: |
-    Starts a stopped or paused container. If the container is already
-    running this is a no-op and still returns 204.
+    Restarts a container by stopping and then starting it. Works
+    regardless of the container's current state.
   tags:
-    - containers
+    - docker
   security:
-    - bearerAuth: [write:containers]
+    - bearerAuth: [write:docker]
   parameters:
     - name: containerId
       in: path
@@ -28,7 +28,7 @@ post:
       example: "b4f3c2a1-7e8d-4f5a-9c0b-1d2e3f4a5b6c"
   responses:
     "204":
-      description: Container started (or was already running).
+      description: Container restarted.
     "400":
       $ref: "../components/responses/BadRequest.yaml"
     "401":

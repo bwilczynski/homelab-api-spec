@@ -6,20 +6,17 @@ description: |
   homelab API validates the token, checks scopes, and exchanges it
   internally for whatever credentials each backend needs.
 
-  Scopes follow the `<access>:<resource>` convention.
+  Scopes follow the `<access>:<group>` convention where group matches
+  the URL group segment (system, docker, storage, network).
 flows:
   clientCredentials:
     tokenUrl: https://idp.homelab.local/oauth/token
     scopes:
-      "read:system": Read aggregate health, UPS state, and cross-cutting system info.
+      "read:system": Read system health, info, utilization, and software updates.
       "write:system": Trigger system-level actions (e.g. force update checks).
-      "read:network": List and inspect network devices (APs, switches, gateways) and connected clients.
-      "read:services": List and inspect service status.
-      "write:services": Restart services.
-      "read:containers": List and inspect containers and their resource usage.
-      "write:containers": Start, stop, and restart containers.
-      "read:backups": Read backup task status and history.
-      "read:storage": Read NAS health, volumes, and shares.
-      "read:media": Read media library albums and photo metadata.
-      "read:home": Read home-automation state (lights, speakers).
-      "write:home": Control home-automation devices (toggle lights, playback).
+      "read:docker": List and inspect Docker containers and their resource usage.
+      "write:docker": Start, stop, and restart Docker containers.
+      "read:storage": Read storage volumes, disk health, and backup status.
+      "write:storage": Manage storage resources and backups.
+      "read:network": List and inspect network devices and connected clients.
+      "write:network": Manage network devices and client configurations.

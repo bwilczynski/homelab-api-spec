@@ -7,9 +7,9 @@ get:
     (`{deviceId}.{name}`, e.g. `nas-1.homeassistant`). The response
     includes current status, image, and live resource usage.
   tags:
-    - containers
+    - docker
   security:
-    - bearerAuth: [read:containers]
+    - bearerAuth: [read:docker]
   parameters:
     - name: containerId
       in: path
