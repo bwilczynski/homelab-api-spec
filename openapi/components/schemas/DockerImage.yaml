@@ -1,0 +1,37 @@
+type: object
+description: A Docker image stored on a backend device.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique image identifier in the form `{device}.{shortId}`,
+      where `shortId` is the first 12 characters of the image's SHA-256 digest.
+    example: "nas-1.925ff61909ae"
+  device:
+    type: string
+    description: Identifier of the backend device storing this image.
+    example: nas-1
+  repository:
+    type: string
+    description: |
+      Full repository name. Includes the registry prefix for non-Docker Hub
+      images (e.g. `ghcr.io/immich-app/immich-server`). Docker Hub images
+      are stored without prefix (e.g. `caddy`).
+    example: "ghcr.io/immich-app/immich-server"
+  tags:
+    type: array
+    description: Tags assigned to this image. Empty when the image is untagged.
+    items:
+      type: string
+    example: ["v1.120.0"]
+  size:
+    allOf:
+      - $ref: "./units/Bytes.yaml"
+    description: On-disk size of the image in bytes.
+    example: 524288000
+required:
+  - id
+  - device
+  - repository
+  - tags
+  - size

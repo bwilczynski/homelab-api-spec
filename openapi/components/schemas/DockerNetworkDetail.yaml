@@ -1,0 +1,30 @@
+allOf:
+  - $ref: "./DockerNetwork.yaml"
+  - type: object
+    description: Detailed information about a Docker network, including driver, IPAM configuration, and connected container names.
+    properties:
+      driver:
+        type: string
+        description: Network driver (e.g. bridge, host, macvlan).
+        example: bridge
+      subnet:
+        type: string
+        description: Subnet in CIDR notation. Omitted for networks without IPAM (e.g. host).
+        example: "172.18.0.0/16"
+      gateway:
+        type: string
+        description: Default gateway IP. Omitted for networks without IPAM.
+        example: "172.18.0.1"
+      ipRange:
+        type: string
+        description: IP range allocated to containers within this subnet, in CIDR notation. Omitted when not configured.
+        example: "172.18.0.0/24"
+      containers:
+        type: array
+        description: Names of containers currently connected to this network.
+        items:
+          type: string
+        example: ["immich_server", "immich_machine_learning", "immich_redis", "immich_postgres"]
+    required:
+      - driver
+      - containers

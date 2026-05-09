@@ -1,0 +1,10 @@
+type: object
+description: List of Docker images.
+properties:
+  items:
+    type: array
+    description: Docker images matching the query. Empty array, never null.
+    items:
+      $ref: "./DockerImage.yaml"
+required:
+  - items

@@ -1,0 +1,55 @@
+get:
+  operationId: listDockerImages
+  x-stability-level: draft
+  summary: List Docker images
+  description: |
+    Returns Docker images stored on all configured backends. Each image
+    includes its repository name, tags, and on-disk size.
+
+    Use the `device` query parameter to filter images from a specific
+    backend (e.g. `?device=nas-1`). Omit it to get images across all
+    devices.
+
+    A homelab NAS typically has tens of images, so this endpoint returns
+    all matching results without pagination.
+  tags:
+    - docker
+  security:
+    - bearerAuth: [read:docker]
+  parameters:
+    - $ref: "../components/parameters/DeviceFilter.yaml"
+  responses:
+    "200":
+      description: List of Docker images.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/DockerImageList.yaml"
+          examples:
+            typicalHomelab:
+              summary: Images on a single NAS.
+              value:
+                items:
+                  - id: "nas-1.925ff61909ae"
+                    device: nas-1
+                    repository: "ghcr.io/immich-app/immich-server"
+                    tags: ["v1.120.0"]
+                    size: 524288000
+                  - id: "nas-1.7512d5867e6c"
+                    device: nas-1
+                    repository: "certbot/dns-route53"
+                    tags: ["latest"]
+                    size: 199188965
+                  - id: "nas-1.e19bf2a13315"
+                    device: nas-1
+                    repository: "eclipse-mosquitto"
+                    tags: ["latest"]
+                    size: 6745886
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

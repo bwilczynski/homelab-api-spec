@@ -27,7 +27,7 @@ tags:
   - name: system
     description: System health, info, utilization, and software updates.
   - name: docker
-    description: Docker containers and their resource usage across backends.
+    description: Docker containers, networks, and images across backends.
   - name: storage
     description: Storage volumes, disk health, and backups across NAS backends.
   - name: network
@@ -57,6 +57,14 @@ paths:
     $ref: "./paths/docker-containers.yaml"
   /docker/containers/{containerId}:
     $ref: "./paths/docker-containers-id.yaml"
+  /docker/networks:
+    $ref: "./paths/docker-networks.yaml"
+  /docker/networks/{networkId}:
+    $ref: "./paths/docker-networks-id.yaml"
+  /docker/images:
+    $ref: "./paths/docker-images.yaml"
+  /docker/images/{imageId}:
+    $ref: "./paths/docker-images-id.yaml"
   "/docker/containers/{containerId}:start":
     $ref: "./paths/docker-containers-id-start.yaml"
   "/docker/containers/{containerId}:stop":

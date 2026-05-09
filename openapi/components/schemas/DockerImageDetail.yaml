@@ -1,0 +1,22 @@
+allOf:
+  - $ref: "./DockerImage.yaml"
+  - type: object
+    description: Detailed information about a Docker image, including build timestamp and uncompressed size.
+    properties:
+      created:
+        type: string
+        format: date-time
+        description: Timestamp when the image was built.
+        example: "2024-09-26T21:51:42Z"
+      virtualSize:
+        allOf:
+          - $ref: "./units/Bytes.yaml"
+        description: Total uncompressed size of all image layers in bytes.
+        example: 1073741824
+      description:
+        type: string
+        description: Human-readable description of the image. Omitted when empty.
+        example: "Immich server component"
+    required:
+      - created
+      - virtualSize

@@ -1,0 +1,55 @@
+get:
+  operationId: getDockerNetwork
+  x-stability-level: draft
+  summary: Get a Docker network
+  description: |
+    Returns a single Docker network by its composite identifier
+    (`{device}.{name}`, e.g. `nas-1.immich_default`). The response
+    includes the network driver, IPAM configuration (subnet, gateway),
+    and the names of all currently connected containers.
+  tags:
+    - docker
+  security:
+    - bearerAuth: [read:docker]
+  parameters:
+    - name: networkId
+      in: path
+      required: true
+      description: |
+        Composite network identifier in the form `{device}.{name}`
+        (e.g. `nas-1.immich_default`).
+      schema:
+        type: string
+      example: "nas-1.immich_default"
+  responses:
+    "200":
+      description: The requested network with extended detail.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/DockerNetworkDetail.yaml"
+          example:
+            id: "nas-1.immich_default"
+            name: immich_default
+            device: nas-1
+            connectedContainers: 4
+            driver: bridge
+            subnet: "172.18.0.0/16"
+            gateway: "172.18.0.1"
+            containers:
+              - immich_server
+              - immich_machine_learning
+              - immich_redis
+              - immich_postgres
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

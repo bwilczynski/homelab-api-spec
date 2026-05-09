@@ -1,0 +1,10 @@
+type: object
+description: List of Docker networks.
+properties:
+  items:
+    type: array
+    description: Docker networks matching the query. Empty array, never null.
+    items:
+      $ref: "./DockerNetwork.yaml"
+required:
+  - items

@@ -1,0 +1,26 @@
+type: object
+description: A Docker network on a backend device.
+properties:
+  id:
+    type: string
+    description: |
+      Globally unique network identifier in the form `{device}.{name}`.
+      Use this value directly in path parameters.
+    example: "nas-1.immich_default"
+  name:
+    type: string
+    description: Network name as reported by Docker.
+    example: immich_default
+  device:
+    type: string
+    description: Identifier of the backend device hosting this network.
+    example: nas-1
+  connectedContainers:
+    type: integer
+    description: Number of containers currently connected to this network.
+    example: 4
+required:
+  - id
+  - name
+  - device
+  - connectedContainers

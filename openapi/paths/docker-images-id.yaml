@@ -1,0 +1,51 @@
+get:
+  operationId: getDockerImage
+  x-stability-level: draft
+  summary: Get a Docker image
+  description: |
+    Returns a single Docker image by its composite identifier
+    (`{device}.{shortId}`, e.g. `nas-1.925ff61909ae`), where `shortId`
+    is the first 12 characters of the image's SHA-256 digest. The response
+    includes build timestamp, uncompressed virtual size, and optional description.
+  tags:
+    - docker
+  security:
+    - bearerAuth: [read:docker]
+  parameters:
+    - name: imageId
+      in: path
+      required: true
+      description: |
+        Composite image identifier in the form `{device}.{shortId}`,
+        where `shortId` is the first 12 characters of the image's SHA-256
+        digest (e.g. `nas-1.925ff61909ae`).
+      schema:
+        type: string
+      example: "nas-1.925ff61909ae"
+  responses:
+    "200":
+      description: The requested image with extended detail.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/DockerImageDetail.yaml"
+          example:
+            id: "nas-1.925ff61909ae"
+            device: nas-1
+            repository: "ghcr.io/immich-app/immich-server"
+            tags: ["v1.120.0"]
+            size: 524288000
+            created: "2024-09-26T21:51:42Z"
+            virtualSize: 1073741824
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

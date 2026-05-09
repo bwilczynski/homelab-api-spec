@@ -1,0 +1,56 @@
+get:
+  operationId: listDockerNetworks
+  x-stability-level: draft
+  summary: List Docker networks
+  description: |
+    Returns Docker networks from all configured backends. Each network
+    includes its name and the count of currently connected containers.
+
+    Use the `device` query parameter to filter networks from a specific
+    backend (e.g. `?device=nas-1`). Omit it to get networks across all
+    devices.
+
+    A homelab typically has a manageable number of networks, so this
+    endpoint returns all matching results without pagination.
+  tags:
+    - docker
+  security:
+    - bearerAuth: [read:docker]
+  parameters:
+    - $ref: "../components/parameters/DeviceFilter.yaml"
+  responses:
+    "200":
+      description: List of Docker networks.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/DockerNetworkList.yaml"
+          examples:
+            typicalHomelab:
+              summary: Networks on a single NAS.
+              value:
+                items:
+                  - id: "nas-1.immich_default"
+                    name: immich_default
+                    device: nas-1
+                    connectedContainers: 4
+                  - id: "nas-1.grafana_default"
+                    name: grafana_default
+                    device: nas-1
+                    connectedContainers: 6
+                  - id: "nas-1.host"
+                    name: host
+                    device: nas-1
+                    connectedContainers: 1
+                  - id: "nas-1.bridge"
+                    name: bridge
+                    device: nas-1
+                    connectedContainers: 0
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"
