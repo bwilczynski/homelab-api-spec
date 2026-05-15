@@ -3,7 +3,7 @@ description: List of network clients.
 properties:
   items:
     type: array
-    description: Connected network clients matching the query. Empty array, never null.
+    description: Network clients matching the query (online and offline). Empty array, never null.
     items:
       $ref: "./NetworkClient.yaml"
 required:

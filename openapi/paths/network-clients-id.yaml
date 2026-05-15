@@ -10,8 +10,7 @@ get:
     name and port number; wireless clients include SSID and signal
     strength.
 
-    Only currently connected clients can be retrieved; requesting an
-    offline client returns 404.
+    For offline clients, session-specific fields (uptime, switchPort, ssid, signalStrength) are absent. switchName may be present as the last known switch.
   tags:
     - network
   security:
@@ -44,6 +43,7 @@ get:
                 mac: "3c:22:fb:09:aa:b1"
                 ip: "192.168.1.101"
                 connectionType: wireless
+                status: online
                 ssid: "HomeNetwork"
                 signalStrength: -62
                 uptime: 7200
@@ -55,6 +55,7 @@ get:
                 mac: "68:d7:9a:12:bb:c2"
                 ip: "192.168.1.10"
                 connectionType: wired
+                status: online
                 switchName: "Switch Living Room"
                 switchPort: 8
                 uptime: 604800

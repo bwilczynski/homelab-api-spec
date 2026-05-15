@@ -1,0 +1,8 @@
+type: string
+description: |
+  Whether the client is currently connected to the network.
+  - `online` — currently connected
+  - `offline` — previously seen, currently disconnected
+enum:
+  - online
+  - offline
