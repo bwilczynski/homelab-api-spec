@@ -3,31 +3,37 @@ get:
   x-stability-level: draft
   summary: List network clients
   description: |
-    Returns currently connected client devices from all configured UniFi
-    controllers.
+    Returns all known client devices from all configured controllers,
+    including currently connected (online) and recently seen (offline) clients.
 
-    Each client includes its MAC address, IP address, and connection type
-    (wired or wireless).
+    Each client includes its MAC address, IP address, connection type
+    (wired or wireless), and connection status (online or offline).
 
-    Only active clients are returned — historically seen but currently
-    offline clients are excluded.
+    Use the `status` query parameter to filter by connection status.
 
-    A homelab typically has a manageable number of active clients, so this
+    A homelab typically has a manageable number of clients, so this
     endpoint returns all results without pagination.
   tags:
     - network
   security:
     - bearerAuth: [read:network]
+  parameters:
+    - name: status
+      in: query
+      required: false
+      schema:
+        $ref: "../components/schemas/NetworkClientStatus.yaml"
+      description: Filter by connection status. Omit to return all clients (online and offline).
   responses:
     "200":
-      description: List of connected network clients.
+      description: List of network clients.
       content:
         application/json:
           schema:
             $ref: "../components/schemas/NetworkClientList.yaml"
           examples:
             typicalHomelab:
-              summary: A mix of wired and wireless clients.
+              summary: A mix of online and offline clients.
               value:
                 items:
                   - id: "unifi.macbook-pro-3c"
@@ -35,16 +41,13 @@ get:
                     mac: "3c:22:fb:09:aa:b1"
                     ip: "192.168.1.101"
                     connectionType: wireless
-                  - id: "unifi.nas-1-68"
-                    name: "nas-1"
-                    mac: "68:d7:9a:12:bb:c2"
-                    ip: "192.168.1.10"
-                    connectionType: wired
-                  - id: "unifi.iphone-a4"
-                    name: "iPhone"
-                    mac: "a4:83:e7:5f:cc:d3"
-                    ip: "192.168.1.102"
+                    status: online
+                  - id: "unifi.sonos-one-sl-c4"
+                    name: "Sonos One SL"
+                    mac: "c4:38:75:7a:8a:46"
+                    ip: "192.168.1.55"
                     connectionType: wireless
+                    status: offline
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

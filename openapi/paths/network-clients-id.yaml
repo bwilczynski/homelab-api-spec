@@ -10,8 +10,7 @@ get:
     name and port number; wireless clients include SSID and signal
     strength.
 
-    Only currently connected clients can be retrieved; requesting an
-    offline client returns 404.
+    For offline clients, session-specific fields (uptime, switchPort, ssid, signalStrength) are absent. switchName may be present as the last known switch.
   tags:
     - network
   security:

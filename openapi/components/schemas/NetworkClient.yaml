@@ -1,5 +1,5 @@
 type: object
-description: A client device currently connected to the network.
+description: A client device on the network (online or offline).
 properties:
   id:
     type: string
@@ -22,12 +22,15 @@ properties:
     example: "3c:22:fb:09:aa:b1"
   ip:
     type: string
-    description: Current IP address of the client.
+    description: Current IP address for online clients; last known IP address for offline clients.
     example: "192.168.1.100"
   connectionType:
     $ref: "./NetworkClientConnectionType.yaml"
+  status:
+    $ref: "./NetworkClientStatus.yaml"
 required:
   - id
   - name
   - mac
   - connectionType
+  - status

@@ -8,7 +8,7 @@ allOf:
         enum: [wired]
       switchName:
         type: string
-        description: Name of the switch this client is connected to.
+        description: Name of the switch this client is connected to. May be available for offline clients (last known switch).
         example: "Switch Living Room"
       switchPort:
         type: integer
@@ -20,6 +20,3 @@ allOf:
         example: 604800
     required:
       - connectionType
-      - switchName
-      - switchPort
-      - uptime
