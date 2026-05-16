@@ -32,6 +32,7 @@ get:
             $ref: "../components/schemas/NetworkDeviceDetail.yaml"
           example:
             id: "unifi.ap-living-room"
+            uri: "/network/devices/unifi.ap-living-room"
             name: "AP Living Room"
             mac: "aa:bb:cc:dd:ee:ff"
             ip: "192.168.1.3"
