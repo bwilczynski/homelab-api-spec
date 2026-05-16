@@ -25,6 +25,8 @@ Examples: `/docker/containers`, `/storage/backups`, `/network/devices`
 - **URL path segments:** `kebab-case` (see URL structure above)
 - **Scopes:** `<access>:<group>` where group matches the URL group segment (e.g. `read:docker`, `write:storage`, `read:system`, `read:network`)
 
+**Enum value exception:** When an enum value encodes a numeric quantity (`<unit><value>`), a single underscore is allowed *between two digits* to encode a decimal point — e.g. `gbe2_5` for 2.5 Gbps. The `_` is permitted only between two digits; everywhere else, the value must remain camelCase. This is enforced by the `enum-value-camelcase` Spectral rule.
+
 ## Resources and operations
 
 - **Composite IDs:** `{device}.{name}` — dot-separated, URL-safe, no encoding required (e.g. `nas-1.homeassistant`)
