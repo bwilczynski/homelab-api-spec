@@ -1,24 +1,22 @@
 allOf:
   - $ref: "./NetworkClient.yaml"
   - type: object
-    description: Detail for a wireless network client, including signal and SSID.
+    description: |
+      Detail for a wireless network client. `connectedTo` carries the
+      AP and SSID the client is associated with (both retained as last
+      known when the client is offline). Signal strength inside
+      `connectedTo` is present for online clients and absent for
+      offline clients.
     properties:
       connectionType:
         type: string
         enum: [wireless]
-      ssid:
-        type: string
-        description: SSID the client is associated with.
-        example: "HomeNetwork"
-      signalStrength:
-        type: integer
-        description: |
-          Received signal strength in dBm.
-          Typical range: -30 (excellent) to -90 (poor).
-        example: -62
+      connectedTo:
+        $ref: "./WirelessConnection.yaml"
       uptime:
         type: integer
-        description: Seconds since the client's current session started.
+        description: Seconds since the client's current session started. Omitted for offline clients.
         example: 7200
     required:
       - connectionType
+      - connectedTo

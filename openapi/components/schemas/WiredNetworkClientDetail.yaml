@@ -1,22 +1,21 @@
 allOf:
   - $ref: "./NetworkClient.yaml"
   - type: object
-    description: Detail for a wired network client, including switch and port information.
+    description: |
+      Detail for a wired network client. `connectedTo` carries the
+      upstream switch reference (last known when the client is
+      offline); the port and link speed inside `connectedTo` are
+      present for online clients and absent for offline clients.
     properties:
       connectionType:
         type: string
         enum: [wired]
-      switchName:
-        type: string
-        description: Name of the switch this client is connected to. May be available for offline clients (last known switch).
-        example: "Switch Living Room"
-      switchPort:
-        type: integer
-        description: Physical port number on the switch.
-        example: 8
+      connectedTo:
+        $ref: "./NetworkConnection.yaml"
       uptime:
         type: integer
-        description: Seconds since the client's current session started.
+        description: Seconds since the client's current session started. Omitted for offline clients.
         example: 604800
     required:
       - connectionType
+      - connectedTo
