@@ -1,21 +1,17 @@
-allOf:
-  - $ref: "./NetworkDevice.yaml"
-  - type: object
-    description: Detailed information about a network device, including model, firmware, and uptime.
-    properties:
-      model:
-        type: string
-        description: Device model identifier as reported by the controller.
-        example: "U6-Lite"
-      firmwareVersion:
-        type: string
-        description: Installed firmware version.
-        example: "6.6.77.14522"
-      uptime:
-        type: integer
-        description: Seconds since the device last (re)connected to the controller.
-        example: 86400
-    required:
-      - model
-      - firmwareVersion
-      - uptime
+anyOf:
+  - $ref: "./SwitchDetail.yaml"
+  - $ref: "./AccessPointDetail.yaml"
+  - $ref: "./GatewayDetail.yaml"
+  - $ref: "./UnknownDeviceDetail.yaml"
+discriminator:
+  propertyName: type
+  mapping:
+    switch: "./SwitchDetail.yaml"
+    accessPoint: "./AccessPointDetail.yaml"
+    gateway: "./GatewayDetail.yaml"
+    unknown: "./UnknownDeviceDetail.yaml"
+description: |
+  Polymorphic detail for a managed network device. The concrete shape
+  depends on `type`: `switch` adds physical ports, `accessPoint` adds
+  associated wireless clients, `gateway` and `unknown` carry only the
+  shared base fields.

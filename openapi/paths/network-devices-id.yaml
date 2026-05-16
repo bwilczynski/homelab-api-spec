@@ -38,10 +38,16 @@ get:
             ip: "192.168.1.3"
             type: accessPoint
             status: connected
-            numClients: 5
             model: "U6-Lite"
             firmwareVersion: "6.6.77.14522"
             uptime: 86400
+            traffic:
+              rxBytesTotal: 12884901888
+              txBytesTotal: 4294967296
+              rxBytesPerSec: 125000
+              txBytesPerSec: 50000
+            numClients: 5
+            connectedClients: []
     "400":
       $ref: "../components/responses/BadRequest.yaml"
     "401":
