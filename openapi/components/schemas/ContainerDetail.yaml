@@ -23,7 +23,7 @@ allOf:
         example: false
       restartPolicy:
         type: string
-        enum: [always, unless-stopped, on-failure, no]
+        enum: [always, unlessStopped, onFailure, no]
         description: Container restart policy.
         example: always
       privileged:
