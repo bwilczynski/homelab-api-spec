@@ -37,12 +37,14 @@ get:
               value:
                 items:
                   - id: "unifi.macbook-pro-3c"
+                    uri: "/network/clients/unifi.macbook-pro-3c"
                     name: "MacBook Pro"
                     mac: "3c:22:fb:09:aa:b1"
                     ip: "192.168.1.101"
                     connectionType: wireless
                     status: online
                   - id: "unifi.sonos-one-sl-c4"
+                    uri: "/network/clients/unifi.sonos-one-sl-c4"
                     name: "Sonos One SL"
                     mac: "c4:38:75:7a:8a:46"
                     ip: "192.168.1.55"

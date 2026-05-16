@@ -39,6 +39,7 @@ get:
               summary: A wireless client with SSID and signal strength.
               value:
                 id: "unifi.macbook-pro-3c"
+                uri: "/network/clients/unifi.macbook-pro-3c"
                 name: "MacBook Pro"
                 mac: "3c:22:fb:09:aa:b1"
                 ip: "192.168.1.101"
@@ -51,6 +52,7 @@ get:
               summary: A wired client with switch and port info.
               value:
                 id: "unifi.nas-1-68"
+                uri: "/network/clients/unifi.nas-1-68"
                 name: "nas-1"
                 mac: "68:d7:9a:12:bb:c2"
                 ip: "192.168.1.10"
