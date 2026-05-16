@@ -1,0 +1,24 @@
+type: object
+description: Lightweight reference to a network device.
+properties:
+  kind:
+    type: string
+    enum: [device]
+    description: Discriminator marking this reference as pointing to a device.
+  id:
+    type: string
+    description: Globally unique device identifier (matches `NetworkDevice.id`).
+    example: "unifi.switch-living-room"
+  uri:
+    type: string
+    description: Relative API path to fetch this device's detail.
+    example: "/network/devices/unifi.switch-living-room"
+  name:
+    type: string
+    description: Human-readable device name.
+    example: "Switch Living Room"
+required:
+  - kind
+  - id
+  - uri
+  - name
