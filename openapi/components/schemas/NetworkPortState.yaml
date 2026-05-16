@@ -1,0 +1,10 @@
+type: string
+description: |
+  Operational state of a physical network port.
+  - `up` — link active
+  - `down` — no link (nothing plugged in or peer unreachable)
+  - `disabled` — administratively shut off in the controller
+enum:
+  - up
+  - down
+  - disabled
