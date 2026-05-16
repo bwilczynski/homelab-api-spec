@@ -1,0 +1,39 @@
+type: object
+description: A physical port on a managed switch.
+properties:
+  number:
+    type: integer
+    minimum: 1
+    description: Physical port number (1-based) as labelled on the switch.
+    example: 7
+  state:
+    $ref: "./NetworkPortState.yaml"
+  linkSpeed:
+    allOf:
+      - $ref: "./NetworkLinkSpeed.yaml"
+    description: |
+      Negotiated link speed. Omitted when `state` is not `up`.
+  poeMode:
+    $ref: "./SwitchPortPoeMode.yaml"
+  poePowerWatts:
+    allOf:
+      - $ref: "./units/Watts.yaml"
+    description: |
+      Power currently being delivered through this port. Omitted when
+      `poeMode` is `off` or when no powered device is attached.
+  traffic:
+    $ref: "./NetworkTraffic.yaml"
+  connectedTo:
+    allOf:
+      - $ref: "./NetworkConnectionRef.yaml"
+    description: |
+      Reference to the device or client connected on this port. Omitted
+      when nothing is connected. When an unmanaged downstream switch
+      hangs off the port with multiple endpoints, the controller reports
+      a single endpoint (UniFi behavior); consumers should not treat
+      this as authoritative for multi-endpoint cases.
+required:
+  - number
+  - state
+  - poeMode
+  - traffic
