@@ -406,6 +406,8 @@ git commit -m "Add NetworkConnectionRef polymorphic wrapper"
 **Files:**
 - Create: `openapi/components/schemas/NetworkConnection.yaml`
 
+Only `device` is required. `port` and `linkSpeed` are optional so the same schema can represent both a live connection (online client, connected device) and a "last known device" reference (offline wired client, disconnected device) where only the upstream device is known.
+
 - [ ] **Step 1: Create the file**
 
 `openapi/components/schemas/NetworkConnection.yaml`:
@@ -413,23 +415,26 @@ git commit -m "Add NetworkConnectionRef polymorphic wrapper"
 ```yaml
 type: object
 description: |
-  A connection to an upstream network device, including the physical
-  port and the negotiated link speed. Used both as a device's `uplink`
-  and as a wired client's `connectedTo`.
+  A connection to an upstream network device. Used both as a device's
+  `uplink` and as a wired client's `connectedTo`. Only `device` is
+  required; `port` and `linkSpeed` are present for live connections and
+  omitted when only the upstream reference is known (e.g. offline wired
+  clients where the controller retains the last known switch but not
+  the last port).
 properties:
   device:
     $ref: "./NetworkDeviceRef.yaml"
   port:
     type: integer
     minimum: 1
-    description: Physical port number on the upstream device.
+    description: Physical port number on the upstream device. Omitted when the connection is not live.
     example: 8
   linkSpeed:
-    $ref: "./NetworkLinkSpeed.yaml"
+    allOf:
+      - $ref: "./NetworkLinkSpeed.yaml"
+    description: Negotiated link speed. Omitted when the connection is not live.
 required:
   - device
-  - port
-  - linkSpeed
 ```
 
 - [ ] **Step 2: Run lint**
@@ -458,26 +463,27 @@ git commit -m "Add NetworkConnection schema (device + port + linkSpeed)"
 ```yaml
 type: object
 description: |
-  A wireless client's association with an access point, including the
-  AP reference, the SSID it's joined to, and the AP-measured signal
-  strength.
+  A wireless client's association with an access point. `device` and
+  `ssid` are required (generally retained as last known even when the
+  client is offline). `signalStrength` is optional and absent for
+  offline clients (no live measurement).
 properties:
   device:
     $ref: "./NetworkDeviceRef.yaml"
   ssid:
     type: string
-    description: SSID the client is associated with.
+    description: SSID the client is associated with (last known when offline).
     example: "HomeNetwork"
   signalStrength:
     type: integer
     description: |
       Received signal strength in dBm as measured by the AP.
       Typical range: -30 (excellent) to -90 (poor).
+      Omitted for offline clients.
     example: -62
 required:
   - device
   - ssid
-  - signalStrength
 ```
 
 - [ ] **Step 2: Run lint**
@@ -967,7 +973,7 @@ BREAKING: consumers reading the previous flat shape must dispatch on
 **Files:**
 - Modify: `openapi/components/schemas/NetworkClient.yaml`
 
-Add `uri` (required).
+Add `uri` (required). Preserve the `status` field added by PR #10 (still required). Preserve the offline-aware description and `ip` field text from PR #10.
 
 - [ ] **Step 1: Replace file contents**
 
@@ -975,7 +981,7 @@ Overwrite `openapi/components/schemas/NetworkClient.yaml` with:
 
 ```yaml
 type: object
-description: A client device currently connected to the network.
+description: A client device on the network (online or offline).
 properties:
   id:
     type: string
@@ -1002,16 +1008,19 @@ properties:
     example: "3c:22:fb:09:aa:b1"
   ip:
     type: string
-    description: Current IP address of the client.
+    description: Current IP address for online clients; last known IP address for offline clients.
     example: "192.168.1.100"
   connectionType:
     $ref: "./NetworkClientConnectionType.yaml"
+  status:
+    $ref: "./NetworkClientStatus.yaml"
 required:
   - id
   - uri
   - name
   - mac
   - connectionType
+  - status
 ```
 
 - [ ] **Step 2: Run lint**
@@ -1033,7 +1042,7 @@ git commit -m "NetworkClient: add uri field"
 **Files:**
 - Modify: `openapi/components/schemas/WiredNetworkClientDetail.yaml`
 
-Replace `switchName` + `switchPort` with `connectedTo: NetworkConnection`. Breaking change.
+Replace `switchName` + `switchPort` with `connectedTo: NetworkConnection`. Breaking change. `connectedTo` is required (preserves the "last known switch" semantics from PR #10 via `connectedTo.device`); inside `NetworkConnection`, only `device` is required (per Task 8). `uptime` stays optional (PR #10 made it optional; absent for offline clients).
 
 - [ ] **Step 1: Replace file contents**
 
@@ -1043,7 +1052,11 @@ Overwrite `openapi/components/schemas/WiredNetworkClientDetail.yaml` with:
 allOf:
   - $ref: "./NetworkClient.yaml"
   - type: object
-    description: Detail for a wired network client, including the upstream switch and port it's plugged into.
+    description: |
+      Detail for a wired network client. `connectedTo` carries the
+      upstream switch reference (last known when the client is
+      offline); the port and link speed inside `connectedTo` are
+      present for online clients and absent for offline clients.
     properties:
       connectionType:
         type: string
@@ -1052,12 +1065,11 @@ allOf:
         $ref: "./NetworkConnection.yaml"
       uptime:
         type: integer
-        description: Seconds since the client's current session started.
+        description: Seconds since the client's current session started. Omitted for offline clients.
         example: 604800
     required:
       - connectionType
       - connectedTo
-      - uptime
 ```
 
 - [ ] **Step 2: Run lint**
@@ -1083,7 +1095,7 @@ matching the device-side uplink shape)."
 **Files:**
 - Modify: `openapi/components/schemas/WirelessNetworkClientDetail.yaml`
 
-Move `ssid` and `signalStrength` into a new `connectedTo: WirelessConnection`. Breaking change.
+Move `ssid` and `signalStrength` into a new `connectedTo: WirelessConnection`. Breaking change. `connectedTo` is required (preserves "last known AP" semantics via `connectedTo.device` and `connectedTo.ssid`); inside `WirelessConnection`, `signalStrength` is optional and absent for offline clients (per Task 9). `uptime` stays optional.
 
 - [ ] **Step 1: Replace file contents**
 
@@ -1093,7 +1105,12 @@ Overwrite `openapi/components/schemas/WirelessNetworkClientDetail.yaml` with:
 allOf:
   - $ref: "./NetworkClient.yaml"
   - type: object
-    description: Detail for a wireless network client, including its association with an AP.
+    description: |
+      Detail for a wireless network client. `connectedTo` carries the
+      AP and SSID the client is associated with (both retained as last
+      known when the client is offline). Signal strength inside
+      `connectedTo` is present for online clients and absent for
+      offline clients.
     properties:
       connectionType:
         type: string
@@ -1102,12 +1119,11 @@ allOf:
         $ref: "./WirelessConnection.yaml"
       uptime:
         type: integer
-        description: Seconds since the client's current session started.
+        description: Seconds since the client's current session started. Omitted for offline clients.
         example: 7200
     required:
       - connectionType
       - connectedTo
-      - uptime
 ```
 
 - [ ] **Step 2: Run lint**
@@ -1396,40 +1412,40 @@ git commit -m "network-devices/{deviceId}: examples per variant, polymorphic des
 **Files:**
 - Modify: `openapi/paths/network-clients.yaml`
 
-Add `uri` to each item in the list example. First read the file to see its exact current structure.
+Add `uri` to each item in the existing list example. The file already contains a `status` query parameter and per-item `status` values (online/offline) from PR #10 — preserve those untouched. Only insert `uri` after `id` on each item.
 
-- [ ] **Step 1: Read the file**
+- [ ] **Step 1: Update each item in the `typicalHomelab` example**
 
-Run: `cat openapi/paths/network-clients.yaml`
-Note the structure of the `examples:` block.
+In `openapi/paths/network-clients.yaml`, under `responses → "200" → content → application/json → examples → typicalHomelab → value → items`, insert a `uri:` line immediately after each `id:` line.
 
-- [ ] **Step 2: Update each item in the example**
-
-For every object inside the `items:` array of the `value:` block, add a `uri:` field directly after the `id:` field. Pattern: `uri: "/network/clients/<id>"`.
-
-Example transformation — before:
+Resulting `items:` block:
 
 ```yaml
-                  - id: "unifi.macbook-pro-3c"
-                    name: "MacBook Pro"
-```
-
-After:
-
-```yaml
+                items:
                   - id: "unifi.macbook-pro-3c"
                     uri: "/network/clients/unifi.macbook-pro-3c"
                     name: "MacBook Pro"
+                    mac: "3c:22:fb:09:aa:b1"
+                    ip: "192.168.1.101"
+                    connectionType: wireless
+                    status: online
+                  - id: "unifi.sonos-one-sl-c4"
+                    uri: "/network/clients/unifi.sonos-one-sl-c4"
+                    name: "Sonos One SL"
+                    mac: "c4:38:75:7a:8a:46"
+                    ip: "192.168.1.55"
+                    connectionType: wireless
+                    status: offline
 ```
 
-Apply to every list item.
+Do not modify the operation `description`, `parameters` block, `summary`, or other examples — those are correct as-is from PR #10.
 
-- [ ] **Step 3: Run lint**
+- [ ] **Step 2: Run lint**
 
 Run: `make lint`
 Expected: PASS.
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 3: Commit**
 
 ```bash
 git add openapi/paths/network-clients.yaml
@@ -1443,16 +1459,16 @@ git commit -m "network-clients: add uri to list examples"
 **Files:**
 - Modify: `openapi/paths/network-clients-id.yaml`
 
-Replace both example payloads with the new shapes.
+Replace the example payloads with the new shapes. Add a third example covering an offline wireless client so the spec demonstrates the optional-field behavior (`connectedTo.signalStrength` and `uptime` absent for offline clients).
 
 - [ ] **Step 1: Replace the `examples:` block under the `200` response**
 
-In `openapi/paths/network-clients-id.yaml`, replace the existing `wirelessClient` and `wiredClient` example values with:
+In `openapi/paths/network-clients-id.yaml`, replace the existing `wirelessClient` and `wiredClient` example values with the block below (three examples — online wireless, online wired, offline wireless):
 
 ```yaml
           examples:
-            wirelessClient:
-              summary: A wireless client associated with an AP.
+            onlineWirelessClient:
+              summary: An online wireless client associated with an AP.
               value:
                 id: "unifi.macbook-pro-3c"
                 uri: "/network/clients/unifi.macbook-pro-3c"
@@ -1460,6 +1476,7 @@ In `openapi/paths/network-clients-id.yaml`, replace the existing `wirelessClient
                 mac: "3c:22:fb:09:aa:b1"
                 ip: "192.168.1.101"
                 connectionType: wireless
+                status: online
                 connectedTo:
                   device:
                     kind: device
@@ -1469,8 +1486,8 @@ In `openapi/paths/network-clients-id.yaml`, replace the existing `wirelessClient
                   ssid: "HomeNetwork"
                   signalStrength: -62
                 uptime: 7200
-            wiredClient:
-              summary: A wired client plugged into a switch port.
+            onlineWiredClient:
+              summary: An online wired client plugged into a switch port.
               value:
                 id: "unifi.nas-1-68"
                 uri: "/network/clients/unifi.nas-1-68"
@@ -1478,6 +1495,7 @@ In `openapi/paths/network-clients-id.yaml`, replace the existing `wirelessClient
                 mac: "68:d7:9a:12:bb:c2"
                 ip: "192.168.1.10"
                 connectionType: wired
+                status: online
                 connectedTo:
                   device:
                     kind: device
@@ -1487,6 +1505,23 @@ In `openapi/paths/network-clients-id.yaml`, replace the existing `wirelessClient
                   port: 8
                   linkSpeed: gbe2_5
                 uptime: 604800
+            offlineWirelessClient:
+              summary: An offline wireless client (last known AP and SSID retained; no live signal strength or session uptime).
+              value:
+                id: "unifi.sonos-one-sl-c4"
+                uri: "/network/clients/unifi.sonos-one-sl-c4"
+                name: "Sonos One SL"
+                mac: "c4:38:75:7a:8a:46"
+                ip: "192.168.1.55"
+                connectionType: wireless
+                status: offline
+                connectedTo:
+                  device:
+                    kind: device
+                    id: "unifi.ap-kitchen"
+                    uri: "/network/devices/unifi.ap-kitchen"
+                    name: "AP Kitchen"
+                  ssid: "HomeNetwork"
 ```
 
 - [ ] **Step 2: Update the operation description**
@@ -1495,15 +1530,18 @@ Find the existing operation `description:` block. Replace it with:
 
 ```yaml
   description: |
-    Returns a single connected client by its composite identifier
+    Returns a single network client by its composite identifier
     (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-3c`).
     The response shape varies by `connectionType`: wired clients carry
     a `connectedTo` referencing the upstream switch (with port and link
-    speed); wireless clients carry a `connectedTo` referencing the AP
-    they are associated with (with SSID and signal strength).
+    speed for online clients); wireless clients carry a `connectedTo`
+    referencing the AP they are associated with (with SSID always and
+    signal strength when online).
 
-    Only currently connected clients can be retrieved; requesting an
-    offline client returns 404.
+    Offline clients are returned with `status: offline`. The `device`
+    inside `connectedTo` (and `ssid` for wireless) is retained as last
+    known; `port`/`linkSpeed`/`signalStrength` and top-level `uptime`
+    are absent.
 ```
 
 - [ ] **Step 3: Run lint**
@@ -1515,7 +1553,12 @@ Expected: PASS.
 
 ```bash
 git add openapi/paths/network-clients-id.yaml
-git commit -m "network-clients/{clientId}: update examples and description for new shapes"
+git commit -m "network-clients/{clientId}: update examples and description for new shapes
+
+Three examples now: online wireless, online wired, offline wireless.
+The offline example demonstrates the optional-field behavior
+(signalStrength and uptime absent; device and ssid retained as last
+known)."
 ```
 
 ---

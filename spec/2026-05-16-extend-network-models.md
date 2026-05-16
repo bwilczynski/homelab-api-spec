@@ -91,10 +91,11 @@ One reusable schema for the rich connection shape, used wherever a downstream en
 
 **`NetworkConnection.yaml`**:
 
-- `device` — `$ref NetworkDeviceRef`. The upstream device.
-- `port` — `integer`, `minimum: 1`. Physical port number on the upstream device.
-- `linkSpeed` — `$ref NetworkLinkSpeed`. Negotiated speed.
-- All three required.
+- `device` — `$ref NetworkDeviceRef`. The upstream device. **Required.**
+- `port` — `integer`, `minimum: 1`. Physical port number on the upstream device. **Optional.**
+- `linkSpeed` — `$ref NetworkLinkSpeed`. Negotiated speed. **Optional.**
+
+Only `device` is required. `port` and `linkSpeed` are present when the connection is live (online client, connected device) and omitted when only the upstream reference is known (e.g. offline wired client where the controller retains the last known switch but not the last port). This preserves "last known device" semantics from PR #10 (status field).
 
 Used by:
 
@@ -105,10 +106,9 @@ Field names differ because the domain phrasing differs (devices have an "uplink"
 
 **`WirelessConnection.yaml`** — wireless analog (no port, no link speed; has SSID and signal strength):
 
-- `device` — `$ref NetworkDeviceRef`. The AP.
-- `ssid` — `string`. SSID the client is associated with.
-- `signalStrength` — `integer`. dBm as measured by the AP.
-- All three required.
+- `device` — `$ref NetworkDeviceRef`. The AP. **Required.**
+- `ssid` — `string`. SSID the client is associated with. **Required.** (Generally retained as last known when client is offline.)
+- `signalStrength` — `integer`. dBm as measured by the AP. **Optional** — absent for offline clients (no live measurement).
 
 Used by `WirelessNetworkClientDetail.connectedTo`.
 
@@ -195,15 +195,19 @@ The same association data is reachable from both sides: from the AP via `connect
 
 ### List shape
 
-**`NetworkClient.yaml`** — add `uri` (required). Other fields unchanged.
+**`NetworkClient.yaml`** — add `uri` (required). All other fields (including the `status: online | offline` added by PR #10) are preserved.
 
 ### Wired detail (breaking)
 
-**`WiredNetworkClientDetail.yaml`** — replace `switchName: string` and `switchPort: integer` with a single `connectedTo: $ref NetworkConnection`. Resulting required fields: `connectionType`, `connectedTo`, `uptime`.
+**`WiredNetworkClientDetail.yaml`** — replace `switchName: string` and `switchPort: integer` with a single `connectedTo: $ref NetworkConnection`. The "last known switch" semantics from PR #10 are preserved through `connectedTo.device` (required) while `port` and `linkSpeed` inside `NetworkConnection` are optional (absent for offline clients).
+
+Resulting required fields on the detail: `connectionType`, `connectedTo`. `uptime` is optional (matches PR #10's offline handling — session-specific, absent when offline).
 
 ### Wireless detail (breaking)
 
-**`WirelessNetworkClientDetail.yaml`** — group `ssid` and `signalStrength` (previously top-level) into a new `connectedTo: $ref WirelessConnection`. Resulting required fields: `connectionType`, `connectedTo`, `uptime`.
+**`WirelessNetworkClientDetail.yaml`** — group `ssid` and `signalStrength` (previously top-level) into a new `connectedTo: $ref WirelessConnection`. The "last known AP" semantics from PR #10 are preserved through `connectedTo.device` and `connectedTo.ssid` (both required). `signalStrength` inside `WirelessConnection` is optional (absent for offline clients).
+
+Resulting required fields on the detail: `connectionType`, `connectedTo`. `uptime` is optional.
 
 ---
 
