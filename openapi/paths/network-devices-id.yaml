@@ -7,9 +7,11 @@ get:
     (`{controller}.{name}`, e.g. `unifi.ap-living-room`). The response
     is polymorphic on the device `type`: switches include their physical
     `ports`, access points include `connectedClients` and `numClients`,
-    gateways and unknown devices carry only the shared base fields. All
-    variants include `traffic` stats and (except gateways) an `uplink`
-    reference to the upstream device.
+    gateways and unknown devices carry only the shared base fields.
+    All variants include `traffic` stats and may include an `uplink`
+    reference to the upstream device (always omitted for gateways since
+    they are the topology root; may be absent for disconnected or
+    unrecognised devices).
   tags:
     - network
   security:
@@ -34,7 +36,7 @@ get:
             $ref: "../components/schemas/NetworkDeviceDetail.yaml"
           examples:
             switch:
-              summary: A managed switch with three ports.
+              summary: A managed switch with four ports (uplink, downstream AP, idle, and a wired client).
               value:
                 id: "unifi.switch-living-room"
                 uri: "/network/devices/unifi.switch-living-room"
@@ -97,6 +99,20 @@ get:
                       txBytesTotal: 0
                       rxBytesPerSec: 0
                       txBytesPerSec: 0
+                  - number: 8
+                    state: up
+                    linkSpeed: gbe2_5
+                    poeMode: 'off'
+                    traffic:
+                      rxBytesTotal: 5497558138
+                      txBytesTotal: 2748779069
+                      rxBytesPerSec: 800000
+                      txBytesPerSec: 100000
+                    connectedTo:
+                      kind: client
+                      id: "unifi.nas-1-68"
+                      uri: "/network/clients/unifi.nas-1-68"
+                      name: "nas-1"
             accessPoint:
               summary: An access point with one associated wireless client.
               value:
@@ -113,8 +129,8 @@ get:
                 traffic:
                   rxBytesTotal: 8589934592
                   txBytesTotal: 17179869184
-                  rxBytesPerSec: 80000
-                  txBytesPerSec: 200000
+                  rxBytesPerSec: 50000
+                  txBytesPerSec: 125000
                 uplink:
                   device:
                     kind: device
