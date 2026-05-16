@@ -1,0 +1,16 @@
+type: string
+description: |
+  Negotiated link speed of a network port, using UniFi nomenclature.
+  - `e` — 10 Mbps (Ethernet)
+  - `fe` — 100 Mbps (Fast Ethernet)
+  - `gbe1` — 1 Gbps
+  - `gbe2_5` — 2.5 Gbps
+  - `gbe5` — 5 Gbps
+  - `gbe10` — 10 Gbps
+enum:
+  - e
+  - fe
+  - gbe1
+  - gbe2_5
+  - gbe5
+  - gbe10
