@@ -1,0 +1,181 @@
+get:
+  operationId: getNetworkTopology
+  x-stability-level: draft
+  summary: Get network topology
+  description: |
+    Returns the network topology as a graph of nodes and edges.
+
+    By default only infrastructure devices (gateway, switches, access
+    points) appear as nodes, with device-to-device uplink edges. Pass
+    `includeClients=true` to add all network clients (online and offline)
+    as nodes with their wired or wireless edges.
+
+    The gateway node has no outgoing edge — it is the topology root.
+    Consumers can identify it by `type: "gateway"`.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: includeClients
+      in: query
+      required: false
+      description: |
+        When `true`, all network clients (online and offline) are included
+        as nodes with their corresponding wired or wireless edges.
+        Defaults to `false`.
+      schema:
+        type: boolean
+        default: false
+  responses:
+    "200":
+      description: Network topology graph.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/NetworkTopology.yaml"
+          examples:
+            devicesOnly:
+              summary: Devices-only topology (gateway → switch → AP).
+              value:
+                nodes:
+                  - kind: device
+                    id: "unifi.usg"
+                    uri: "/network/devices/unifi.usg"
+                    name: "USG"
+                    type: gateway
+                    status: connected
+                  - kind: device
+                    id: "unifi.switch-living-room"
+                    uri: "/network/devices/unifi.switch-living-room"
+                    name: "Switch Living Room"
+                    type: switch
+                    status: connected
+                  - kind: device
+                    id: "unifi.ap-living-room"
+                    uri: "/network/devices/unifi.ap-living-room"
+                    name: "AP Living Room"
+                    type: accessPoint
+                    status: connected
+                    numClients: 1
+                edges:
+                  - kind: wired
+                    source:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                    target:
+                      kind: device
+                      id: "unifi.usg"
+                      uri: "/network/devices/unifi.usg"
+                      name: "USG"
+                    port: 1
+                    linkSpeed: gbe1
+                  - kind: wired
+                    source:
+                      kind: device
+                      id: "unifi.ap-living-room"
+                      uri: "/network/devices/unifi.ap-living-room"
+                      name: "AP Living Room"
+                    target:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                    port: 7
+                    linkSpeed: gbe2_5
+            withClients:
+              summary: Topology with a wired client and a wireless client.
+              value:
+                nodes:
+                  - kind: device
+                    id: "unifi.usg"
+                    uri: "/network/devices/unifi.usg"
+                    name: "USG"
+                    type: gateway
+                    status: connected
+                  - kind: device
+                    id: "unifi.switch-living-room"
+                    uri: "/network/devices/unifi.switch-living-room"
+                    name: "Switch Living Room"
+                    type: switch
+                    status: connected
+                  - kind: device
+                    id: "unifi.ap-living-room"
+                    uri: "/network/devices/unifi.ap-living-room"
+                    name: "AP Living Room"
+                    type: accessPoint
+                    status: connected
+                    numClients: 1
+                  - kind: client
+                    id: "unifi.nas-1-68"
+                    uri: "/network/clients/unifi.nas-1-68"
+                    name: "nas-1"
+                    connectionType: wired
+                    status: online
+                  - kind: client
+                    id: "unifi.macbook-pro-3c"
+                    uri: "/network/clients/unifi.macbook-pro-3c"
+                    name: "MacBook Pro"
+                    connectionType: wireless
+                    status: online
+                edges:
+                  - kind: wired
+                    source:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                    target:
+                      kind: device
+                      id: "unifi.usg"
+                      uri: "/network/devices/unifi.usg"
+                      name: "USG"
+                    port: 1
+                    linkSpeed: gbe1
+                  - kind: wired
+                    source:
+                      kind: device
+                      id: "unifi.ap-living-room"
+                      uri: "/network/devices/unifi.ap-living-room"
+                      name: "AP Living Room"
+                    target:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                    port: 7
+                    linkSpeed: gbe2_5
+                  - kind: wired
+                    source:
+                      kind: client
+                      id: "unifi.nas-1-68"
+                      uri: "/network/clients/unifi.nas-1-68"
+                      name: "nas-1"
+                    target:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                    port: 8
+                    linkSpeed: gbe2_5
+                  - kind: wireless
+                    source:
+                      kind: client
+                      id: "unifi.macbook-pro-3c"
+                      uri: "/network/clients/unifi.macbook-pro-3c"
+                      name: "MacBook Pro"
+                    target:
+                      kind: device
+                      id: "unifi.ap-living-room"
+                      uri: "/network/devices/unifi.ap-living-room"
+                      name: "AP Living Room"
+                    ssid: "HomeNetwork"
+                    signalStrength: -55
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"
