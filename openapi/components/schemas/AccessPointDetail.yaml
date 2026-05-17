@@ -1,0 +1,23 @@
+allOf:
+  - $ref: "./NetworkDeviceDetailBase.yaml"
+  - type: object
+    description: Detail for a wireless access point, including its associated clients.
+    properties:
+      type:
+        type: string
+        enum: [accessPoint]
+      numClients:
+        type: integer
+        description: Number of wireless clients currently associated with this AP.
+        example: 5
+      connectedClients:
+        type: array
+        description: |
+          Wireless clients currently associated with this AP. Empty
+          array (`[]`) when none, never null.
+        items:
+          $ref: "./AccessPointClient.yaml"
+    required:
+      - type
+      - numClients
+      - connectedClients

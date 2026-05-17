@@ -1,0 +1,22 @@
+type: object
+description: |
+  A wireless client currently associated with an access point. Mirrors
+  the structure of `WirelessConnection` from the AP side (carries a
+  client reference instead of a device reference).
+properties:
+  client:
+    $ref: "./NetworkClientRef.yaml"
+  ssid:
+    type: string
+    description: SSID the client is associated with.
+    example: "HomeNetwork"
+  signalStrength:
+    type: integer
+    description: |
+      Received signal strength in dBm as measured by the AP.
+      Typical range: -30 (excellent) to -90 (poor).
+    example: -62
+required:
+  - client
+  - ssid
+  - signalStrength

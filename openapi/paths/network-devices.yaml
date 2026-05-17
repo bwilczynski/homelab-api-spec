@@ -6,8 +6,7 @@ get:
     Returns managed network devices (access points, switches, gateways) from
     all configured UniFi controllers.
 
-    Each device includes its type, connectivity status, and — for access
-    points — the number of currently associated wireless clients.
+    Each device includes its type and connectivity status.
 
     A homelab typically has a small number of network devices, so this
     endpoint returns all results without pagination.
@@ -28,31 +27,33 @@ get:
               value:
                 items:
                   - id: "unifi.usg"
+                    uri: "/network/devices/unifi.usg"
                     name: "USG"
                     mac: "aa:bb:cc:dd:00:01"
                     ip: "192.168.1.1"
                     type: gateway
                     status: connected
                   - id: "unifi.switch-living-room"
+                    uri: "/network/devices/unifi.switch-living-room"
                     name: "Switch Living Room"
                     mac: "aa:bb:cc:dd:00:02"
                     ip: "192.168.1.2"
                     type: switch
                     status: connected
                   - id: "unifi.ap-living-room"
+                    uri: "/network/devices/unifi.ap-living-room"
                     name: "AP Living Room"
                     mac: "aa:bb:cc:dd:00:03"
                     ip: "192.168.1.3"
                     type: accessPoint
                     status: connected
-                    numClients: 5
                   - id: "unifi.ap-office"
+                    uri: "/network/devices/unifi.ap-office"
                     name: "AP Office"
                     mac: "aa:bb:cc:dd:00:04"
                     ip: "192.168.1.4"
                     type: accessPoint
                     status: connected
-                    numClients: 2
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

@@ -1,0 +1,10 @@
+allOf:
+  - $ref: "./NetworkDeviceDetailBase.yaml"
+  - type: object
+    description: Detail for a security gateway / router.
+    properties:
+      type:
+        type: string
+        enum: [gateway]
+    required:
+      - type

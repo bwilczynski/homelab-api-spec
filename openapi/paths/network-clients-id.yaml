@@ -3,14 +3,18 @@ get:
   x-stability-level: draft
   summary: Get a network client
   description: |
-    Returns a single connected client by its composite identifier
-    (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-3c`). The response
-    includes connection type and session uptime. The shape of the
-    response varies by connection type: wired clients include switch
-    name and port number; wireless clients include SSID and signal
-    strength.
+    Returns a single network client by its composite identifier
+    (`{controller}.{hostname}-{macPrefix}`, e.g. `unifi.macbook-pro-3c`).
+    The response shape varies by `connectionType`: wired clients carry
+    a `connectedTo` referencing the upstream switch (with port and link
+    speed for online clients); wireless clients carry a `connectedTo`
+    referencing the AP they are associated with (with SSID always and
+    signal strength when online).
 
-    For offline clients, session-specific fields (uptime, switchPort, ssid, signalStrength) are absent. switchName may be present as the last known switch.
+    Offline clients are returned with `status: offline`. The `device`
+    inside `connectedTo` (and `ssid` for wireless) is retained as last
+    known; `port`/`linkSpeed`/`signalStrength` and top-level `uptime`
+    are absent.
   tags:
     - network
   security:
@@ -35,30 +39,61 @@ get:
           schema:
             $ref: "../components/schemas/NetworkClientDetail.yaml"
           examples:
-            wirelessClient:
-              summary: A wireless client with SSID and signal strength.
+            onlineWirelessClient:
+              summary: An online wireless client associated with an AP.
               value:
                 id: "unifi.macbook-pro-3c"
+                uri: "/network/clients/unifi.macbook-pro-3c"
                 name: "MacBook Pro"
                 mac: "3c:22:fb:09:aa:b1"
                 ip: "192.168.1.101"
                 connectionType: wireless
                 status: online
-                ssid: "HomeNetwork"
-                signalStrength: -62
+                connectedTo:
+                  device:
+                    kind: device
+                    id: "unifi.ap-living-room"
+                    uri: "/network/devices/unifi.ap-living-room"
+                    name: "AP Living Room"
+                  ssid: "HomeNetwork"
+                  signalStrength: -62
                 uptime: 7200
-            wiredClient:
-              summary: A wired client with switch and port info.
+            onlineWiredClient:
+              summary: An online wired client plugged into a switch port.
               value:
                 id: "unifi.nas-1-68"
+                uri: "/network/clients/unifi.nas-1-68"
                 name: "nas-1"
                 mac: "68:d7:9a:12:bb:c2"
                 ip: "192.168.1.10"
                 connectionType: wired
                 status: online
-                switchName: "Switch Living Room"
-                switchPort: 8
+                connectedTo:
+                  device:
+                    kind: device
+                    id: "unifi.switch-living-room"
+                    uri: "/network/devices/unifi.switch-living-room"
+                    name: "Switch Living Room"
+                  port: 8
+                  linkSpeed: gbe2_5
                 uptime: 604800
+            offlineWirelessClient:
+              summary: An offline wireless client (last known AP and SSID retained; no live signal strength or session uptime).
+              value:
+                id: "unifi.sonos-one-sl-c4"
+                uri: "/network/clients/unifi.sonos-one-sl-c4"
+                name: "Sonos One SL"
+                mac: "c4:38:75:7a:8a:46"
+                ip: "192.168.1.55"
+                connectionType: wireless
+                status: offline
+                connectedTo:
+                  device:
+                    kind: device
+                    id: "unifi.ap-kitchen"
+                    uri: "/network/devices/unifi.ap-kitchen"
+                    name: "AP Kitchen"
+                  ssid: "HomeNetwork"
     "400":
       $ref: "../components/responses/BadRequest.yaml"
     "401":

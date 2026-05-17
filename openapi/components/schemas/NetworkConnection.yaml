@@ -1,0 +1,22 @@
+type: object
+description: |
+  A connection to an upstream network device. Used both as a device's
+  `uplink` and as a wired client's `connectedTo`. Only `device` is
+  required; `port` and `linkSpeed` are present for live connections and
+  omitted when only the upstream reference is known (e.g. offline wired
+  clients where the controller retains the last known switch but not
+  the last port).
+properties:
+  device:
+    $ref: "./NetworkDeviceRef.yaml"
+  port:
+    type: integer
+    minimum: 1
+    description: Physical port number on the upstream device. Omitted when the connection is not live.
+    example: 8
+  linkSpeed:
+    allOf:
+      - $ref: "./NetworkLinkSpeed.yaml"
+    description: Negotiated link speed. Omitted when the connection is not live.
+required:
+  - device

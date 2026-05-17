@@ -1,0 +1,24 @@
+type: object
+description: Lightweight reference to a network client.
+properties:
+  kind:
+    type: string
+    enum: [client]
+    description: Discriminator marking this reference as pointing to a client.
+  id:
+    type: string
+    description: Globally unique client identifier (matches `NetworkClient.id`).
+    example: "unifi.macbook-pro-3c"
+  uri:
+    type: string
+    description: Relative API path to fetch this client's detail.
+    example: "/network/clients/unifi.macbook-pro-3c"
+  name:
+    type: string
+    description: Human-readable client name.
+    example: "MacBook Pro"
+required:
+  - kind
+  - id
+  - uri
+  - name

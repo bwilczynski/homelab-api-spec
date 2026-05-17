@@ -80,6 +80,19 @@ rules:
       functionOptions:
         match: "^[a-zA-Z][a-zA-Z0-9-]*$"
 
+  enum-value-camelcase:
+    description: |
+      Enum values must be camelCase. A single underscore is allowed only
+      between two digits (to encode a decimal point in numeric enums,
+      e.g. `gbe2_5`).
+    message: "Enum value '{{value}}' must be camelCase (with `_` allowed only between digits)."
+    severity: error
+    given: "$..enum[*]"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*(?:[0-9]_[0-9][a-zA-Z0-9]*)?$"
+
   # --- descriptions -------------------------------------------------------
   operation-description-required:
     description: Every operation needs a description (agents use it to pick tools).

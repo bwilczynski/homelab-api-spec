@@ -10,6 +10,10 @@ properties:
       characters of the MAC address for disambiguation. The
       implementation ensures uniqueness across controllers.
     example: "unifi.macbook-pro-3c"
+  uri:
+    type: string
+    description: Relative API path to fetch this client's detail.
+    example: "/network/clients/unifi.macbook-pro-3c"
   name:
     type: string
     description: |
@@ -30,6 +34,7 @@ properties:
     $ref: "./NetworkClientStatus.yaml"
 required:
   - id
+  - uri
   - name
   - mac
   - connectionType

@@ -1,0 +1,16 @@
+allOf:
+  - $ref: "./NetworkDeviceDetailBase.yaml"
+  - type: object
+    description: Detail for a managed switch, including its physical ports.
+    properties:
+      type:
+        type: string
+        enum: [switch]
+      ports:
+        type: array
+        description: Physical ports on this switch.
+        items:
+          $ref: "./SwitchPort.yaml"
+    required:
+      - type
+      - ports

@@ -1,0 +1,12 @@
+type: string
+description: |
+  Configured PoE behavior on a switch port.
+  - `off` — PoE disabled
+  - `auto` — auto-negotiated 802.3af/at/bt (PoE+/PoE++ are runtime outcomes of `auto`)
+  - `passive24v` — legacy 24 V passive PoE
+  - `passthrough` — forwards power from the switch's PoE input
+enum:
+  - 'off'
+  - auto
+  - passive24v
+  - passthrough

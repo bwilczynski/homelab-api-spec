@@ -1,0 +1,12 @@
+anyOf:
+  - $ref: "./NetworkDeviceRef.yaml"
+  - $ref: "./NetworkClientRef.yaml"
+discriminator:
+  propertyName: kind
+  mapping:
+    device: "./NetworkDeviceRef.yaml"
+    client: "./NetworkClientRef.yaml"
+description: |
+  Polymorphic reference to either a network device or a network client,
+  discriminated on `kind`. Used wherever a single field may point at
+  either resource type (e.g. `SwitchPort.connectedTo`).

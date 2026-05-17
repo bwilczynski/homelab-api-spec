@@ -5,9 +5,13 @@ get:
   description: |
     Returns a single network device by its composite identifier
     (`{controller}.{name}`, e.g. `unifi.ap-living-room`). The response
-    includes model, firmware version, connectivity status, and uptime.
-    Access points additionally include the number of currently associated
-    wireless clients.
+    is polymorphic on the device `type`: switches include their physical
+    `ports`, access points include `connectedClients` and `numClients`,
+    gateways and unknown devices carry only the shared base fields.
+    All variants include `traffic` stats and may include an `uplink`
+    reference to the upstream device (always omitted for gateways since
+    they are the topology root; may be absent for disconnected or
+    unrecognised devices).
   tags:
     - network
   security:
@@ -30,17 +34,156 @@ get:
         application/json:
           schema:
             $ref: "../components/schemas/NetworkDeviceDetail.yaml"
-          example:
-            id: "unifi.ap-living-room"
-            name: "AP Living Room"
-            mac: "aa:bb:cc:dd:ee:ff"
-            ip: "192.168.1.3"
-            type: accessPoint
-            status: connected
-            numClients: 5
-            model: "U6-Lite"
-            firmwareVersion: "6.6.77.14522"
-            uptime: 86400
+          examples:
+            switch:
+              summary: A managed switch with four ports (uplink, downstream AP, idle, and a wired client).
+              value:
+                id: "unifi.switch-living-room"
+                uri: "/network/devices/unifi.switch-living-room"
+                name: "Switch Living Room"
+                mac: "aa:bb:cc:dd:00:02"
+                ip: "192.168.1.2"
+                type: switch
+                status: connected
+                model: "USW-Lite-8-PoE"
+                firmwareVersion: "6.6.77.14522"
+                uptime: 172800
+                traffic:
+                  rxBytesTotal: 87960930222
+                  txBytesTotal: 43980465111
+                  rxBytesPerSec: 1250000
+                  txBytesPerSec: 600000
+                uplink:
+                  device:
+                    kind: device
+                    id: "unifi.usg"
+                    uri: "/network/devices/unifi.usg"
+                    name: "USG"
+                  port: 1
+                  linkSpeed: gbe1
+                ports:
+                  - number: 1
+                    state: up
+                    linkSpeed: gbe1
+                    poeMode: 'off'
+                    traffic:
+                      rxBytesTotal: 43980465111
+                      txBytesTotal: 87960930222
+                      rxBytesPerSec: 600000
+                      txBytesPerSec: 1250000
+                    connectedTo:
+                      kind: device
+                      id: "unifi.usg"
+                      uri: "/network/devices/unifi.usg"
+                      name: "USG"
+                  - number: 7
+                    state: up
+                    linkSpeed: gbe2_5
+                    poeMode: auto
+                    poePowerWatts: 4.5
+                    traffic:
+                      rxBytesTotal: 12884901888
+                      txBytesTotal: 4294967296
+                      rxBytesPerSec: 125000
+                      txBytesPerSec: 50000
+                    connectedTo:
+                      kind: device
+                      id: "unifi.ap-living-room"
+                      uri: "/network/devices/unifi.ap-living-room"
+                      name: "AP Living Room"
+                  - number: 2
+                    state: down
+                    poeMode: 'off'
+                    traffic:
+                      rxBytesTotal: 0
+                      txBytesTotal: 0
+                      rxBytesPerSec: 0
+                      txBytesPerSec: 0
+                  - number: 8
+                    state: up
+                    linkSpeed: gbe2_5
+                    poeMode: 'off'
+                    traffic:
+                      rxBytesTotal: 5497558138
+                      txBytesTotal: 2748779069
+                      rxBytesPerSec: 800000
+                      txBytesPerSec: 100000
+                    connectedTo:
+                      kind: client
+                      id: "unifi.nas-1-68"
+                      uri: "/network/clients/unifi.nas-1-68"
+                      name: "nas-1"
+            accessPoint:
+              summary: An access point with one associated wireless client.
+              value:
+                id: "unifi.ap-living-room"
+                uri: "/network/devices/unifi.ap-living-room"
+                name: "AP Living Room"
+                mac: "aa:bb:cc:dd:00:03"
+                ip: "192.168.1.3"
+                type: accessPoint
+                status: connected
+                model: "U6-Lite"
+                firmwareVersion: "6.6.77.14522"
+                uptime: 86400
+                traffic:
+                  rxBytesTotal: 8589934592
+                  txBytesTotal: 17179869184
+                  rxBytesPerSec: 50000
+                  txBytesPerSec: 125000
+                uplink:
+                  device:
+                    kind: device
+                    id: "unifi.switch-living-room"
+                    uri: "/network/devices/unifi.switch-living-room"
+                    name: "Switch Living Room"
+                  port: 7
+                  linkSpeed: gbe2_5
+                numClients: 1
+                connectedClients:
+                  - client:
+                      kind: client
+                      id: "unifi.macbook-pro-3c"
+                      uri: "/network/clients/unifi.macbook-pro-3c"
+                      name: "MacBook Pro"
+                    ssid: "HomeNetwork"
+                    signalStrength: -62
+            gateway:
+              summary: The security gateway / router (root of the topology).
+              value:
+                id: "unifi.usg"
+                uri: "/network/devices/unifi.usg"
+                name: "USG"
+                mac: "aa:bb:cc:dd:00:01"
+                ip: "192.168.1.1"
+                type: gateway
+                status: connected
+                model: "UDM-Pro"
+                firmwareVersion: "3.2.12"
+                uptime: 604800
+                traffic:
+                  rxBytesTotal: 549755813888
+                  txBytesTotal: 274877906944
+                  rxBytesPerSec: 5000000
+                  txBytesPerSec: 2000000
+            unknown:
+              summary: A device whose role the controller does not recognise.
+              value:
+                id: "unifi.unknown-1"
+                uri: "/network/devices/unifi.unknown-1"
+                name: "Unknown 1"
+                mac: "aa:bb:cc:dd:00:99"
+                ip: "192.168.1.99"
+                type: unknown
+                status: disconnected
+                model: "unknown"
+                firmwareVersion: "unknown"
+                uptime: 0
+                traffic:
+                  rxBytesTotal: 0
+                  txBytesTotal: 0
+                  rxBytesPerSec: 0
+                  txBytesPerSec: 0
     "400":
       $ref: "../components/responses/BadRequest.yaml"
     "401":

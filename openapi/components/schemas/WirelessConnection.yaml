@@ -1,0 +1,23 @@
+type: object
+description: |
+  A wireless client's association with an access point. `device` and
+  `ssid` are required (generally retained as last known even when the
+  client is offline). `signalStrength` is optional and absent for
+  offline clients (no live measurement).
+properties:
+  device:
+    $ref: "./NetworkDeviceRef.yaml"
+  ssid:
+    type: string
+    description: SSID the client is associated with (last known when offline).
+    example: "HomeNetwork"
+  signalStrength:
+    type: integer
+    description: |
+      Received signal strength in dBm as measured by the AP.
+      Typical range: -30 (excellent) to -90 (poor).
+      Omitted for offline clients.
+    example: -62
+required:
+  - device
+  - ssid

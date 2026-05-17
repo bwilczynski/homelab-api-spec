@@ -1,0 +1,30 @@
+allOf:
+  - $ref: "./NetworkDevice.yaml"
+  - type: object
+    description: Detail fields shared by every device-detail variant.
+    properties:
+      model:
+        type: string
+        description: Device model identifier as reported by the controller.
+        example: "U6-Lite"
+      firmwareVersion:
+        type: string
+        description: Installed firmware version.
+        example: "6.6.77.14522"
+      uptime:
+        type: integer
+        description: Seconds since the device last (re)connected to the controller.
+        example: 86400
+      traffic:
+        $ref: "./NetworkTraffic.yaml"
+      uplink:
+        allOf:
+          - $ref: "./NetworkConnection.yaml"
+        description: |
+          The upstream device this one is connected through. Omitted for
+          gateways (root of the topology).
+    required:
+      - model
+      - firmwareVersion
+      - uptime
+      - traffic

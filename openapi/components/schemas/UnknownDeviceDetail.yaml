@@ -1,0 +1,12 @@
+allOf:
+  - $ref: "./NetworkDeviceDetailBase.yaml"
+  - type: object
+    description: |
+      Catch-all detail variant for devices whose `type` is `unknown`.
+      Carries only the shared base fields.
+    properties:
+      type:
+        type: string
+        enum: [unknown]
+    required:
+      - type

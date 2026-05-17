@@ -1,0 +1,4 @@
+type: number
+format: float
+minimum: 0
+description: A quantity of electrical power expressed in watts.
