@@ -50,6 +50,8 @@ get:
                     ip: "192.168.1.55"
                     connectionType: wireless
                     status: offline
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
