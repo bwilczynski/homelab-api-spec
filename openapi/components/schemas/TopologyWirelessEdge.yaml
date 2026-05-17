@@ -1,0 +1,33 @@
+type: object
+description: |
+  A wireless association between a client and an access point. `source`
+  is the client; `target` is the AP. `signalStrength` is present for
+  online clients and omitted for offline clients (no live measurement).
+  `ssid` is always present — retained as last known when the client is
+  offline.
+properties:
+  kind:
+    type: string
+    enum: [wireless]
+    description: Discriminator identifying this as a wireless edge.
+  source:
+    $ref: "./NetworkClientRef.yaml"
+  target:
+    $ref: "./NetworkDeviceRef.yaml"
+  ssid:
+    type: string
+    description: |
+      SSID the client is (or was last) associated with. Present for both
+      online and offline clients.
+    example: "HomeNetwork"
+  signalStrength:
+    type: integer
+    description: |
+      Signal strength in dBm as measured by the access point. Omitted
+      for offline clients (no live measurement available).
+    example: -55
+required:
+  - kind
+  - source
+  - target
+  - ssid

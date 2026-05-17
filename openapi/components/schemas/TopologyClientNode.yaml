@@ -1,0 +1,12 @@
+allOf:
+  - $ref: "./NetworkClientRef.yaml"
+  - type: object
+    description: A client device node in the topology graph.
+    properties:
+      connectionType:
+        $ref: "./NetworkClientConnectionType.yaml"
+      status:
+        $ref: "./NetworkClientStatus.yaml"
+    required:
+      - connectionType
+      - status

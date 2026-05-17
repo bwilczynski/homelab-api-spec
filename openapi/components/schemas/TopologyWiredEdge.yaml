@@ -1,0 +1,31 @@
+type: object
+description: |
+  A wired connection between two nodes. `source` is the downstream
+  endpoint (a device or a wired client); `target` is the upstream device.
+  `port` and `linkSpeed` are present for live connections and omitted when
+  only the upstream reference is known (e.g. an offline wired client where
+  the controller retains the last known switch but not the last port).
+properties:
+  kind:
+    type: string
+    enum: [wired]
+    description: Discriminator identifying this as a wired edge.
+  source:
+    $ref: "./NetworkConnectionRef.yaml"
+  target:
+    $ref: "./NetworkDeviceRef.yaml"
+  port:
+    type: integer
+    minimum: 1
+    description: |
+      Physical port number on the upstream device. Omitted when the
+      connection is not live.
+    example: 4
+  linkSpeed:
+    allOf:
+      - $ref: "./NetworkLinkSpeed.yaml"
+    description: Negotiated link speed. Omitted when the connection is not live.
+required:
+  - kind
+  - source
+  - target

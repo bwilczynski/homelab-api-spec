@@ -1,0 +1,12 @@
+anyOf:
+  - $ref: "./TopologyWiredEdge.yaml"
+  - $ref: "./TopologyWirelessEdge.yaml"
+discriminator:
+  propertyName: kind
+  mapping:
+    wired: "./TopologyWiredEdge.yaml"
+    wireless: "./TopologyWirelessEdge.yaml"
+description: |
+  Polymorphic topology edge discriminated on `kind`. `wired` edges connect
+  devices to devices (uplinks) or wired clients to their upstream switch.
+  `wireless` edges connect wireless clients to their access point.
