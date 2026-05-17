@@ -1,0 +1,26 @@
+type: object
+description: |
+  A snapshot of the network topology as a graph of nodes and edges.
+  Nodes are devices and (optionally) clients; edges are the connections
+  between them. The gateway node has no outgoing edge — it is the topology
+  root. Identify it by `type: "gateway"`.
+properties:
+  nodes:
+    type: array
+    description: |
+      All nodes in the topology. Always includes infrastructure devices
+      (gateway, switches, access points). Includes clients when the
+      `includeClients` query parameter is `true`.
+    items:
+      $ref: "./TopologyNode.yaml"
+  edges:
+    type: array
+    description: |
+      All connections between nodes. Device-to-device uplink edges are
+      always present. Client-to-device edges are present when clients are
+      included.
+    items:
+      $ref: "./TopologyEdge.yaml"
+required:
+  - nodes
+  - edges
