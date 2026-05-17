@@ -1,0 +1,13 @@
+anyOf:
+  - $ref: "./TopologyDeviceNode.yaml"
+  - $ref: "./TopologyClientNode.yaml"
+discriminator:
+  propertyName: kind
+  mapping:
+    device: "./TopologyDeviceNode.yaml"
+    client: "./TopologyClientNode.yaml"
+description: |
+  Polymorphic topology node discriminated on `kind`. `device` nodes are
+  infrastructure devices (gateway, switch, access point, unknown); `client`
+  nodes are end-user devices. Follow `uri` to fetch full detail for either
+  type.

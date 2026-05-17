@@ -1,0 +1,19 @@
+allOf:
+  - $ref: "./NetworkDeviceRef.yaml"
+  - type: object
+    description: A network device node in the topology graph.
+    properties:
+      type:
+        $ref: "./NetworkDeviceType.yaml"
+      status:
+        $ref: "./NetworkDeviceStatus.yaml"
+      numClients:
+        type: integer
+        minimum: 0
+        description: |
+          Number of associated wireless clients. Present only on access
+          point nodes; omitted for switches, gateways, and unknown devices.
+        example: 3
+    required:
+      - type
+      - status
