@@ -173,6 +173,8 @@ get:
                       name: "AP Living Room"
                     ssid: "HomeNetwork"
                     signalStrength: -55
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "429":
