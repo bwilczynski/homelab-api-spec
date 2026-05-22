@@ -1,0 +1,32 @@
+type: object
+description: A VLAN managed by a network controller.
+properties:
+  id:
+    type: string
+    description: |
+      Composite VLAN identifier in the form `{controller}.{name}`,
+      e.g. `unifi.iot`. The controller prefix disambiguates VLANs
+      across multiple controllers.
+    example: "unifi.iot"
+  uri:
+    type: string
+    description: Relative API path to fetch this VLAN's detail.
+    example: "/network/vlans/unifi.iot"
+  name:
+    type: string
+    description: Human-readable VLAN name.
+    example: "IoT"
+  vlanId:
+    type: integer
+    description: Numeric VLAN tag (1–4094).
+    example: 20
+  subnet:
+    type: string
+    description: Network subnet in CIDR notation.
+    example: "192.168.20.0/24"
+required:
+  - id
+  - uri
+  - name
+  - vlanId
+  - subnet

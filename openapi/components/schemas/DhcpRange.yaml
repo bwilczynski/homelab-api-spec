@@ -1,0 +1,16 @@
+type: object
+description: The IP address range allocated by the DHCP server for a VLAN.
+properties:
+  start:
+    allOf:
+      - $ref: "./IpAddress.yaml"
+    description: First IP address in the DHCP pool.
+    example: "192.168.20.100"
+  end:
+    allOf:
+      - $ref: "./IpAddress.yaml"
+    description: Last IP address in the DHCP pool.
+    example: "192.168.20.200"
+required:
+  - start
+  - end
