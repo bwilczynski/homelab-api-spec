@@ -89,6 +89,10 @@ paths:
     $ref: "./paths/network-ssids.yaml"
   /network/ssids/{ssidId}:
     $ref: "./paths/network-ssids-id.yaml"
+  /network/vlans:
+    $ref: "./paths/network-vlans.yaml"
+  /network/vlans/{vlanId}:
+    $ref: "./paths/network-vlans-id.yaml"
 
 components:
   securitySchemes:
