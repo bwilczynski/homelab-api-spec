@@ -1,0 +1,54 @@
+get:
+  operationId: getWan
+  x-stability-level: draft
+  summary: Get a WAN interface
+  description: |
+    Returns a single WAN interface by its composite identifier
+    (`{controller}.{name}`, e.g. `unifi.wan1`).
+
+    The response includes DNS configuration in addition to the list fields.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: wanId
+      in: path
+      required: true
+      description: |
+        Composite WAN identifier in the form `{controller}.{name}`
+        (e.g. `unifi.wan1`). The controller prefix disambiguates WAN
+        interfaces across multiple controllers.
+      schema:
+        type: string
+      example: "unifi.wan1"
+  responses:
+    "200":
+      description: The requested WAN interface.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/WanDetail.yaml"
+          examples:
+            connectedWan:
+              summary: A connected primary WAN with ISP-assigned DNS servers.
+              value:
+                id: "unifi.wan1"
+                uri: "/network/wans/unifi.wan1"
+                name: "WAN 1"
+                ipAddress: "203.0.113.42"
+                uptime: 86400
+                status: connected
+                dnsServers:
+                  - "1.1.1.1"
+                  - "1.0.0.1"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

@@ -93,6 +93,10 @@ paths:
     $ref: "./paths/network-vlans.yaml"
   /network/vlans/{vlanId}:
     $ref: "./paths/network-vlans-id.yaml"
+  /network/wans:
+    $ref: "./paths/network-wans.yaml"
+  /network/wans/{wanId}:
+    $ref: "./paths/network-wans-id.yaml"
 
 components:
   securitySchemes:
