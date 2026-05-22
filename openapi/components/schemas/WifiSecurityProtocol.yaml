@@ -1,0 +1,18 @@
+type: string
+description: |
+  The security protocol used by a WiFi network.
+  - `open` — No authentication
+  - `wpa2` — WPA2 Personal
+  - `wpa3` — WPA3 Personal
+  - `wpa2Wpa3` — WPA2/WPA3 Personal transition mode
+  - `wpa2Enterprise` — WPA2 Enterprise (802.1X)
+  - `wpa3Enterprise` — WPA3 Enterprise (802.1X)
+  - `wpa2Wpa3Enterprise` — WPA2/WPA3 Enterprise transition mode
+enum:
+  - open
+  - wpa2
+  - wpa3
+  - wpa2Wpa3
+  - wpa2Enterprise
+  - wpa3Enterprise
+  - wpa2Wpa3Enterprise

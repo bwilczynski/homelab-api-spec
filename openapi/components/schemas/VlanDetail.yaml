@@ -1,0 +1,36 @@
+allOf:
+  - $ref: "./Vlan.yaml"
+  - type: object
+    description: Full detail for a VLAN, including DHCP configuration and DNS settings.
+    properties:
+      gatewayIp:
+        allOf:
+          - $ref: "./IpAddress.yaml"
+        description: IP address of the gateway for this VLAN.
+        example: "192.168.20.1"
+      broadcastIp:
+        allOf:
+          - $ref: "./IpAddress.yaml"
+        description: Broadcast IP address for this VLAN's subnet.
+        example: "192.168.20.255"
+      dhcpMode:
+        $ref: "./DhcpMode.yaml"
+      dhcpRange:
+        allOf:
+          - $ref: "./DhcpRange.yaml"
+        description: IP address pool allocated by the DHCP server. Present only when `dhcpMode` is `server`.
+      relayServer:
+        allOf:
+          - $ref: "./IpAddress.yaml"
+        description: IP address of the upstream DHCP server. Present only when `dhcpMode` is `relay`.
+        example: "192.168.1.1"
+      dnsServers:
+        type: array
+        description: DNS server IP addresses configured for this VLAN.
+        items:
+          $ref: "./IpAddress.yaml"
+    required:
+      - gatewayIp
+      - broadcastIp
+      - dhcpMode
+      - dnsServers

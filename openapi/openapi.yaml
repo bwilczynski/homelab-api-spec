@@ -85,6 +85,18 @@ paths:
     $ref: "./paths/network-clients-id.yaml"
   /network/topology:
     $ref: "./paths/network-topology.yaml"
+  /network/ssids:
+    $ref: "./paths/network-ssids.yaml"
+  /network/ssids/{ssidId}:
+    $ref: "./paths/network-ssids-id.yaml"
+  /network/vlans:
+    $ref: "./paths/network-vlans.yaml"
+  /network/vlans/{vlanId}:
+    $ref: "./paths/network-vlans-id.yaml"
+  /network/wans:
+    $ref: "./paths/network-wans.yaml"
+  /network/wans/{wanId}:
+    $ref: "./paths/network-wans-id.yaml"
 
 components:
   securitySchemes:

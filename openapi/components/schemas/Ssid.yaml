@@ -1,0 +1,38 @@
+type: object
+description: A WiFi network (SSID) managed by a network controller.
+properties:
+  id:
+    type: string
+    description: |
+      Composite SSID identifier in the form `{controller}.{name}`,
+      e.g. `unifi.iot`. The controller prefix disambiguates SSIDs
+      across multiple controllers.
+    example: "unifi.iot"
+  uri:
+    type: string
+    description: Relative API path to fetch this SSID's detail.
+    example: "/network/ssids/unifi.iot"
+  name:
+    type: string
+    description: The broadcast SSID name clients see when scanning for networks.
+    example: "IoT"
+  vlanId:
+    type: integer
+    description: The numeric VLAN tag this WiFi network is associated with.
+    example: 20
+  bands:
+    type: array
+    description: Radio frequency bands on which this SSID broadcasts.
+    items:
+      $ref: "./WifiBand.yaml"
+  numClients:
+    type: integer
+    description: Number of clients currently connected to this SSID.
+    example: 4
+required:
+  - id
+  - uri
+  - name
+  - vlanId
+  - bands
+  - numClients

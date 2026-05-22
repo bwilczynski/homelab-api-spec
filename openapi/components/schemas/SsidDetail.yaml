@@ -1,0 +1,21 @@
+allOf:
+  - $ref: "./Ssid.yaml"
+  - type: object
+    description: Full detail for a WiFi network (SSID), including connected clients and broadcasting access points.
+    properties:
+      securityProtocol:
+        $ref: "./WifiSecurityProtocol.yaml"
+      clients:
+        type: array
+        description: Clients currently connected to this SSID.
+        items:
+          $ref: "./NetworkClientRef.yaml"
+      broadcastingAps:
+        type: array
+        description: Access points currently broadcasting this SSID.
+        items:
+          $ref: "./NetworkDeviceRef.yaml"
+    required:
+      - securityProtocol
+      - clients
+      - broadcastingAps

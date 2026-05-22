@@ -1,0 +1,75 @@
+get:
+  operationId: getSsid
+  x-stability-level: draft
+  summary: Get a WiFi network
+  description: |
+    Returns a single WiFi network (SSID) by its composite identifier
+    (`{controller}.{name}`, e.g. `unifi.iot`).
+
+    The response includes connected clients, broadcasting access points,
+    and security protocol in addition to the list fields.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: ssidId
+      in: path
+      required: true
+      description: |
+        Composite SSID identifier in the form `{controller}.{name}`
+        (e.g. `unifi.iot`). The controller prefix disambiguates SSIDs
+        across multiple controllers.
+      schema:
+        type: string
+      example: "unifi.iot"
+  responses:
+    "200":
+      description: The requested WiFi network.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/SsidDetail.yaml"
+          examples:
+            iotSsid:
+              summary: An IoT SSID with WPA2 security and connected clients.
+              value:
+                id: "unifi.iot"
+                uri: "/network/ssids/unifi.iot"
+                name: "IoT"
+                vlanId: 20
+                bands: [band2g, band5g]
+                numClients: 3
+                securityProtocol: wpa2
+                clients:
+                  - kind: client
+                    id: "unifi.sonos-one-sl-c4"
+                    uri: "/network/clients/unifi.sonos-one-sl-c4"
+                    name: "Sonos One SL"
+                  - kind: client
+                    id: "unifi.philips-hue-bridge-b8"
+                    uri: "/network/clients/unifi.philips-hue-bridge-b8"
+                    name: "Philips Hue Bridge"
+                  - kind: client
+                    id: "unifi.nest-thermostat-0a"
+                    uri: "/network/clients/unifi.nest-thermostat-0a"
+                    name: "Nest Thermostat"
+                broadcastingAps:
+                  - kind: device
+                    id: "unifi.ap-living-room"
+                    uri: "/network/devices/unifi.ap-living-room"
+                    name: "AP Living Room"
+                  - kind: device
+                    id: "unifi.ap-kitchen"
+                    uri: "/network/devices/unifi.ap-kitchen"
+                    name: "AP Kitchen"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

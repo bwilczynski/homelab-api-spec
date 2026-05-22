@@ -1,0 +1,48 @@
+get:
+  operationId: listVlans
+  x-stability-level: draft
+  summary: List VLANs
+  description: |
+    Returns all VLANs managed by all configured controllers.
+
+    A homelab typically has a small number of VLANs, so this endpoint
+    returns all results without pagination.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  responses:
+    "200":
+      description: List of VLANs.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/VlanList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A homelab with main, IoT, and management VLANs.
+              value:
+                items:
+                  - id: "unifi.default"
+                    uri: "/network/vlans/unifi.default"
+                    name: "Default"
+                    vlanId: 1
+                    subnet: "192.168.1.0/24"
+                  - id: "unifi.iot"
+                    uri: "/network/vlans/unifi.iot"
+                    name: "IoT"
+                    vlanId: 20
+                    subnet: "192.168.20.0/24"
+                  - id: "unifi.mgmt"
+                    uri: "/network/vlans/unifi.mgmt"
+                    name: "Management"
+                    vlanId: 99
+                    subnet: "10.0.99.0/24"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

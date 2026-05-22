@@ -1,0 +1,10 @@
+type: object
+description: List of WiFi networks (SSIDs).
+properties:
+  items:
+    type: array
+    description: All SSIDs managed by connected controllers. Empty array, never null.
+    items:
+      $ref: "./Ssid.yaml"
+required:
+  - items

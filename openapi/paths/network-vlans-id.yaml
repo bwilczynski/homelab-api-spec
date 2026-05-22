@@ -1,0 +1,88 @@
+get:
+  operationId: getVlan
+  x-stability-level: draft
+  summary: Get a VLAN
+  description: |
+    Returns a single VLAN by its composite identifier
+    (`{controller}.{name}`, e.g. `unifi.iot`).
+
+    The response includes DHCP configuration and DNS settings in addition
+    to the list fields. `dhcpRange` is present only when `dhcpMode` is
+    `server`; `relayServer` is present only when `dhcpMode` is `relay`.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: vlanId
+      in: path
+      required: true
+      description: |
+        Composite VLAN identifier in the form `{controller}.{name}`
+        (e.g. `unifi.iot`). The controller prefix disambiguates VLANs
+        across multiple controllers.
+      schema:
+        type: string
+      example: "unifi.iot"
+  responses:
+    "200":
+      description: The requested VLAN.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/VlanDetail.yaml"
+          examples:
+            serverDhcp:
+              summary: A VLAN running its own DHCP server.
+              value:
+                id: "unifi.iot"
+                uri: "/network/vlans/unifi.iot"
+                name: "IoT"
+                vlanId: 20
+                subnet: "192.168.20.0/24"
+                gatewayIp: "192.168.20.1"
+                broadcastIp: "192.168.20.255"
+                dhcpMode: server
+                dhcpRange:
+                  start: "192.168.20.100"
+                  end: "192.168.20.200"
+                dnsServers:
+                  - "1.1.1.1"
+                  - "8.8.8.8"
+            relayDhcp:
+              summary: A VLAN relaying DHCP to an upstream server.
+              value:
+                id: "unifi.mgmt"
+                uri: "/network/vlans/unifi.mgmt"
+                name: "Management"
+                vlanId: 99
+                subnet: "10.0.99.0/24"
+                gatewayIp: "10.0.99.1"
+                broadcastIp: "10.0.99.255"
+                dhcpMode: relay
+                relayServer: "192.168.1.1"
+                dnsServers:
+                  - "192.168.1.1"
+            disabledDhcp:
+              summary: A VLAN with DHCP disabled (static assignments only).
+              value:
+                id: "unifi.servers"
+                uri: "/network/vlans/unifi.servers"
+                name: "Servers"
+                vlanId: 10
+                subnet: "192.168.10.0/24"
+                gatewayIp: "192.168.10.1"
+                broadcastIp: "192.168.10.255"
+                dhcpMode: disabled
+                dnsServers:
+                  - "1.1.1.1"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "404":
+      $ref: "../components/responses/NotFound.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

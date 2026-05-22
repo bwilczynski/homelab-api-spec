@@ -1,0 +1,10 @@
+type: string
+description: |
+  The DHCP operating mode for a VLAN.
+  - `server` — This VLAN runs its own DHCP server; `dhcpRange` is present in the detail
+  - `relay` — DHCP requests are forwarded to an upstream server; `relayServer` is present in the detail
+  - `disabled` — No DHCP on this VLAN
+enum:
+  - server
+  - relay
+  - disabled

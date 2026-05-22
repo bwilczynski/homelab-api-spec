@@ -1,0 +1,10 @@
+type: string
+description: |
+  The connection status of a WAN interface.
+  - `connected` — WAN is up and passing traffic
+  - `disconnected` — WAN link is down
+  - `failover` — WAN is in failover/backup mode
+enum:
+  - connected
+  - disconnected
+  - failover

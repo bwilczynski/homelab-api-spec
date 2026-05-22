@@ -1,0 +1,45 @@
+get:
+  operationId: listWans
+  x-stability-level: draft
+  summary: List WAN interfaces
+  description: |
+    Returns all WAN interfaces managed by all configured controllers.
+
+    A homelab typically has a small number of WAN interfaces, so this
+    endpoint returns all results without pagination.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  responses:
+    "200":
+      description: List of WAN interfaces.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/WanList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A homelab with a primary WAN and a failover connection.
+              value:
+                items:
+                  - id: "unifi.wan1"
+                    uri: "/network/wans/unifi.wan1"
+                    name: "WAN 1"
+                    ipAddress: "203.0.113.42"
+                    uptime: 86400
+                    status: connected
+                  - id: "unifi.wan2"
+                    uri: "/network/wans/unifi.wan2"
+                    name: "WAN 2"
+                    ipAddress: "198.51.100.7"
+                    uptime: 0
+                    status: failover
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

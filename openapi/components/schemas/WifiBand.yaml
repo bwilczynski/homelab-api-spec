@@ -1,0 +1,10 @@
+type: string
+description: |
+  A radio frequency band on which a WiFi network broadcasts.
+  - `band2g` — 2.4 GHz
+  - `band5g` — 5 GHz
+  - `band6g` — 6 GHz
+enum:
+  - band2g
+  - band5g
+  - band6g

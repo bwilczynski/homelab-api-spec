@@ -1,0 +1,46 @@
+get:
+  operationId: listSsids
+  x-stability-level: draft
+  summary: List WiFi networks
+  description: |
+    Returns all WiFi networks (SSIDs) managed by all configured
+    controllers.
+
+    A homelab typically has a small number of SSIDs, so this endpoint
+    returns all results without pagination.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  responses:
+    "200":
+      description: List of WiFi networks.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/SsidList.yaml"
+          examples:
+            typicalHomelab:
+              summary: A homelab with a main network and IoT SSID.
+              value:
+                items:
+                  - id: "unifi.home"
+                    uri: "/network/ssids/unifi.home"
+                    name: "Home"
+                    vlanId: 1
+                    bands: [band2g, band5g, band6g]
+                    numClients: 12
+                  - id: "unifi.iot"
+                    uri: "/network/ssids/unifi.iot"
+                    name: "IoT"
+                    vlanId: 20
+                    bands: [band2g, band5g]
+                    numClients: 8
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

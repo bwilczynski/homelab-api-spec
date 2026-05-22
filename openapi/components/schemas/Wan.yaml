@@ -1,0 +1,37 @@
+type: object
+description: A WAN interface managed by a network controller.
+properties:
+  id:
+    type: string
+    description: |
+      Composite WAN identifier in the form `{controller}.{name}`,
+      e.g. `unifi.wan1`. The controller prefix disambiguates WAN
+      interfaces across multiple controllers.
+    example: "unifi.wan1"
+  uri:
+    type: string
+    description: Relative API path to fetch this WAN's detail.
+    example: "/network/wans/unifi.wan1"
+  name:
+    type: string
+    description: Human-readable WAN interface name.
+    example: "WAN 1"
+  ipAddress:
+    allOf:
+      - $ref: "./IpAddress.yaml"
+    description: Current public IP address assigned to this WAN interface. Last known address for disconnected interfaces.
+    example: "203.0.113.42"
+  uptime:
+    allOf:
+      - $ref: "./units/Seconds.yaml"
+    description: Seconds since the WAN connection was last established. Zero when disconnected or in standby.
+    example: 86400
+  status:
+    $ref: "./WanStatus.yaml"
+required:
+  - id
+  - uri
+  - name
+  - ipAddress
+  - uptime
+  - status

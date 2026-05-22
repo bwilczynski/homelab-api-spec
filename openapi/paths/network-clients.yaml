@@ -47,9 +47,23 @@ get:
                     uri: "/network/clients/unifi.sonos-one-sl-c4"
                     name: "Sonos One SL"
                     mac: "c4:38:75:7a:8a:46"
-                    ip: "192.168.1.55"
+                    ip: "192.168.20.21"
                     connectionType: wireless
-                    status: offline
+                    status: online
+                  - id: "unifi.philips-hue-bridge-b8"
+                    uri: "/network/clients/unifi.philips-hue-bridge-b8"
+                    name: "Philips Hue Bridge"
+                    mac: "b8:27:eb:f9:71:c2"
+                    ip: "192.168.20.22"
+                    connectionType: wireless
+                    status: online
+                  - id: "unifi.nest-thermostat-0a"
+                    uri: "/network/clients/unifi.nest-thermostat-0a"
+                    name: "Nest Thermostat"
+                    mac: "0a:4c:d9:23:7e:51"
+                    ip: "192.168.20.23"
+                    connectionType: wireless
+                    status: online
     "400":
       $ref: "../components/responses/BadRequest.yaml"
     "401":

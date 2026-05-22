@@ -1,0 +1,12 @@
+allOf:
+  - $ref: "./Wan.yaml"
+  - type: object
+    description: Full detail for a WAN interface, including DNS configuration.
+    properties:
+      dnsServers:
+        type: array
+        description: DNS server IP addresses assigned to this WAN interface.
+        items:
+          $ref: "./IpAddress.yaml"
+    required:
+      - dnsServers
