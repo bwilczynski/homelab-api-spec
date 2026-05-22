@@ -1,0 +1,2 @@
+type: integer
+description: A duration expressed in seconds.
