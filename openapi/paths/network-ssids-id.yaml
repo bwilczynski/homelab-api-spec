@@ -63,6 +63,8 @@ get:
                     id: "unifi.ap-kitchen"
                     uri: "/network/devices/unifi.ap-kitchen"
                     name: "AP Kitchen"
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":

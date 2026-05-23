@@ -76,6 +76,8 @@ get:
                 dhcpMode: disabled
                 dnsServers:
                   - "1.1.1.1"
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "403":
