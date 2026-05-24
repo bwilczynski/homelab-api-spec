@@ -16,10 +16,10 @@ aliases:
     - "$.paths[*].parameters[*]"
     - "$.components.parameters[*]"
   SchemaPropertyName:
-    - "$.components.schemas[*].properties"
-    - "$.components.schemas[*].allOf[*].properties"
-    - "$.components.schemas[*].oneOf[*].properties"
-    - "$.components.schemas[*].anyOf[*].properties"
+    - "$.components.schemas[*].properties.*~"
+    - "$.components.schemas[*].allOf[*].properties.*~"
+    - "$.components.schemas[*].oneOf[*].properties.*~"
+    - "$.components.schemas[*].anyOf[*].properties.*~"
 
 functions: []
 
@@ -51,9 +51,8 @@ rules:
       custom actions (`:action`) are exempt from this rule.
     message: "Path '{{value}}' uses non-kebab-case segments."
     severity: error
-    given: "$.paths"
+    given: "$.paths.*~"
     then:
-      field: "@key"
       function: pattern
       functionOptions:
         match: "^(/([a-z][a-z0-9-]*(:[a-z][a-zA-Z0-9]*)?|\\{[a-zA-Z0-9_]+\\}(:[a-z][a-zA-Z0-9]*)?))+$"
@@ -64,7 +63,6 @@ rules:
     severity: error
     given: "#SchemaPropertyName"
     then:
-      field: "@key"
       function: pattern
       functionOptions:
         match: "^[a-z][a-zA-Z0-9]*$"

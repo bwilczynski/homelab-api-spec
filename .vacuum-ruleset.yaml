@@ -1,0 +1,4 @@
+extends:
+  - .spectral.yaml
+rules:
+  paths-kebab-case: off
