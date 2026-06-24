@@ -69,9 +69,9 @@ Use the `BREAKING CHANGE` footer (or `!` shorthand) only when the change is a
 true breaking change: removal or rename of a field, endpoint, or required
 parameter, or restriction of a previously allowed value. Determine this by
 inspecting the spec diff — do **not** run `make breaking` (requires Docker and
-is unreliable in agent environments). The CI `breaking-changes` job (in
-`lint.yaml`) runs oasdiff automatically; it already ignores endpoints annotated
-with `x-stability-level: draft`.
+is unreliable in agent environments). The CI `breaking-changes` job (in `lint.yaml`) runs oasdiff automatically on
+pull requests; it already ignores endpoints annotated with
+`x-stability-level: draft`.
 
 Check `x-stability-level` on each affected endpoint before deciding whether to
 add the footer. Endpoints marked `draft` are exempt; only changes to `stable`
@@ -80,7 +80,8 @@ endpoints require the `BREAKING CHANGE` footer.
 ### `info.version` is managed automatically
 
 Do not edit `info.version` in `openapi/openapi.yaml` by hand. It is patched
-by semantic-release on each release.
+by semantic-release on each release. The release commit message includes
+`[skip ci]` to prevent the workflow from re-triggering on that commit.
 
 ## OpenAPI version
 
