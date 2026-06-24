@@ -61,17 +61,21 @@ analyzes commits, determines the next SemVer, patches `info.version` in
 |---|---|---|
 | Description or example fix | `fix:` | patch |
 | New endpoint or new optional field | `feat:` | minor |
-| Change oasdiff flags as breaking | `feat!:` or `BREAKING CHANGE` footer | major |
+| Removal or rename of a field, endpoint, or required parameter | `feat!:` or `BREAKING CHANGE` footer | major |
 
 ### `BREAKING CHANGE` rule
 
-Use the `BREAKING CHANGE` footer (or `!` shorthand) **only when `make breaking`
-/ oasdiff reports a breaking change**. oasdiff already ignores endpoints
-annotated with `x-stability-level: draft`, so no manual filtering is needed.
-If oasdiff is silent, no breaking change footer is needed.
+Use the `BREAKING CHANGE` footer (or `!` shorthand) only when the change is a
+true breaking change: removal or rename of a field, endpoint, or required
+parameter, or restriction of a previously allowed value. Determine this by
+inspecting the spec diff — do **not** run `make breaking` (requires Docker and
+is unreliable in agent environments). The CI `breaking-changes` job (in
+`lint.yaml`) runs oasdiff automatically; it already ignores endpoints annotated
+with `x-stability-level: draft`.
 
-All current endpoints carry `x-stability-level: draft`. No breaking changes
-are expected until an endpoint graduates to `x-stability-level: stable`.
+Check `x-stability-level` on each affected endpoint before deciding whether to
+add the footer. Endpoints marked `draft` are exempt; only changes to `stable`
+endpoints require the `BREAKING CHANGE` footer.
 
 ### `info.version` is managed automatically
 
