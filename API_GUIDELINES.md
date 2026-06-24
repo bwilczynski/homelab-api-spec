@@ -104,3 +104,17 @@ These are lint-enforced constraints on the OpenAPI document itself:
 - Every operation must declare `401` and `500` responses
 - All error responses use `application/problem+json`
 - Response and request body schemas must use `$ref` to files under `components/schemas/` (no inline schemas)
+
+## Versioning
+
+The spec version follows [Semantic Versioning](https://semver.org/) and is
+managed by semantic-release. Use these commit prefixes when changing the spec:
+
+| Change type | Commit prefix | Version bump |
+|---|---|---|
+| Description or example fix | `fix:` | patch |
+| New endpoint or new optional field | `feat:` | minor |
+| Change oasdiff flags as breaking | `feat!:` or `BREAKING CHANGE` footer | major |
+
+Use `BREAKING CHANGE` only when oasdiff confirms a breaking change. oasdiff
+ignores `x-stability-level: draft` endpoints automatically.
