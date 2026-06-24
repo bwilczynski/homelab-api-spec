@@ -114,7 +114,12 @@ managed by semantic-release. Use these commit prefixes when changing the spec:
 |---|---|---|
 | Description or example fix | `fix:` | patch |
 | New endpoint or new optional field | `feat:` | minor |
-| Change oasdiff flags as breaking | `feat!:` or `BREAKING CHANGE` footer | major |
+| Removal or rename of a field, endpoint, or required parameter | `feat!:` or `BREAKING CHANGE` footer | major |
 
-Use `BREAKING CHANGE` only when oasdiff confirms a breaking change. oasdiff
-ignores `x-stability-level: draft` endpoints automatically.
+Use `BREAKING CHANGE` only for a true breaking change: removal or rename of a
+field, endpoint, or required parameter, or restriction of a previously allowed
+value. Endpoints annotated with `x-stability-level: draft` are exempt — only
+changes to `stable` endpoints require the `BREAKING CHANGE` footer.
+
+`info.version` in `openapi/openapi.yaml` is patched automatically by the
+release workflow — do not edit it by hand.
