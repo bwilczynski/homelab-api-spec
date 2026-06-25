@@ -104,3 +104,24 @@ These are lint-enforced constraints on the OpenAPI document itself:
 - Every operation must declare `401` and `500` responses
 - All error responses use `application/problem+json`
 - Response and request body schemas must use `$ref` to files under `components/schemas/` (no inline schemas)
+
+## Versioning
+
+The spec version follows [Semantic Versioning](https://semver.org/) and is
+managed by semantic-release. Use these commit prefixes when changing the spec:
+
+| Change type | Commit prefix | Version bump |
+|---|---|---|
+| Description or example fix | `fix:` | patch |
+| New endpoint or new optional field | `feat:` | minor |
+| Removal or rename of a field, endpoint, or required parameter | `feat!:` or `BREAKING CHANGE` footer | major |
+
+Commits using other prefixes (`chore:`, `docs:`, `ci:`, etc.) produce no release.
+
+Use `BREAKING CHANGE` only for a true breaking change: removal or rename of a
+field, endpoint, or required parameter, or restriction of a previously allowed
+value. Endpoints annotated with `x-stability-level: draft` are exempt — only
+changes to `stable` endpoints require the `BREAKING CHANGE` footer.
+
+`info.version` in `openapi/openapi.yaml` is patched automatically by the
+release workflow — do not edit it by hand.

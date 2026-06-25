@@ -49,6 +49,40 @@ If the same raw numeric type+description would appear in two or more places and 
 
 `make lint` runs Redocly on the source spec (validates structure and references), then Spectral on the bundled artifact (where all `$ref`s are resolved). This avoids false positives from cross-file references that Spectral can't follow in multi-file mode.
 
+## Versioning
+
+The spec uses semantic-release. On every push to `main`, the release workflow
+analyzes commits, determines the next SemVer, patches `info.version` in
+`openapi/openapi.yaml`, commits the change back, and creates a GitHub release.
+
+### Commit conventions
+
+| Change type | Commit prefix | Version bump |
+|---|---|---|
+| Description or example fix | `fix:` | patch |
+| New endpoint or new optional field | `feat:` | minor |
+| Removal or rename of a field, endpoint, or required parameter | `feat!:` or `BREAKING CHANGE` footer | major |
+
+### `BREAKING CHANGE` rule
+
+Use the `BREAKING CHANGE` footer (or `!` shorthand) only when the change is a
+true breaking change: removal or rename of a field, endpoint, or required
+parameter, or restriction of a previously allowed value. Determine this by
+inspecting the spec diff — do **not** run `make breaking` (requires Docker and
+is unreliable in agent environments). The CI `breaking-changes` job (in `lint.yaml`) runs oasdiff automatically on
+pull requests; it already ignores endpoints annotated with
+`x-stability-level: draft`.
+
+Check `x-stability-level` on each affected endpoint before deciding whether to
+add the footer. Endpoints marked `draft` are exempt; only changes to `stable`
+endpoints require the `BREAKING CHANGE` footer.
+
+### `info.version` is managed automatically
+
+Do not edit `info.version` in `openapi/openapi.yaml` by hand. It is patched
+by semantic-release on each release. The release commit message includes
+`[skip ci]` to prevent the workflow from re-triggering on that commit.
+
 ## OpenAPI version
 
 The spec uses **3.0.3**. Spectral 6.x has issues with OAS 3.1 PathItem `$ref` resolution (`unevaluatedProperties` false positives). Upgrade when tooling stabilizes.
