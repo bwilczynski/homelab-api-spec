@@ -1,6 +1,6 @@
 get:
   operationId: getMetaAuth
-  x-stability-level: stable
+  x-stability-level: draft
   summary: Get auth configuration
   description: |
     Returns the auth configuration for this API instance. Clients use

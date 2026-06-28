@@ -1,6 +1,6 @@
 get:
   operationId: getMetaVersion
-  x-stability-level: stable
+  x-stability-level: draft
   summary: Get API and server version
   description: |
     Returns the version of the OpenAPI contract this server implements
