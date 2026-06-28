@@ -1,0 +1,12 @@
+type: object
+description: API and server version information.
+properties:
+  apiVersion:
+    type: string
+    description: Version of the OpenAPI contract this server implements.
+  serverVersion:
+    type: string
+    description: Build version of the server binary.
+required:
+  - apiVersion
+  - serverVersion

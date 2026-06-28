@@ -1,0 +1,23 @@
+get:
+  operationId: getMetaAuth
+  x-stability-level: draft
+  summary: Get auth configuration
+  description: |
+    Returns the auth configuration for this API instance. Clients use
+    this to determine whether authentication is required and which
+    issuer to use before attempting to obtain a token. Public endpoint
+    — no authentication required.
+  tags:
+    - meta
+  security: []
+  responses:
+    "200":
+      description: Auth configuration.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/AuthDiscovery.yaml"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"

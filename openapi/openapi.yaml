@@ -32,11 +32,17 @@ tags:
     description: Storage volumes, disk health, and backups across NAS backends.
   - name: network
     description: Network devices and connected clients from UniFi controllers.
+  - name: meta
+    description: API metadata — version info and auth configuration discovery.
 
 security:
   - bearerAuth: []
 
 paths:
+  /meta/version:
+    $ref: "./paths/meta-version.yaml"
+  /meta/auth:
+    $ref: "./paths/meta-auth.yaml"
   /system/health:
     $ref: "./paths/system-health.yaml"
   /system/info:
