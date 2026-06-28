@@ -1,0 +1,11 @@
+type: object
+description: Auth configuration for this API instance.
+properties:
+  enabled:
+    type: boolean
+    description: Whether bearer-token authentication is enforced.
+  issuer:
+    type: string
+    description: OAuth 2.0 issuer URL. Omitted when auth is disabled.
+required:
+  - enabled
