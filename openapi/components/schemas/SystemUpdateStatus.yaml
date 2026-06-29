@@ -1,7 +1,15 @@
 type: string
-description: Whether an update is available for this component.
+description: |
+  Whether an update is available for this component.
+  - `upToDate`: running version matches the latest upstream release.
+  - `updateAvailable`: a newer upstream release exists.
+  - `unknown`: no upstream source is configured for this component.
+  - `stale`: a source is configured but the upstream lookup has not yet
+    succeeded (e.g. first boot or persistent fetch failure). Run
+    `updates check` to force a fresh lookup.
 enum:
   - upToDate
   - updateAvailable
   - unknown
+  - stale
 example: updateAvailable
