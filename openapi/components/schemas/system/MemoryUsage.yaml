@@ -3,12 +3,12 @@ description: Memory and swap usage.
 properties:
   totalBytes:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Total physical memory in bytes.
     example: 4294967296
   availableBytes:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Available physical memory in bytes.
     example: 2147483648
   usedPercent:
@@ -17,12 +17,12 @@ properties:
     example: 50
   swapTotalBytes:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Total swap space in bytes.
     example: 4294967296
   swapUsedBytes:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Used swap space in bytes.
     example: 104857600
 required:

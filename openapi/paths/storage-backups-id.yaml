@@ -28,7 +28,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/BackupTaskDetail.yaml"
+            $ref: "../components/schemas/storage/BackupTaskDetail.yaml"
           example:
             id: "nas-1.1"
             name: "Daily NAS Backup"

@@ -30,7 +30,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/VlanDetail.yaml"
+            $ref: "../components/schemas/network/VlanDetail.yaml"
           examples:
             serverDhcp:
               summary: A VLAN running its own DHCP server.

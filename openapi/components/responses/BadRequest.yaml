@@ -2,7 +2,7 @@ description: The request is malformed or contains invalid parameter values.
 content:
   application/problem+json:
     schema:
-      $ref: "../schemas/Problem.yaml"
+      $ref: "../schemas/common/Problem.yaml"
     example:
       type: https://homelab.local/problems/bad-request
       title: Bad Request

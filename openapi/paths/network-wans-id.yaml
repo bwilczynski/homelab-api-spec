@@ -28,7 +28,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/WanDetail.yaml"
+            $ref: "../components/schemas/network/WanDetail.yaml"
           examples:
             connectedWan:
               summary: A connected primary WAN with ISP-assigned DNS servers.

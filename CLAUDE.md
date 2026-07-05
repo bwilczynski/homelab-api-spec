@@ -27,7 +27,7 @@ All API design conventions are in [`API_GUIDELINES.md`](API_GUIDELINES.md). Read
 ## How to add a new endpoint
 
 1. Create a path file in `openapi/paths/` (e.g. `devices.yaml`).
-2. Create any new schemas in `openapi/components/schemas/`. Reuse existing shared schemas (e.g. `Problem.yaml` for errors).
+2. Create any new schemas in the matching domain subdirectory of `openapi/components/schemas/` (`meta/`, `system/`, `docker/`, `storage/`, `network/`; cross-domain schemas go in `common/`). Reuse existing shared schemas (e.g. `common/Problem.yaml` for errors).
 3. Create any new shared responses in `openapi/components/responses/` or reuse existing ones (Unauthorized, Forbidden, TooManyRequests, InternalServerError).
 4. Reference the path file from `openapi/openapi.yaml` under `paths:`.
 5. Only add components (schemas, parameters, responses) that the new endpoint actually uses — no pre-registering unused components.

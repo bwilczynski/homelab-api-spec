@@ -28,7 +28,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/DockerImageDetail.yaml"
+            $ref: "../components/schemas/docker/DockerImageDetail.yaml"
           example:
             id: "nas-1.925ff61909ae"
             device: nas-1

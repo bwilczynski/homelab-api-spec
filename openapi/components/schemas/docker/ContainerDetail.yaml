@@ -32,7 +32,7 @@ allOf:
         example: false
       memoryLimit:
         allOf:
-          - $ref: "./units/Bytes.yaml"
+          - $ref: "../units/Bytes.yaml"
         description: Configured memory limit in bytes. 0 means unlimited.
         example: 0
       portBindings:

@@ -2,9 +2,10 @@ extends:
   - spectral:oas
 
 # Rules encode the conventions from the 002-api-patterns decisions
-# doc: camelCase JSON fields, kebab-case paths, plural nouns, cursor
-# pagination, RFC 9457 problem responses, operationId + description
-# on every operation, no inline schemas.
+# doc: camelCase JSON fields, kebab-case paths, plural nouns,
+# RFC 9457 problem responses, operationId + description on every
+# operation, no inline schemas. Lists are unpaginated by design
+# (see API_GUIDELINES.md).
 
 aliases:
   PathItem:
@@ -20,6 +21,8 @@ aliases:
     - "$.components.schemas[*].allOf[*].properties.*~"
     - "$.components.schemas[*].oneOf[*].properties.*~"
     - "$.components.schemas[*].anyOf[*].properties.*~"
+  ProtectedOperation:
+    - "$.paths[*][?(@ && @.responses && (!@.security || @.security.length > 0))]"
 
 functions: []
 
@@ -67,16 +70,33 @@ rules:
       functionOptions:
         match: "^[a-z][a-zA-Z0-9]*$"
 
-  parameter-name-camelcase:
-    description: Query and header parameter names must be camelCase.
+  query-path-parameter-camelcase:
+    description: Query and path parameter names must be camelCase.
     message: "Parameter name '{{value}}' must be camelCase."
     severity: error
-    given: "#ParameterObject"
+    given:
+      - "$.paths[*][get,put,post,delete,patch,options,head,trace].parameters[?(@.in == 'query' || @.in == 'path')]"
+      - "$.paths[*].parameters[?(@.in == 'query' || @.in == 'path')]"
+      - "$.components.parameters[?(@.in == 'query' || @.in == 'path')]"
     then:
       field: name
       function: pattern
       functionOptions:
-        match: "^[a-zA-Z][a-zA-Z0-9-]*$"
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  header-parameter-hyphenated-pascal:
+    description: Header parameter names must be Hyphenated-Pascal-Case (e.g. Idempotency-Key).
+    message: "Header parameter name '{{value}}' must be Hyphenated-Pascal-Case."
+    severity: error
+    given:
+      - "$.paths[*][get,put,post,delete,patch,options,head,trace].parameters[?(@.in == 'header')]"
+      - "$.paths[*].parameters[?(@.in == 'header')]"
+      - "$.components.parameters[?(@.in == 'header')]"
+    then:
+      field: name
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9]*(-[A-Z][a-zA-Z0-9]*)*$"
 
   enum-value-camelcase:
     description: |
@@ -112,12 +132,30 @@ rules:
 
   # --- response discipline ------------------------------------------------
   operation-has-401:
-    description: Protected operations must declare a 401 response.
-    message: Operation is missing a 401 Unauthorized response.
+    description: Protected operations must declare a 401 response. Public operations (security: []) must not need one.
+    message: Protected operation is missing a 401 Unauthorized response.
     severity: error
-    given: "#OperationObject"
+    given: "#ProtectedOperation"
     then:
       field: responses.401
+      function: truthy
+
+  operation-has-403:
+    description: Protected operations must declare a 403 response (insufficient scope).
+    message: Protected operation is missing a 403 Forbidden response.
+    severity: error
+    given: "#ProtectedOperation"
+    then:
+      field: responses.403
+      function: truthy
+
+  operation-has-429:
+    description: Protected operations must declare a 429 response with Retry-After.
+    message: Protected operation is missing a 429 Too Many Requests response.
+    severity: error
+    given: "#ProtectedOperation"
+    then:
+      field: responses.429
       function: truthy
 
   operation-has-500:

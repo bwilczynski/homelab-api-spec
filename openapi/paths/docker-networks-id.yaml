@@ -27,7 +27,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/DockerNetworkDetail.yaml"
+            $ref: "../components/schemas/docker/DockerNetworkDetail.yaml"
           example:
             id: "nas-1.immich_default"
             name: immich_default

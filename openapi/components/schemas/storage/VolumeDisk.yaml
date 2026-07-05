@@ -13,7 +13,7 @@ properties:
     $ref: "./DiskStatus.yaml"
   totalBytes:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Total physical capacity of the disk in bytes.
     example: 4000787030016
   temperatureCelsius:

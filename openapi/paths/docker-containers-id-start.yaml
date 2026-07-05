@@ -10,22 +10,8 @@ post:
   security:
     - bearerAuth: [write:docker]
   parameters:
-    - name: containerId
-      in: path
-      required: true
-      description: |
-        Composite container identifier in the form `{deviceId}.{name}`
-        (e.g. `nas-1.homeassistant`).
-      schema:
-        type: string
-      example: "nas-1.homeassistant"
-    - name: Idempotency-Key
-      in: header
-      required: false
-      description: Client-generated key to ensure the request is processed at most once.
-      schema:
-        type: string
-      example: "b4f3c2a1-7e8d-4f5a-9c0b-1d2e3f4a5b6c"
+    - $ref: "../components/parameters/ContainerId.yaml"
+    - $ref: "../components/parameters/IdempotencyKey.yaml"
   responses:
     "204":
       description: Container started (or was already running).

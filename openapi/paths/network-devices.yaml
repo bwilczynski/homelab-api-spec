@@ -20,7 +20,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/NetworkDeviceList.yaml"
+            $ref: "../components/schemas/network/NetworkDeviceList.yaml"
           examples:
             typicalHomelab:
               summary: A gateway, a switch, and two access points.

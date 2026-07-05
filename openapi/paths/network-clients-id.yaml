@@ -37,7 +37,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/NetworkClientDetail.yaml"
+            $ref: "../components/schemas/network/NetworkClientDetail.yaml"
           examples:
             onlineWirelessClient:
               summary: An online wireless client associated with an AP.

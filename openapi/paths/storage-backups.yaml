@@ -25,7 +25,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/BackupTaskList.yaml"
+            $ref: "../components/schemas/storage/BackupTaskList.yaml"
           examples:
             mixedBackups:
               summary: Hyper Backup and Glacier tasks on a single NAS.

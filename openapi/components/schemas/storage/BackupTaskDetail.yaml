@@ -15,7 +15,7 @@ allOf:
         example: "2026-04-17T03:00:00Z"
       size:
         allOf:
-          - $ref: "./units/Bytes.yaml"
+          - $ref: "../units/Bytes.yaml"
         description: Total size of the most recent backup.
         example: 10737418240
       folders:

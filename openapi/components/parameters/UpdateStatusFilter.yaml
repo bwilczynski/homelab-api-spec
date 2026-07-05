@@ -6,4 +6,4 @@ description: |
   status are returned. Omit to get all tracked components regardless
   of status.
 schema:
-  $ref: "../schemas/SystemUpdateStatus.yaml"
+  $ref: "../schemas/system/SystemUpdateStatus.yaml"

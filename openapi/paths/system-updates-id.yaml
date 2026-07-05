@@ -29,7 +29,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SystemUpdateDetail.yaml"
+            $ref: "../components/schemas/system/SystemUpdateDetail.yaml"
           examples:
             containerWithUpdate:
               summary: A container with an update available.

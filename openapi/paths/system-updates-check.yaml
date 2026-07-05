@@ -18,20 +18,14 @@ post:
   security:
     - bearerAuth: [write:system]
   parameters:
-    - name: Idempotency-Key
-      in: header
-      required: false
-      description: Client-generated key to ensure the request is processed at most once.
-      schema:
-        type: string
-      example: "b4f3c2a1-7e8d-4f5a-9c0b-1d2e3f4a5b6c"
+    - $ref: "../components/parameters/IdempotencyKey.yaml"
   responses:
     "200":
       description: Updated list of tracked components after checking upstream sources.
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SystemUpdateList.yaml"
+            $ref: "../components/schemas/system/SystemUpdateList.yaml"
           examples:
             afterCheck:
               summary: Results after a fresh check against upstream sources.

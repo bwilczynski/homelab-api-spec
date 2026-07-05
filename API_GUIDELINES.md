@@ -21,11 +21,21 @@ Examples: `/docker/containers`, `/storage/backups`, `/network/devices`
 
 ## Naming
 
-- **JSON properties, enum values, operationIds, parameter names:** `camelCase`
+- **JSON properties, enum values, operationIds, query/path parameter names:** `camelCase`
+- **Header parameter names:** `Hyphenated-Pascal-Case` (e.g. `Idempotency-Key`)
 - **URL path segments:** `kebab-case` (see URL structure above)
 - **Scopes:** `<access>:<group>` where group matches the URL group segment (e.g. `read:docker`, `write:storage`, `read:system`, `read:network`)
 
 **Enum value exception:** When an enum value encodes a numeric quantity (`<unit><value>`), a single underscore is allowed *between two digits* to encode a decimal point — e.g. `gbe2_5` for 2.5 Gbps. The `_` is permitted only between two digits; everywhere else, the value must remain camelCase. This is enforced by the `enum-value-camelcase` Spectral rule.
+
+## File layout
+
+Schema files live in domain subdirectories mirroring the URL groups:
+`openapi/components/schemas/{meta,system,docker,storage,network}/`.
+Cross-domain schemas (e.g. `Problem`) go in `common/`; unit schemas in
+`units/`. Schema file basenames must stay unique across all
+subdirectories — Redocly names bundled components by basename, so a
+collision would merge two schemas.
 
 ## Resources and operations
 
@@ -82,7 +92,13 @@ the base via `allOf`, and register it in the wrapper's `anyOf`/`mapping`.
 ## Collections and pagination
 
 - **Collection root key:** `"items": [...]`
-- **Pagination:** Cursor-based only. Query params: `cursor` + `limit`. Response includes a `next` link (no `previous`, no offset)
+- **Pagination:** List endpoints are **unpaginated by design** — a homelab
+  has a manageable number of resources, so collections return all matching
+  results. State this in the operation description when it is not obvious.
+- **If pagination is ever needed** for a specific endpoint, it must be
+  cursor-based: query params `cursor` + `limit`, response gains an optional
+  `next` link (no `previous`, no offset). Adding the optional `next` field
+  and the query params is a non-breaking `feat:` change.
 
 ## Responses
 

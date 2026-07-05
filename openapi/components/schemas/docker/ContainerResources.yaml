@@ -8,7 +8,7 @@ properties:
     example: 2.5
   memoryBytes:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Current memory usage in bytes.
     example: 268435456
   memoryPercent:

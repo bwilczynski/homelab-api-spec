@@ -24,7 +24,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/DockerNetworkList.yaml"
+            $ref: "../components/schemas/docker/DockerNetworkList.yaml"
           examples:
             typicalHomelab:
               summary: Networks on a single NAS.

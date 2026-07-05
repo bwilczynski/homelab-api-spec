@@ -11,23 +11,14 @@ get:
   security:
     - bearerAuth: [read:docker]
   parameters:
-    - name: containerId
-      in: path
-      required: true
-      description: |
-        Composite container identifier in the form `{deviceId}.{name}`
-        (e.g. `nas-1.homeassistant`). The device prefix disambiguates
-        containers across multiple backends that may use the same name.
-      schema:
-        type: string
-      example: "nas-1.homeassistant"
+    - $ref: "../components/parameters/ContainerId.yaml"
   responses:
     "200":
       description: The requested container.
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/ContainerDetail.yaml"
+            $ref: "../components/schemas/docker/ContainerDetail.yaml"
           example:
             id: "nas-1.homeassistant"
             name: homeassistant

@@ -23,7 +23,7 @@ properties:
     example: "203.0.113.42"
   uptime:
     allOf:
-      - $ref: "./units/Seconds.yaml"
+      - $ref: "../units/Seconds.yaml"
     description: Seconds since the WAN connection was last established. Zero when disconnected or in standby.
     example: 86400
   status:

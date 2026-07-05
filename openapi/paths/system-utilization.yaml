@@ -25,7 +25,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SystemUtilizationList.yaml"
+            $ref: "../components/schemas/system/SystemUtilizationList.yaml"
           examples:
             singleNas:
               summary: Utilization snapshot for a single NAS.
