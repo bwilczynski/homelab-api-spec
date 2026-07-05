@@ -27,6 +27,15 @@ Examples: `/docker/containers`, `/storage/backups`, `/network/devices`
 
 **Enum value exception:** When an enum value encodes a numeric quantity (`<unit><value>`), a single underscore is allowed *between two digits* to encode a decimal point — e.g. `gbe2_5` for 2.5 Gbps. The `_` is permitted only between two digits; everywhere else, the value must remain camelCase. This is enforced by the `enum-value-camelcase` Spectral rule.
 
+## File layout
+
+Schema files live in domain subdirectories mirroring the URL groups:
+`openapi/components/schemas/{meta,system,docker,storage,network}/`.
+Cross-domain schemas (e.g. `Problem`) go in `common/`; unit schemas in
+`units/`. Schema file basenames must stay unique across all
+subdirectories — Redocly names bundled components by basename, so a
+collision would merge two schemas.
+
 ## Resources and operations
 
 - **Composite IDs:** `{device}.{name}` — dot-separated, URL-safe, no encoding required (e.g. `nas-1.homeassistant`)
