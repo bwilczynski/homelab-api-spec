@@ -21,7 +21,8 @@ Examples: `/docker/containers`, `/storage/backups`, `/network/devices`
 
 ## Naming
 
-- **JSON properties, enum values, operationIds, parameter names:** `camelCase`
+- **JSON properties, enum values, operationIds, query/path parameter names:** `camelCase`
+- **Header parameter names:** `Hyphenated-Pascal-Case` (e.g. `Idempotency-Key`)
 - **URL path segments:** `kebab-case` (see URL structure above)
 - **Scopes:** `<access>:<group>` where group matches the URL group segment (e.g. `read:docker`, `write:storage`, `read:system`, `read:network`)
 

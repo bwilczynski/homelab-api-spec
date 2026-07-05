@@ -69,16 +69,33 @@ rules:
       functionOptions:
         match: "^[a-z][a-zA-Z0-9]*$"
 
-  parameter-name-camelcase:
-    description: Query and header parameter names must be camelCase.
+  query-path-parameter-camelcase:
+    description: Query and path parameter names must be camelCase.
     message: "Parameter name '{{value}}' must be camelCase."
     severity: error
-    given: "#ParameterObject"
+    given:
+      - "$.paths[*][get,put,post,delete,patch,options,head,trace].parameters[?(@.in == 'query' || @.in == 'path')]"
+      - "$.paths[*].parameters[?(@.in == 'query' || @.in == 'path')]"
+      - "$.components.parameters[?(@.in == 'query' || @.in == 'path')]"
     then:
       field: name
       function: pattern
       functionOptions:
-        match: "^[a-zA-Z][a-zA-Z0-9-]*$"
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  header-parameter-hyphenated-pascal:
+    description: Header parameter names must be Hyphenated-Pascal-Case (e.g. Idempotency-Key).
+    message: "Header parameter name '{{value}}' must be Hyphenated-Pascal-Case."
+    severity: error
+    given:
+      - "$.paths[*][get,put,post,delete,patch,options,head,trace].parameters[?(@.in == 'header')]"
+      - "$.paths[*].parameters[?(@.in == 'header')]"
+      - "$.components.parameters[?(@.in == 'header')]"
+    then:
+      field: name
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9]*(-[A-Z][a-zA-Z0-9]*)*$"
 
   enum-value-camelcase:
     description: |
