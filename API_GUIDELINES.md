@@ -92,7 +92,13 @@ the base via `allOf`, and register it in the wrapper's `anyOf`/`mapping`.
 ## Collections and pagination
 
 - **Collection root key:** `"items": [...]`
-- **Pagination:** Cursor-based only. Query params: `cursor` + `limit`. Response includes a `next` link (no `previous`, no offset)
+- **Pagination:** List endpoints are **unpaginated by design** — a homelab
+  has a manageable number of resources, so collections return all matching
+  results. State this in the operation description when it is not obvious.
+- **If pagination is ever needed** for a specific endpoint, it must be
+  cursor-based: query params `cursor` + `limit`, response gains an optional
+  `next` link (no `previous`, no offset). Adding the optional `next` field
+  and the query params is a non-breaking `feat:` change.
 
 ## Responses
 

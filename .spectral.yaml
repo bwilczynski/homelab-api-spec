@@ -2,9 +2,10 @@ extends:
   - spectral:oas
 
 # Rules encode the conventions from the 002-api-patterns decisions
-# doc: camelCase JSON fields, kebab-case paths, plural nouns, cursor
-# pagination, RFC 9457 problem responses, operationId + description
-# on every operation, no inline schemas.
+# doc: camelCase JSON fields, kebab-case paths, plural nouns,
+# RFC 9457 problem responses, operationId + description on every
+# operation, no inline schemas. Lists are unpaginated by design
+# (see API_GUIDELINES.md).
 
 aliases:
   PathItem:
