@@ -1,0 +1,9 @@
+name: containerId
+in: path
+required: true
+description: |
+  Composite container identifier in the form `{deviceId}.{name}`
+  (e.g. `nas-1.homeassistant`).
+schema:
+  type: string
+example: "nas-1.homeassistant"
