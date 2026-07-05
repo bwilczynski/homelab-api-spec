@@ -24,7 +24,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/VolumeList.yaml"
+            $ref: "../components/schemas/storage/VolumeList.yaml"
           examples:
             singleNas:
               summary: Two volumes on a single NAS.

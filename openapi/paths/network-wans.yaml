@@ -17,7 +17,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/WanList.yaml"
+            $ref: "../components/schemas/network/WanList.yaml"
           examples:
             typicalHomelab:
               summary: A homelab with a primary WAN and a failover connection.

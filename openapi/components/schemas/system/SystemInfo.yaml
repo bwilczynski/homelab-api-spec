@@ -20,7 +20,7 @@ properties:
     example: 1209600
   ramMb:
     allOf:
-      - $ref: "./units/Megabytes.yaml"
+      - $ref: "../units/Megabytes.yaml"
     description: Total physical RAM in megabytes.
     example: 4096
 required:

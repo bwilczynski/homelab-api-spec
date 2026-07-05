@@ -16,7 +16,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/AuthDiscovery.yaml"
+            $ref: "../components/schemas/meta/AuthDiscovery.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "500":

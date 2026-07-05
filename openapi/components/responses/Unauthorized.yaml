@@ -2,7 +2,7 @@ description: Bearer token is missing, invalid, or expired.
 content:
   application/problem+json:
     schema:
-      $ref: "../schemas/Problem.yaml"
+      $ref: "../schemas/common/Problem.yaml"
     example:
       type: https://homelab.local/problems/unauthorized
       title: Unauthorized

@@ -8,7 +8,7 @@ headers:
 content:
   application/problem+json:
     schema:
-      $ref: "../schemas/Problem.yaml"
+      $ref: "../schemas/common/Problem.yaml"
     example:
       type: https://homelab.local/problems/too-many-requests
       title: Too Many Requests

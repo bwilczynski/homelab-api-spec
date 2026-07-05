@@ -6,22 +6,22 @@ description: |
 properties:
   rxBytesTotal:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Cumulative bytes received since the device's current uptime started.
     example: 12884901888
   txBytesTotal:
     allOf:
-      - $ref: "./units/Bytes.yaml"
+      - $ref: "../units/Bytes.yaml"
     description: Cumulative bytes transmitted since the device's current uptime started.
     example: 4294967296
   rxBytesPerSec:
     allOf:
-      - $ref: "./units/BytesPerSec.yaml"
+      - $ref: "../units/BytesPerSec.yaml"
     description: Current receive throughput in bytes per second.
     example: 125000
   txBytesPerSec:
     allOf:
-      - $ref: "./units/BytesPerSec.yaml"
+      - $ref: "../units/BytesPerSec.yaml"
     description: Current transmit throughput in bytes per second.
     example: 50000
 required:

@@ -27,7 +27,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/ContainerDetail.yaml"
+            $ref: "../components/schemas/docker/ContainerDetail.yaml"
           example:
             id: "nas-1.homeassistant"
             name: homeassistant

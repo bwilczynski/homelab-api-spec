@@ -29,7 +29,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SsidDetail.yaml"
+            $ref: "../components/schemas/network/SsidDetail.yaml"
           examples:
             iotSsid:
               summary: An IoT SSID with WPA2 security and connected clients.

@@ -5,4 +5,4 @@ description: |
   Filter updates by component type. Only components of the given type
   are returned. Omit to get all tracked components regardless of type.
 schema:
-  $ref: "../schemas/SystemUpdateType.yaml"
+  $ref: "../schemas/system/SystemUpdateType.yaml"

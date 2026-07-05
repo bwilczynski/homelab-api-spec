@@ -28,7 +28,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/VolumeDetail.yaml"
+            $ref: "../components/schemas/storage/VolumeDetail.yaml"
           example:
             id: "nas-1.volume_1"
             name: volume_1

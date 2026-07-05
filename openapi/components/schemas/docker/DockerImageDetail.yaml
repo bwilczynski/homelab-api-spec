@@ -10,7 +10,7 @@ allOf:
         example: "2024-09-26T21:51:42Z"
       virtualSize:
         allOf:
-          - $ref: "./units/Bytes.yaml"
+          - $ref: "../units/Bytes.yaml"
         description: Total uncompressed size of all image layers in bytes.
         example: 1073741824
       description:

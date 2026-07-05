@@ -25,7 +25,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/ContainerList.yaml"
+            $ref: "../components/schemas/docker/ContainerList.yaml"
           examples:
             typicalHomelab:
               summary: A few containers on a single NAS.

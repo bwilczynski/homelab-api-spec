@@ -7,12 +7,12 @@ properties:
     example: eth0
   rxBytesPerSec:
     allOf:
-      - $ref: "./units/BytesPerSec.yaml"
+      - $ref: "../units/BytesPerSec.yaml"
     description: Receive throughput in bytes per second.
     example: 125000
   txBytesPerSec:
     allOf:
-      - $ref: "./units/BytesPerSec.yaml"
+      - $ref: "../units/BytesPerSec.yaml"
     description: Transmit throughput in bytes per second.
     example: 50000
 required:

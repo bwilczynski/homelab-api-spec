@@ -17,7 +17,7 @@ properties:
     $ref: "./SwitchPortPoeMode.yaml"
   poePowerWatts:
     allOf:
-      - $ref: "./units/Watts.yaml"
+      - $ref: "../units/Watts.yaml"
     description: |
       Power currently being delivered through this port. Omitted when
       `poeMode` is `off` or when no powered device is attached.

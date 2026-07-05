@@ -22,7 +22,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SystemInfoList.yaml"
+            $ref: "../components/schemas/system/SystemInfoList.yaml"
           examples:
             singleNas:
               summary: System info for a single NAS.

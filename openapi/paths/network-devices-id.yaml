@@ -33,7 +33,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/NetworkDeviceDetail.yaml"
+            $ref: "../components/schemas/network/NetworkDeviceDetail.yaml"
           examples:
             switch:
               summary: A managed switch with four ports (uplink, downstream AP, idle, and a wired client).

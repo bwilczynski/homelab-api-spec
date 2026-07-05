@@ -22,7 +22,7 @@ get:
       in: query
       required: false
       schema:
-        $ref: "../components/schemas/NetworkClientStatus.yaml"
+        $ref: "../components/schemas/network/NetworkClientStatus.yaml"
       description: Filter by connection status. Omit to return all clients (online and offline).
   responses:
     "200":
@@ -30,7 +30,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/NetworkClientList.yaml"
+            $ref: "../components/schemas/network/NetworkClientList.yaml"
           examples:
             typicalHomelab:
               summary: A mix of online and offline clients.

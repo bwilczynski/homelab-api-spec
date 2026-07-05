@@ -33,7 +33,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/NetworkTopology.yaml"
+            $ref: "../components/schemas/network/NetworkTopology.yaml"
           examples:
             devicesOnly:
               summary: Devices-only topology (gateway → switch → AP).

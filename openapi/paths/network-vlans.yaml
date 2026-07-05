@@ -17,7 +17,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/VlanList.yaml"
+            $ref: "../components/schemas/network/VlanList.yaml"
           examples:
             typicalHomelab:
               summary: A homelab with main, IoT, and management VLANs.

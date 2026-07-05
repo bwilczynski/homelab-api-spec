@@ -25,7 +25,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SystemUpdateList.yaml"
+            $ref: "../components/schemas/system/SystemUpdateList.yaml"
           examples:
             mixedStatus:
               summary: Some containers up to date, some with updates available.

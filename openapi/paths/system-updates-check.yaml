@@ -31,7 +31,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/SystemUpdateList.yaml"
+            $ref: "../components/schemas/system/SystemUpdateList.yaml"
           examples:
             afterCheck:
               summary: Results after a fresh check against upstream sources.

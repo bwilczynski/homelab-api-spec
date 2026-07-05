@@ -15,7 +15,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: "../components/schemas/Version.yaml"
+            $ref: "../components/schemas/meta/Version.yaml"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "500":
