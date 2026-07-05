@@ -27,7 +27,5 @@ get:
               summary: Auth disabled (trusted-network deployment). `issuer` omitted.
               value:
                 enabled: false
-    "401":
-      $ref: "../components/responses/Unauthorized.yaml"
     "500":
       $ref: "../components/responses/InternalServerError.yaml"
