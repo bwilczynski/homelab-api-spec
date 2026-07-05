@@ -17,6 +17,16 @@ get:
         application/json:
           schema:
             $ref: "../components/schemas/meta/AuthDiscovery.yaml"
+          examples:
+            authEnabled:
+              summary: Auth enforced against a homelab IdP.
+              value:
+                enabled: true
+                issuer: "https://idp.homelab.local"
+            authDisabled:
+              summary: Auth disabled (trusted-network deployment). `issuer` omitted.
+              value:
+                enabled: false
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "500":

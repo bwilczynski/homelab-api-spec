@@ -16,6 +16,12 @@ get:
         application/json:
           schema:
             $ref: "../components/schemas/meta/Version.yaml"
+          examples:
+            release:
+              summary: Server running a tagged release.
+              value:
+                apiVersion: "1.1.0"
+                serverVersion: "0.4.2"
     "401":
       $ref: "../components/responses/Unauthorized.yaml"
     "500":
