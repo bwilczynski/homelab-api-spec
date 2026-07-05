@@ -20,6 +20,8 @@ aliases:
     - "$.components.schemas[*].allOf[*].properties.*~"
     - "$.components.schemas[*].oneOf[*].properties.*~"
     - "$.components.schemas[*].anyOf[*].properties.*~"
+  ProtectedOperation:
+    - "$.paths[*][?(@ && @.responses && (!@.security || @.security.length > 0))]"
 
 functions: []
 
@@ -112,12 +114,30 @@ rules:
 
   # --- response discipline ------------------------------------------------
   operation-has-401:
-    description: Protected operations must declare a 401 response.
-    message: Operation is missing a 401 Unauthorized response.
+    description: Protected operations must declare a 401 response. Public operations (security: []) must not need one.
+    message: Protected operation is missing a 401 Unauthorized response.
     severity: error
-    given: "#OperationObject"
+    given: "#ProtectedOperation"
     then:
       field: responses.401
+      function: truthy
+
+  operation-has-403:
+    description: Protected operations must declare a 403 response (insufficient scope).
+    message: Protected operation is missing a 403 Forbidden response.
+    severity: error
+    given: "#ProtectedOperation"
+    then:
+      field: responses.403
+      function: truthy
+
+  operation-has-429:
+    description: Protected operations must declare a 429 response with Retry-After.
+    message: Protected operation is missing a 429 Too Many Requests response.
+    severity: error
+    given: "#ProtectedOperation"
+    then:
+      field: responses.429
       function: truthy
 
   operation-has-500:
