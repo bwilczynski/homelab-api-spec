@@ -1,0 +1,24 @@
+type: object
+description: Lightweight reference to a VLAN.
+properties:
+  id:
+    type: string
+    description: Composite VLAN identifier (matches `Vlan.id`).
+    example: "unifi.iot"
+  uri:
+    type: string
+    description: Relative API path to fetch this VLAN's detail.
+    example: "/network/vlans/unifi.iot"
+  name:
+    type: string
+    description: Human-readable VLAN name.
+    example: "IoT"
+  vlanId:
+    type: integer
+    description: Numeric 802.1Q tag (1–4094).
+    example: 20
+required:
+  - id
+  - uri
+  - name
+  - vlanId

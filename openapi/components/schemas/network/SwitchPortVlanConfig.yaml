@@ -1,0 +1,42 @@
+type: object
+description: |
+  VLAN policy configured on a switch port. Present when the port is
+  not administratively disabled (`state != disabled`).
+properties:
+  mode:
+    type: string
+    enum: [access, trunk]
+    description: |
+      - `access` — port carries a single untagged VLAN (the native VLAN)
+        and blocks all tagged traffic. Typical for end-device ports.
+      - `trunk` — port carries an untagged native VLAN plus one or more
+        tagged VLANs. Typical for uplinks and downstream AP links.
+  nativeVlan:
+    allOf:
+      - $ref: "./NetworkVlanRef.yaml"
+    description: The untagged VLAN carried on this port.
+  taggedVlans:
+    type: object
+    description: |
+      Tagged VLANs allowed on this port. Present only when `mode` is
+      `trunk`; omitted for `access`.
+    properties:
+      scope:
+        type: string
+        enum: [all, custom]
+        description: |
+          - `all` — every VLAN configured on the switch is allowed
+            (trunk-all).
+          - `custom` — only the VLANs listed under `items` are allowed.
+      items:
+        type: array
+        description: |
+          Explicit allow-list of tagged VLANs. Present only when
+          `scope` is `custom`.
+        items:
+          $ref: "./NetworkVlanRef.yaml"
+    required:
+      - scope
+required:
+  - mode
+  - nativeVlan
