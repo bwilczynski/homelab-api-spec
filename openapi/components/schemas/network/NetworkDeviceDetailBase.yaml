@@ -12,7 +12,8 @@ allOf:
         description: Installed firmware version.
         example: "6.6.77.14522"
       uptime:
-        type: integer
+        allOf:
+          - $ref: "../units/Seconds.yaml"
         description: Seconds since the device last (re)connected to the controller.
         example: 86400
       traffic:

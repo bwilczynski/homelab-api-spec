@@ -36,7 +36,7 @@ get:
             $ref: "../components/schemas/network/NetworkDeviceDetail.yaml"
           examples:
             switch:
-              summary: A managed switch with four ports (uplink, downstream AP, idle, and a wired client).
+              summary: A managed switch with four ports (trunk uplink, AP downlink, idle access port, and a NAS on a fiber port bonded into a LAG).
               value:
                 id: "unifi.switch-living-room"
                 uri: "/network/devices/unifi.switch-living-room"
@@ -45,7 +45,7 @@ get:
                 ip: "192.168.1.2"
                 type: switch
                 status: connected
-                model: "USW-Lite-8-PoE"
+                model: "USW-Pro-24-PoE"
                 firmwareVersion: "6.6.77.14522"
                 uptime: 172800
                 traffic:
@@ -65,7 +65,17 @@ get:
                   - number: 1
                     state: up
                     linkSpeed: gbe1
+                    linkUptime: 172800
                     poeMode: 'off'
+                    vlanConfig:
+                      mode: trunk
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                      taggedVlans:
+                        scope: all
                     traffic:
                       rxBytesTotal: 43980465111
                       txBytesTotal: 87960930222
@@ -77,10 +87,30 @@ get:
                       uri: "/network/devices/unifi.usg"
                       name: "USG"
                   - number: 7
+                    label: "AP Living Room uplink"
                     state: up
                     linkSpeed: gbe2_5
+                    linkUptime: 86400
                     poeMode: auto
                     poePowerWatts: 4.5
+                    vlanConfig:
+                      mode: trunk
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                      taggedVlans:
+                        scope: custom
+                        items:
+                          - id: "unifi.iot"
+                            uri: "/network/vlans/unifi.iot"
+                            name: "IoT"
+                            vlanId: 20
+                          - id: "unifi.guest"
+                            uri: "/network/vlans/unifi.guest"
+                            name: "Guest"
+                            vlanId: 30
                     traffic:
                       rxBytesTotal: 12884901888
                       txBytesTotal: 4294967296
@@ -94,6 +124,13 @@ get:
                   - number: 2
                     state: down
                     poeMode: 'off'
+                    vlanConfig:
+                      mode: access
+                      nativeVlan:
+                        id: "unifi.servers"
+                        uri: "/network/vlans/unifi.servers"
+                        name: "Servers"
+                        vlanId: 100
                     traffic:
                       rxBytesTotal: 0
                       txBytesTotal: 0
@@ -101,8 +138,20 @@ get:
                       txBytesPerSec: 0
                   - number: 8
                     state: up
-                    linkSpeed: gbe2_5
+                    linkSpeed: gbe10
+                    linkUptime: 3600
+                    sfpModulePresent: true
                     poeMode: 'off'
+                    lagMembership:
+                      id: 8
+                      role: master
+                    vlanConfig:
+                      mode: access
+                      nativeVlan:
+                        id: "unifi.servers"
+                        uri: "/network/vlans/unifi.servers"
+                        name: "Servers"
+                        vlanId: 100
                     traffic:
                       rxBytesTotal: 5497558138
                       txBytesTotal: 2748779069

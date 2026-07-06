@@ -1,0 +1,22 @@
+type: object
+description: |
+  Link-aggregation (LAG) membership of a switch port. Present only when
+  the port participates in a LAG (bond).
+properties:
+  id:
+    type: integer
+    minimum: 1
+    description: |
+      Switch-local LAG identifier. Ports on the same switch sharing an
+      `id` are bonded together.
+    example: 3
+  role:
+    type: string
+    enum: [master, member]
+    description: |
+      - `master` — the port that owns the LAG's configuration and
+        reports aggregated traffic.
+      - `member` — a port bonded into the LAG under a master.
+required:
+  - id
+  - role
