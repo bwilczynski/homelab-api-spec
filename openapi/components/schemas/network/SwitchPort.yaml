@@ -6,6 +6,12 @@ properties:
     minimum: 1
     description: Physical port number (1-based) as labelled on the switch.
     example: 7
+  label:
+    type: string
+    description: |
+      Operator-assigned port label. Omitted when the port uses the
+      controller's default label (`Port <number>`).
+    example: "Backhaul to attic"
   state:
     $ref: "./NetworkPortState.yaml"
   linkSpeed:
@@ -13,6 +19,18 @@ properties:
       - $ref: "./NetworkLinkSpeed.yaml"
     description: |
       Negotiated link speed. Omitted when `state` is not `up`.
+  linkUptime:
+    allOf:
+      - $ref: "../units/Seconds.yaml"
+    description: |
+      Seconds since the current link came up. Present only when
+      `state` is `up`; resets on link flap.
+  sfpModulePresent:
+    type: boolean
+    description: |
+      Whether an SFP/SFP+ optical module is currently inserted in this
+      port's fiber cage. Present only on ports with an SFP cage;
+      omitted on RJ45-only ports.
   poeMode:
     $ref: "./SwitchPortPoeMode.yaml"
   poePowerWatts:
@@ -21,6 +39,36 @@ properties:
     description: |
       Power currently being delivered through this port. Omitted when
       `poeMode` is `off` or when no powered device is attached.
+  lagMembership:
+    type: object
+    description: |
+      Link-aggregation (LAG) membership. Present only when this port
+      participates in a LAG (bond).
+    properties:
+      id:
+        type: integer
+        minimum: 1
+        description: |
+          LAG identifier on this switch. Ports sharing an `id` are
+          bonded together.
+        example: 3
+      role:
+        type: string
+        enum: [master, member]
+        description: |
+          - `master` — the port that owns the LAG's configuration and
+            reports aggregated traffic.
+          - `member` — a port bonded into the LAG under a master.
+    required:
+      - id
+      - role
+  vlanConfig:
+    allOf:
+      - $ref: "./SwitchPortVlanConfig.yaml"
+    description: |
+      VLAN policy configured on this port. Omitted when `state` is
+      `disabled` (the port carries no traffic) or when the controller
+      does not report enough data to resolve the native VLAN.
   traffic:
     $ref: "./NetworkTraffic.yaml"
   connectedTo:
