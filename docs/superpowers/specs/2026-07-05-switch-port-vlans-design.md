@@ -1,7 +1,7 @@
 # Design: Per-Port VLAN Policy and Detail Fields for Switch Ports
 
 **Date:** 2026-07-05
-**Status:** Draft
+**Status:** Approved
 
 ## Context
 
