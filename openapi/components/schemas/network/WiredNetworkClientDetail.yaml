@@ -13,7 +13,8 @@ allOf:
       connectedTo:
         $ref: "./NetworkConnection.yaml"
       uptime:
-        type: integer
+        allOf:
+          - $ref: "../units/Seconds.yaml"
         description: Seconds since the client's current session started. Omitted for offline clients.
         example: 604800
     required:
