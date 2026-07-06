@@ -1,28 +1,28 @@
-# Design: Per-Port VLAN Policy and Dashboard Fields for Switch Ports
+# Design: Per-Port VLAN Policy and Detail Fields for Switch Ports
 
 **Date:** 2026-07-05
 **Status:** Draft
 
 ## Context
 
-`GET /network/devices/{deviceId}` returns a `SwitchDetail` variant whose `ports[]` describe each physical port on a managed switch. Today, a port carries link/PoE/traffic information and a reference to what is connected on the other end, but nothing about its VLAN policy — a dashboard cannot show which VLAN a port is on, whether it is an access or trunk port, or which tagged VLANs a trunk carries.
+`GET /network/devices/{deviceId}` returns a `SwitchDetail` variant whose `ports[]` describe each physical port on a managed switch. Today, a port carries link/PoE/traffic information and a reference to what is connected on the other end, but nothing about its VLAN policy — the `hlctl` detailed switch view cannot show which VLAN a port is on, whether it is an access or trunk port, or which tagged VLANs a trunk carries.
 
 A few adjacent per-port fields that a homelab operator inspecting a switch would routinely want are also missing: an operator-assigned port label, SFP module presence on fiber cages, current link uptime, and link-aggregation (LAG) membership.
 
 This design extends the existing `SwitchPort` schema with:
 
-1. A `vlan` sub-object modeling the port's VLAN policy.
-2. Four additional optional dashboard-oriented fields (`label`, `sfpModulePresent`, `linkUptime`, `lag`).
+1. A `vlanConfig` sub-object modeling the port's VLAN policy.
+2. Four additional optional per-port fields (`label`, `sfpModulePresent`, `linkUptime`, `lagMembership`).
 
 The endpoint is `x-stability-level: draft`; all additions are optional, and no existing field or requirement changes. As a small consistency cleanup that falls out of introducing the new `linkUptime` field, three pre-existing inline `uptime: integer` fields elsewhere in the `network` domain switch to the shared `units/Seconds.yaml` schema.
 
 ## Use case
 
-The primary consumer is a dashboard/inspection view — a UI that renders "what is each port doing right now" so a human can understand the switch at a glance. This shapes:
+The primary consumer is the detailed switch view in `hlctl` — a CLI that renders a switch's ports in a compact table or per-port block so a human can understand the switch at a glance. This shapes the design:
 
-- Preferring resolvable references (`NetworkVlanRef` with `id`, `uri`, `name`, `vlanId`) over raw numeric tags, so the UI can render human names and deep-link to the VLAN detail endpoint.
-- Preferring an explicit `mode: access | trunk` discriminator over shape-inference, so the UI has a single field to switch layouts on.
-- Adding fields that answer routine visual questions (labeled ports, fiber modules, LAG grouping) rather than deep-troubleshooting fields (STP state, dot1x, port security).
+- Preferring resolvable references (`NetworkVlanRef` with `id`, `uri`, `name`, `vlanId`) over raw numeric tags, so the CLI can print human names and other tooling can follow the `uri` back to the VLAN detail endpoint.
+- Preferring an explicit `mode: access | trunk` discriminator over shape-inference, so the CLI has a single field to switch its output layout on.
+- Adding fields that answer routine inspection questions (labeled ports, fiber modules, LAG grouping) rather than deep-troubleshooting fields (STP state, dot1x, port security).
 
 ## Schema Design
 
@@ -58,11 +58,11 @@ Rationale for including both `id` and `vlanId`:
 - `id` is the composite `{controller}.{name}` identifier used to fetch VLAN detail via `/network/vlans/{vlanId}`.
 - `vlanId` is the numeric 802.1Q tag humans and network gear speak in.
 
-Both are cheap to include; each answers a distinct question a dashboard asks.
+Both are cheap to include; each answers a distinct question the CLI asks when rendering a port.
 
 ### New: `SwitchPortVlanConfig`
 
-The per-port VLAN policy, referenced from `SwitchPort.vlan`. Modeling notes follow the schema.
+The per-port VLAN policy, referenced from `SwitchPort.vlanConfig`. Modeling notes follow the schema.
 
 ```yaml
 type: object
@@ -106,7 +106,7 @@ required: [mode, nativeVlan]
 
 Design notes:
 
-- **Two modes, not four.** Port admin-state (`disabled`) is already carried on `SwitchPort.state`; overloading `vlan.mode` with a `disabled` value would duplicate the same fact. When `state: disabled`, the `vlan` sub-object is omitted entirely.
+- **Two modes, not four.** Port admin-state (`disabled`) is already carried on `SwitchPort.state`; overloading `vlanConfig.mode` with a `disabled` value would duplicate the same fact. When `state: disabled`, the `vlanConfig` sub-object is omitted entirely.
 - **`taggedVlans` uses a nested `scope` + `items`** rather than a polymorphic `oneOf: [string, array]`. Two enums are easier to render, easier to validate, and OpenAPI 3.0 handles this shape cleanly.
 - **`taggedVlans.scope: all` with no `items`** represents a trunk allowing every VLAN currently configured on the switch — the natural encoding for `forward: "all"` and for `forward: "customize"` with an empty exclusion list.
 
@@ -136,7 +136,7 @@ linkUptime:
     Seconds since the current link came up. Present only when
     `state` is `up`; resets on link flap.
 
-lag:
+lagMembership:
   type: object
   description: |
     Link-aggregation membership. Present only when this port
@@ -158,7 +158,7 @@ lag:
         - `member` — a port bonded into the LAG under a master.
   required: [id, role]
 
-vlan:
+vlanConfig:
   allOf:
     - $ref: "./SwitchPortVlanConfig.yaml"
   description: |
@@ -185,27 +185,27 @@ The service layer normalizes the four UniFi port combinations into the API's two
 
 ### VLAN policy
 
-| UniFi `port_table` fields                                             | API `vlan` value                                                                       |
+| UniFi `port_table` fields                                             | API `vlanConfig` value                                                                 |
 | --------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | `forward: "native"` + `tagged_vlan_mgmt: "block_all"`                  | `mode: access`, `nativeVlan: <ref to native_networkconf_id>`                            |
 | `forward: "all"`                                                      | `mode: trunk`, `taggedVlans: { scope: all }`, `nativeVlan: <switch default network>`   |
 | `forward: "customize"` + `excluded_networkconf_ids: []`                | `mode: trunk`, `taggedVlans: { scope: all }` (semantically equivalent)                  |
 | `forward: "customize"` + `excluded_networkconf_ids: [id1, id2, ...]`   | `mode: trunk`, `taggedVlans: { scope: custom, items: <all VLANs minus excluded> }`     |
-| `forward: "disable"`                                                  | `state: disabled` on `SwitchPort`; `vlan` omitted                                       |
+| `forward: "disable"`                                                  | `state: disabled` on `SwitchPort`; `vlanConfig` omitted                                 |
 
 The `native_networkconf_id` and each `excluded_networkconf_ids[i]` are UniFi controller ObjectIDs. The adapter resolves them against the controller's `networkconf` collection (`purpose: corporate` entries) into `NetworkVlanRef` values whose `id`/`uri`/`name`/`vlanId` mirror the `/network/vlans/{vlanId}` resource.
 
-For `forward: "all"` ports, the raw `port_table` entry reports `native_networkconf_id: null`; the native VLAN falls back to the switch-level default network (the `networkconf` entry with `purpose: corporate` and no `vlan` tag, or explicitly marked as default). If no such default can be resolved (rare — misconfigured or partial controller data), the adapter omits the entire `vlan` sub-object on that port rather than emitting a partially populated one.
+For `forward: "all"` ports, the raw `port_table` entry reports `native_networkconf_id: null`; the native VLAN falls back to the switch-level default network (the `networkconf` entry with `purpose: corporate` and no `vlan` tag, or explicitly marked as default). If no such default can be resolved (rare — misconfigured or partial controller data), the adapter omits the entire `vlanConfig` sub-object on that port rather than emitting a partially populated one.
 
 ### Additional port fields
 
-| UniFi field                                       | API field on `SwitchPort`                          |
-| ------------------------------------------------- | -------------------------------------------------- |
-| `name` (when different from `Port <port_idx>`)    | `label`                                            |
-| `sfp_found`                                       | `sfpModulePresent`                                 |
-| `uptime` (port-level, when `up: true`)            | `linkUptime`                                       |
-| `aggregated_by: false` on a port with downstream members | `lag: { id: <port_idx>, role: master }`      |
-| `aggregated_by: <master_port_idx>`                | `lag: { id: <master_port_idx>, role: member }`     |
+| UniFi field                                             | API field on `SwitchPort`                                    |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| `name` (when different from `Port <port_idx>`)          | `label`                                                      |
+| `sfp_found`                                             | `sfpModulePresent`                                           |
+| `uptime` (port-level, when `up: true`)                  | `linkUptime`                                                 |
+| `aggregated_by: false` on a port with downstream members | `lagMembership: { id: <port_idx>, role: master }`            |
+| `aggregated_by: <master_port_idx>`                      | `lagMembership: { id: <master_port_idx>, role: member }`     |
 
 ## Example
 
@@ -235,7 +235,7 @@ switch:
         linkUptime: 172800
         traffic: { ... }
         connectedTo: { kind: device, id: "unifi.usg", uri: "/network/devices/unifi.usg", name: "USG" }
-        vlan:
+        vlanConfig:
           mode: trunk
           nativeVlan:
             id: "unifi.default"
@@ -253,7 +253,7 @@ switch:
         linkUptime: 86400
         traffic: { ... }
         connectedTo: { kind: device, id: "unifi.ap-living-room", uri: "/network/devices/unifi.ap-living-room", name: "AP Living Room" }
-        vlan:
+        vlanConfig:
           mode: trunk
           nativeVlan:
             id: "unifi.default"
@@ -275,7 +275,7 @@ switch:
         state: down
         poeMode: 'off'
         traffic: { ... }
-        vlan:
+        vlanConfig:
           mode: access
           nativeVlan:
             id: "unifi.servers"
@@ -288,10 +288,10 @@ switch:
         poeMode: 'off'
         sfpModulePresent: true
         linkUptime: 3600
-        lag: { id: 8, role: master }
+        lagMembership: { id: 8, role: master }
         traffic: { ... }
         connectedTo: { kind: client, id: "unifi.nas-1-68", uri: "/network/clients/unifi.nas-1-68", name: "nas-1" }
-        vlan:
+        vlanConfig:
           mode: access
           nativeVlan:
             id: "unifi.servers"
@@ -309,7 +309,7 @@ switch:
 
 **Modified:**
 
-- `openapi/components/schemas/network/SwitchPort.yaml` — adds `label`, `sfpModulePresent`, `linkUptime`, `lag`, `vlan` (all optional)
+- `openapi/components/schemas/network/SwitchPort.yaml` — adds `label`, `sfpModulePresent`, `linkUptime`, `lagMembership`, `vlanConfig` (all optional)
 - `openapi/components/schemas/network/NetworkDeviceDetailBase.yaml` — `uptime` → `Seconds` ref
 - `openapi/components/schemas/network/WiredNetworkClientDetail.yaml` — `uptime` → `Seconds` ref
 - `openapi/components/schemas/network/WirelessNetworkClientDetail.yaml` — `uptime` → `Seconds` ref
@@ -320,11 +320,12 @@ switch:
 - `GET /network/devices/{deviceId}` is `x-stability-level: draft`; per `API_GUIDELINES.md`, changes on draft endpoints do not need a `BREAKING CHANGE` footer even when they would otherwise qualify.
 - No fields are removed or renamed. All new fields on `SwitchPort` are optional. Existing consumers ignore them.
 - The `uptime` retrofit swaps an inline `type: integer` for a `$ref` to `units/Seconds.yaml`, itself `type: integer` — the wire type is unchanged.
-- Suggested commit prefix: `feat:` (minor bump), e.g. `feat: add per-port VLAN policy and dashboard fields to switch ports`.
+- Suggested commit prefix: `feat:` (minor bump), e.g. `feat: add per-port VLAN policy and detail fields to switch ports`.
 
 ## Out of scope
 
 - **Impl PR in `homelab-api` (Go).** The adapter (`internal/adapters/unifi.go` `UniFiPortEntry`) needs to gain the missing UniFi fields (`name`, `forward`, `native_networkconf_id`, `tagged_vlan_mgmt`, `excluded_networkconf_ids`, `sfp_found`, `aggregated_by`, per-port `uptime`) and the service layer (`internal/network/devices_service.go` `buildSwitchPorts`) needs to be passed a VLAN lookup map and apply the mapping table above. Landing after this spec change ships.
+- **`hlctl` rendering.** How the CLI actually formats port rows / blocks is a separate change in the `hlctl` repo; this spec only makes the data available.
 - **Access-point port VLANs.** APs also expose port info; not covered here.
-- **STP state, port isolation, 802.1X, port security, storm control.** Not needed for the current dashboard/inspection use case. Straightforward to add later as optional fields without breaking changes.
+- **STP state, port isolation, 802.1X, port security, storm control.** Not needed for the current `hlctl` detailed switch view. Straightforward to add later as optional fields without breaking changes.
 - **Voice VLAN (`voice_networkconf_id`).** Present in UniFi's data but empty in every captured port; deferred until a real use case emerges.
