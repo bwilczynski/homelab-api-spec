@@ -28,9 +28,8 @@ properties:
   sfpModulePresent:
     type: boolean
     description: |
-      Whether an SFP/SFP+ optical module is currently inserted in this
-      port's fiber cage. Present only on ports with an SFP cage;
-      omitted on RJ45-only ports.
+      Whether an SFP/SFP+ optical module is currently inserted.
+      Omitted on ports without an SFP cage.
   poeMode:
     $ref: "./SwitchPortPoeMode.yaml"
   poePowerWatts:
@@ -40,35 +39,14 @@ properties:
       Power currently being delivered through this port. Omitted when
       `poeMode` is `off` or when no powered device is attached.
   lagMembership:
-    type: object
-    description: |
-      Link-aggregation (LAG) membership. Present only when this port
-      participates in a LAG (bond).
-    properties:
-      id:
-        type: integer
-        minimum: 1
-        description: |
-          LAG identifier on this switch. Ports sharing an `id` are
-          bonded together.
-        example: 3
-      role:
-        type: string
-        enum: [master, member]
-        description: |
-          - `master` — the port that owns the LAG's configuration and
-            reports aggregated traffic.
-          - `member` — a port bonded into the LAG under a master.
-    required:
-      - id
-      - role
+    $ref: "./SwitchPortLagMembership.yaml"
   vlanConfig:
     allOf:
       - $ref: "./SwitchPortVlanConfig.yaml"
     description: |
-      VLAN policy configured on this port. Omitted when `state` is
-      `disabled` (the port carries no traffic) or when the controller
-      does not report enough data to resolve the native VLAN.
+      VLAN policy configured on this port. Omitted when the port is
+      administratively disabled or when the controller does not report
+      enough data to resolve the native VLAN.
   traffic:
     $ref: "./NetworkTraffic.yaml"
   connectedTo:
