@@ -3,7 +3,9 @@ description: Lightweight reference to a VLAN.
 properties:
   id:
     type: string
-    description: Composite VLAN identifier (matches `Vlan.id`).
+    description: |
+      Composite VLAN identifier in the form `{controller}.{name}`,
+      e.g. `unifi.iot`. Matches `Vlan.id`.
     example: "unifi.iot"
   uri:
     type: string
@@ -15,7 +17,7 @@ properties:
     example: "IoT"
   vlanId:
     type: integer
-    description: Numeric 802.1Q tag (1–4094).
+    description: Numeric VLAN tag (1–4094).
     example: 20
 required:
   - id
