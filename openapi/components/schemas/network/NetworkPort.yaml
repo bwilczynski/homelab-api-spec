@@ -10,8 +10,6 @@ allOf:
       switch:
         allOf:
           - $ref: "./NetworkDeviceRef.yaml"
-        description: |
-          Reference to the switch this port belongs to. Always populated;
-          `switch.kind` is always `device`.
+        description: Reference to the switch this port belongs to.
     required:
       - switch

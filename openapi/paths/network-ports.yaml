@@ -11,54 +11,21 @@ get:
 
     A homelab typically has a small number of switches (each with tens of
     ports), so this endpoint returns all results without pagination.
+    Result order is not guaranteed; clients should sort as needed.
 
     Filters are AND-composed and applied server-side; any combination is
-    valid. Ports without a `vlanConfig` (administratively disabled ports)
-    never match the `mode` or `vlanId` filters.
+    valid. Ports without a `vlanConfig` (either administratively disabled
+    or when the controller does not report enough data to resolve the
+    native VLAN) never match the `mode` or `vlanId` filters.
   tags:
     - network
   security:
     - bearerAuth: [read:network]
   parameters:
-    - name: switchId
-      in: query
-      required: false
-      description: |
-        Filter to ports belonging to a specific switch, matched against
-        the composite device identifier (`{controller}.{name}`).
-      schema:
-        type: string
-      example: "unifi.switch-living-room"
-    - name: mode
-      in: query
-      required: false
-      description: |
-        Filter by VLAN mode. Ports without a `vlanConfig` never match.
-      schema:
-        type: string
-        enum: [access, trunk]
-      example: trunk
-    - name: state
-      in: query
-      required: false
-      description: Filter by link state.
-      schema:
-        type: string
-        enum: [up, down]
-      example: up
-    - name: vlanId
-      in: query
-      required: false
-      description: |
-        Filter to ports that carry the given VLAN ID. A port matches when
-        its `vlanConfig.nativeVlan.vlanId` equals this value, OR when the
-        value appears in `vlanConfig.taggedVlans.items[*].vlanId`, OR when
-        the port is a trunk with `vlanConfig.taggedVlans.scope == "all"`.
-        Ports without a `vlanConfig` never match.
-      schema:
-        type: integer
-        minimum: 1
-      example: 20
+    - $ref: "../components/parameters/SwitchIdFilter.yaml"
+    - $ref: "../components/parameters/SwitchPortModeFilter.yaml"
+    - $ref: "../components/parameters/NetworkPortStateFilter.yaml"
+    - $ref: "../components/parameters/VlanIdFilter.yaml"
   responses:
     "200":
       description: List of switch ports across all switches.

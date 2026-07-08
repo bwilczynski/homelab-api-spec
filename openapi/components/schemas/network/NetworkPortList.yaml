@@ -1,12 +1,9 @@
 type: object
-description: List of switch ports across all managed switches.
+description: List of switch ports.
 properties:
   items:
     type: array
-    description: |
-      All switch ports across all managed switches from all configured
-      controllers. Empty array, never null. Order is not guaranteed;
-      clients should sort as needed.
+    description: Switch ports matching the query. Empty array, never null.
     items:
       $ref: "./NetworkPort.yaml"
 required:
