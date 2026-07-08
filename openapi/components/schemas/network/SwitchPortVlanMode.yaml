@@ -1,0 +1,8 @@
+type: string
+enum: [access, trunk]
+description: |
+  VLAN mode of a switch port.
+  - `access` — port carries a single untagged VLAN (the native VLAN)
+    and blocks all tagged traffic. Typical for end-device ports.
+  - `trunk` — port carries an untagged native VLAN plus one or more
+    tagged VLANs. Typical for uplinks and downstream AP links.

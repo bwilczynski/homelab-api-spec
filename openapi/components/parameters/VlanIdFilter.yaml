@@ -1,0 +1,13 @@
+name: vlanId
+in: query
+required: false
+description: |
+  Filter to ports that carry the given VLAN ID. A port matches when
+  its `vlanConfig.nativeVlan.vlanId` equals this value, OR when the
+  value appears in `vlanConfig.taggedVlans.items[*].vlanId`, OR when
+  the port is a trunk with `vlanConfig.taggedVlans.scope == "all"`.
+  Ports without a `vlanConfig` never match.
+schema:
+  type: integer
+  minimum: 1
+example: 20

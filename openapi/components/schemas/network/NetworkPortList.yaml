@@ -1,0 +1,10 @@
+type: object
+description: List of switch ports.
+properties:
+  items:
+    type: array
+    description: Switch ports matching the query. Empty array, never null.
+    items:
+      $ref: "./NetworkPort.yaml"
+required:
+  - items

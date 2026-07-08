@@ -1,0 +1,10 @@
+name: state
+in: query
+required: false
+description: |
+  Filter by port state. Accepts every value of `NetworkPortState`
+  including `disabled` — administratively-disabled ports can be
+  audited by passing `state=disabled`.
+schema:
+  $ref: "../schemas/network/NetworkPortState.yaml"
+example: up

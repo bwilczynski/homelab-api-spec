@@ -85,6 +85,8 @@ paths:
     $ref: "./paths/network-devices.yaml"
   /network/devices/{deviceId}:
     $ref: "./paths/network-devices-id.yaml"
+  /network/ports:
+    $ref: "./paths/network-ports.yaml"
   /network/clients:
     $ref: "./paths/network-clients.yaml"
   /network/clients/{clientId}:
