@@ -1,0 +1,17 @@
+allOf:
+  - $ref: "./SwitchPort.yaml"
+  - type: object
+    description: |
+      A physical switch port surfaced in the flat `/network/ports` listing.
+      Inherits every field from `SwitchPort` and carries a reference to its
+      parent switch so consumers can audit ports across all switches in a
+      single call.
+    properties:
+      switch:
+        allOf:
+          - $ref: "./NetworkDeviceRef.yaml"
+        description: |
+          Reference to the switch this port belongs to. Always populated;
+          `switch.kind` is always `device`.
+    required:
+      - switch

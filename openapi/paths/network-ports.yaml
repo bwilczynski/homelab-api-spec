@@ -1,0 +1,199 @@
+get:
+  operationId: listNetworkPorts
+  x-stability-level: draft
+  summary: List switch ports across all switches
+  description: |
+    Returns physical ports from every managed switch across all configured
+    UniFi controllers as a single flat list. Each port carries a reference
+    to its parent switch so consumers can audit VLAN policy, PoE state,
+    LAG membership, and connected endpoints without fanning out one call
+    per switch.
+
+    A homelab typically has a small number of switches (each with tens of
+    ports), so this endpoint returns all results without pagination.
+
+    Filters are AND-composed and applied server-side; any combination is
+    valid. Ports without a `vlanConfig` (administratively disabled ports)
+    never match the `mode` or `vlanId` filters.
+  tags:
+    - network
+  security:
+    - bearerAuth: [read:network]
+  parameters:
+    - name: switchId
+      in: query
+      required: false
+      description: |
+        Filter to ports belonging to a specific switch, matched against
+        the composite device identifier (`{controller}.{name}`).
+      schema:
+        type: string
+      example: "unifi.switch-living-room"
+    - name: mode
+      in: query
+      required: false
+      description: |
+        Filter by VLAN mode. Ports without a `vlanConfig` never match.
+      schema:
+        type: string
+        enum: [access, trunk]
+      example: trunk
+    - name: state
+      in: query
+      required: false
+      description: Filter by link state.
+      schema:
+        type: string
+        enum: [up, down]
+      example: up
+    - name: vlanId
+      in: query
+      required: false
+      description: |
+        Filter to ports that carry the given VLAN ID. A port matches when
+        its `vlanConfig.nativeVlan.vlanId` equals this value, OR when the
+        value appears in `vlanConfig.taggedVlans.items[*].vlanId`, OR when
+        the port is a trunk with `vlanConfig.taggedVlans.scope == "all"`.
+        Ports without a `vlanConfig` never match.
+      schema:
+        type: integer
+        minimum: 1
+      example: 20
+  responses:
+    "200":
+      description: List of switch ports across all switches.
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/network/NetworkPortList.yaml"
+          examples:
+            typicalHomelab:
+              summary: One switch, four ports (trunk uplink, trunk AP downlink, idle access port, access LAG member).
+              value:
+                items:
+                  - number: 1
+                    state: up
+                    linkSpeed: gbe1
+                    linkUptime: 172800
+                    poeMode: 'off'
+                    vlanConfig:
+                      mode: trunk
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                      taggedVlans:
+                        scope: all
+                    traffic:
+                      rxBytesTotal: 43980465111
+                      txBytesTotal: 87960930222
+                      rxBytesPerSec: 600000
+                      txBytesPerSec: 1250000
+                    connectedTo:
+                      kind: device
+                      id: "unifi.usg"
+                      uri: "/network/devices/unifi.usg"
+                      name: "USG"
+                    switch:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                  - number: 7
+                    label: "AP Living Room uplink"
+                    state: up
+                    linkSpeed: gbe2_5
+                    linkUptime: 86400
+                    poeMode: auto
+                    poePowerWatts: 4.5
+                    vlanConfig:
+                      mode: trunk
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                      taggedVlans:
+                        scope: custom
+                        items:
+                          - id: "unifi.iot"
+                            uri: "/network/vlans/unifi.iot"
+                            name: "IoT"
+                            vlanId: 20
+                    traffic:
+                      rxBytesTotal: 12884901888
+                      txBytesTotal: 4294967296
+                      rxBytesPerSec: 125000
+                      txBytesPerSec: 50000
+                    connectedTo:
+                      kind: device
+                      id: "unifi.ap-living-room"
+                      uri: "/network/devices/unifi.ap-living-room"
+                      name: "AP Living Room"
+                    switch:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                  - number: 2
+                    state: down
+                    poeMode: 'off'
+                    vlanConfig:
+                      mode: access
+                      nativeVlan:
+                        id: "unifi.servers"
+                        uri: "/network/vlans/unifi.servers"
+                        name: "Servers"
+                        vlanId: 100
+                    traffic:
+                      rxBytesTotal: 0
+                      txBytesTotal: 0
+                      rxBytesPerSec: 0
+                      txBytesPerSec: 0
+                    switch:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                  - number: 8
+                    state: up
+                    linkSpeed: gbe10
+                    linkUptime: 3600
+                    sfpModulePresent: true
+                    poeMode: 'off'
+                    lagMembership:
+                      id: 8
+                      role: master
+                    vlanConfig:
+                      mode: access
+                      nativeVlan:
+                        id: "unifi.servers"
+                        uri: "/network/vlans/unifi.servers"
+                        name: "Servers"
+                        vlanId: 100
+                    traffic:
+                      rxBytesTotal: 5497558138
+                      txBytesTotal: 2748779069
+                      rxBytesPerSec: 800000
+                      txBytesPerSec: 100000
+                    connectedTo:
+                      kind: client
+                      id: "unifi.nas-1-68"
+                      uri: "/network/clients/unifi.nas-1-68"
+                      name: "nas-1"
+                    switch:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
+    "401":
+      $ref: "../components/responses/Unauthorized.yaml"
+    "403":
+      $ref: "../components/responses/Forbidden.yaml"
+    "429":
+      $ref: "../components/responses/TooManyRequests.yaml"
+    "500":
+      $ref: "../components/responses/InternalServerError.yaml"
