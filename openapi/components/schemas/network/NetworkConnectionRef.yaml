@@ -9,4 +9,4 @@ discriminator:
 description: |
   Polymorphic reference to either a network device or a network client,
   discriminated on `kind`. Used wherever a single field may point at
-  either resource type (e.g. `SwitchPort.connectedTo`).
+  either resource type (e.g. `DevicePort.connectedTo`).

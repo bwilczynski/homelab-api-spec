@@ -4,5 +4,5 @@ required: false
 description: |
   Filter by VLAN mode. Ports without a `vlanConfig` never match.
 schema:
-  $ref: "../schemas/network/SwitchPortVlanMode.yaml"
+  $ref: "../schemas/network/DevicePortVlanMode.yaml"
 example: trunk

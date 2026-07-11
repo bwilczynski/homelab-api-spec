@@ -10,7 +10,7 @@ allOf:
         type: array
         description: Physical ports on this switch.
         items:
-          $ref: "./SwitchPort.yaml"
+          $ref: "./DevicePort.yaml"
     required:
       - type
       - ports
