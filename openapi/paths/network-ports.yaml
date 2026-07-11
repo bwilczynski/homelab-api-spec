@@ -22,8 +22,8 @@ get:
   security:
     - bearerAuth: [read:network]
   parameters:
-    - $ref: "../components/parameters/SwitchIdFilter.yaml"
-    - $ref: "../components/parameters/SwitchPortModeFilter.yaml"
+    - $ref: "../components/parameters/DeviceIdFilter.yaml"
+    - $ref: "../components/parameters/DevicePortModeFilter.yaml"
     - $ref: "../components/parameters/NetworkPortStateFilter.yaml"
     - $ref: "../components/parameters/VlanIdFilter.yaml"
   responses:
