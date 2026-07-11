@@ -31,13 +31,19 @@ properties:
       Whether an SFP/SFP+ optical module is currently inserted.
       Omitted on ports without an SFP cage.
   poeMode:
-    $ref: "./DevicePortPoeMode.yaml"
+    allOf:
+      - $ref: "./DevicePortPoeMode.yaml"
+    description: |
+      Configured PoE behaviour on this port. Omitted on ports whose
+      hardware has no PoE cage (typical for most gateway ports and for
+      non-PoE switches).
   poePowerWatts:
     allOf:
       - $ref: "../units/Watts.yaml"
     description: |
       Power currently being delivered through this port. Omitted when
-      `poeMode` is `off` or when no powered device is attached.
+      `poeMode` is absent or `'off'`, or when no powered device is
+      attached.
   lagMembership:
     $ref: "./DevicePortLagMembership.yaml"
   vlanConfig:
@@ -61,5 +67,4 @@ properties:
 required:
   - number
   - state
-  - poeMode
   - traffic
