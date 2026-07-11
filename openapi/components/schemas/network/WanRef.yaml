@@ -1,0 +1,19 @@
+type: object
+description: Lightweight reference to a WAN interface.
+properties:
+  id:
+    type: string
+    description: Composite WAN identifier (matches `Wan.id`).
+    example: "unifi.wan1"
+  uri:
+    type: string
+    description: Relative API path to fetch this WAN's detail.
+    example: "/network/wans/unifi.wan1"
+  name:
+    type: string
+    description: Human-readable WAN interface name.
+    example: "WAN 1"
+required:
+  - id
+  - uri
+  - name
