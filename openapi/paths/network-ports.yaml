@@ -62,7 +62,7 @@ get:
                       id: "unifi.usg"
                       uri: "/network/devices/unifi.usg"
                       name: "USG"
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
@@ -98,7 +98,7 @@ get:
                       id: "unifi.ap-living-room"
                       uri: "/network/devices/unifi.ap-living-room"
                       name: "AP Living Room"
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
@@ -118,7 +118,7 @@ get:
                       txBytesTotal: 0
                       rxBytesPerSec: 0
                       txBytesPerSec: 0
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
@@ -149,7 +149,7 @@ get:
                       id: "unifi.nas-1-68"
                       uri: "/network/clients/unifi.nas-1-68"
                       name: "nas-1"
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"

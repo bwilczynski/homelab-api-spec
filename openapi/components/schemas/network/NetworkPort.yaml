@@ -2,14 +2,15 @@ allOf:
   - $ref: "./DevicePort.yaml"
   - type: object
     description: |
-      A physical switch port surfaced in the flat `/network/ports` listing.
-      Inherits every field from `DevicePort` and carries a reference to its
-      parent switch so consumers can audit ports across all switches in a
-      single call.
+      A physical device port surfaced in the flat `/network/ports`
+      listing. Inherits every field from `DevicePort` and carries a
+      reference to its parent device (a switch, or a gateway for
+      LAN-role gateway ports) so consumers can audit ports across
+      every device in a single call.
     properties:
-      switch:
+      device:
         allOf:
           - $ref: "./NetworkDeviceRef.yaml"
-        description: Reference to the switch this port belongs to.
+        description: Reference to the device this port belongs to.
     required:
-      - switch
+      - device
