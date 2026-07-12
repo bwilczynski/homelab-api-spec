@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Homelab API
-  version: 1.4.0
+  version: 1.5.0
   description: |
     Contract-first API exposing homelab infrastructure operations to AI
     agents and tooling. The Homelab API provides a unified surface over
