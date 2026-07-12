@@ -6,5 +6,24 @@ allOf:
       type:
         type: string
         enum: [gateway]
+      ports:
+        type: array
+        description: |
+          Physical LAN switch-fabric ports on this gateway. WAN-role
+          ports are not included here; see `wans` for the logical WAN
+          interfaces this gateway exposes.
+        items:
+          $ref: "./DevicePort.yaml"
+      wans:
+        type: array
+        description: |
+          WAN interfaces configured on this gateway. Empty array (`[]`)
+          when none, never null. Each entry is a lightweight reference;
+          fetch full detail (public IP, DNS, status, uptime) from
+          `/network/wans/{id}`.
+        items:
+          $ref: "./WanRef.yaml"
     required:
       - type
+      - ports
+      - wans

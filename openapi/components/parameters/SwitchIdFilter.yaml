@@ -1,9 +1,0 @@
-name: switchId
-in: query
-required: false
-description: |
-  Filter to ports belonging to a specific switch, matched against the
-  composite device identifier (`{controller}.{name}`).
-schema:
-  type: string
-example: "unifi.switch-living-room"

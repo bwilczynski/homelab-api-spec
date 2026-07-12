@@ -1,0 +1,10 @@
+name: deviceId
+in: query
+required: false
+description: |
+  Filter to ports belonging to a specific device (switch or gateway),
+  matched against the composite device identifier
+  (`{controller}.{name}`).
+schema:
+  type: string
+example: "unifi.switch-living-room"

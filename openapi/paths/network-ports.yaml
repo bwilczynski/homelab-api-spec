@@ -1,15 +1,19 @@
 get:
   operationId: listNetworkPorts
   x-stability-level: draft
-  summary: List switch ports across all switches
+  summary: List LAN ports across all switches and gateways
   description: |
-    Returns physical ports from every managed switch across all configured
-    UniFi controllers as a single flat list. Each port carries a reference
-    to its parent switch so consumers can audit VLAN policy, PoE state,
-    LAG membership, and connected endpoints without fanning out one call
-    per switch.
+    Returns physical LAN ports from every managed switch and gateway
+    across all configured UniFi controllers as a single flat list. Each
+    port carries a reference to its parent device so consumers can audit
+    VLAN policy, PoE state, LAG membership, and connected endpoints
+    without fanning out one call per device.
 
-    A homelab typically has a small number of switches (each with tens of
+    Gateway LAN switch-fabric ports appear here alongside switch ports.
+    WAN-role gateway ports are not included — enumerate them through
+    `/network/wans` or through the `wans` array on `GatewayDetail`.
+
+    A homelab typically has a small number of devices (each with tens of
     ports), so this endpoint returns all results without pagination.
     Result order is not guaranteed; clients should sort as needed.
 
@@ -22,8 +26,8 @@ get:
   security:
     - bearerAuth: [read:network]
   parameters:
-    - $ref: "../components/parameters/SwitchIdFilter.yaml"
-    - $ref: "../components/parameters/SwitchPortModeFilter.yaml"
+    - $ref: "../components/parameters/DeviceIdFilter.yaml"
+    - $ref: "../components/parameters/DevicePortModeFilter.yaml"
     - $ref: "../components/parameters/NetworkPortStateFilter.yaml"
     - $ref: "../components/parameters/VlanIdFilter.yaml"
   responses:
@@ -35,7 +39,7 @@ get:
             $ref: "../components/schemas/network/NetworkPortList.yaml"
           examples:
             typicalHomelab:
-              summary: One switch, four ports (trunk uplink, trunk AP downlink, idle access port, access LAG member).
+              summary: One switch (four ports) plus one gateway LAN port.
               value:
                 items:
                   - number: 1
@@ -62,7 +66,7 @@ get:
                       id: "unifi.usg"
                       uri: "/network/devices/unifi.usg"
                       name: "USG"
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
@@ -98,7 +102,7 @@ get:
                       id: "unifi.ap-living-room"
                       uri: "/network/devices/unifi.ap-living-room"
                       name: "AP Living Room"
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
@@ -118,7 +122,7 @@ get:
                       txBytesTotal: 0
                       rxBytesPerSec: 0
                       txBytesPerSec: 0
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
@@ -149,11 +153,40 @@ get:
                       id: "unifi.nas-1-68"
                       uri: "/network/clients/unifi.nas-1-68"
                       name: "nas-1"
-                    switch:
+                    device:
                       kind: device
                       id: "unifi.switch-living-room"
                       uri: "/network/devices/unifi.switch-living-room"
                       name: "Switch Living Room"
+                  - number: 1
+                    label: "LAN to living room switch"
+                    state: up
+                    linkSpeed: gbe1
+                    linkUptime: 172800
+                    vlanConfig:
+                      mode: trunk
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                      taggedVlans:
+                        scope: all
+                    traffic:
+                      rxBytesTotal: 87960930222
+                      txBytesTotal: 43980465111
+                      rxBytesPerSec: 1250000
+                      txBytesPerSec: 600000
+                    connectedTo:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                    device:
+                      kind: device
+                      id: "unifi.usg"
+                      uri: "/network/devices/unifi.usg"
+                      name: "USG"
     "400":
       $ref: "../components/responses/BadRequest.yaml"
     "401":

@@ -1,10 +1,10 @@
 type: object
-description: A physical port on a managed switch.
+description: A physical port on a managed network device (switch or gateway).
 properties:
   number:
     type: integer
     minimum: 1
-    description: Physical port number (1-based) as labelled on the switch.
+    description: Physical port number (1-based) as labelled on the device.
     example: 7
   label:
     type: string
@@ -31,18 +31,24 @@ properties:
       Whether an SFP/SFP+ optical module is currently inserted.
       Omitted on ports without an SFP cage.
   poeMode:
-    $ref: "./SwitchPortPoeMode.yaml"
+    allOf:
+      - $ref: "./DevicePortPoeMode.yaml"
+    description: |
+      Configured PoE behaviour on this port. Omitted on ports whose
+      hardware has no PoE cage (typical for most gateway ports and for
+      non-PoE switches).
   poePowerWatts:
     allOf:
       - $ref: "../units/Watts.yaml"
     description: |
       Power currently being delivered through this port. Omitted when
-      `poeMode` is `off` or when no powered device is attached.
+      `poeMode` is absent or `'off'`, or when no powered device is
+      attached.
   lagMembership:
-    $ref: "./SwitchPortLagMembership.yaml"
+    $ref: "./DevicePortLagMembership.yaml"
   vlanConfig:
     allOf:
-      - $ref: "./SwitchPortVlanConfig.yaml"
+      - $ref: "./DevicePortVlanConfig.yaml"
     description: |
       VLAN policy configured on this port. Omitted when the port is
       administratively disabled or when the controller does not report
@@ -61,5 +67,4 @@ properties:
 required:
   - number
   - state
-  - poeMode
   - traffic

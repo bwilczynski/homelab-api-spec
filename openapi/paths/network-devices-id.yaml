@@ -7,7 +7,8 @@ get:
     (`{controller}.{name}`, e.g. `unifi.ap-living-room`). The response
     is polymorphic on the device `type`: switches include their physical
     `ports`, access points include `connectedClients` and `numClients`,
-    gateways and unknown devices carry only the shared base fields.
+    gateways include their LAN `ports` and configured `wans`, and
+    unknown devices carry only the shared base fields.
     All variants include `traffic` stats and may include an `uplink`
     reference to the upstream device (always omitted for gateways since
     they are the topology root; may be absent for disconnected or
@@ -198,7 +199,7 @@ get:
                     ssid: "HomeNetwork"
                     signalStrength: -62
             gateway:
-              summary: The security gateway / router (root of the topology).
+              summary: The security gateway / router (root of the topology), with two LAN ports and two configured WANs.
               value:
                 id: "unifi.usg"
                 uri: "/network/devices/unifi.usg"
@@ -215,6 +216,52 @@ get:
                   txBytesTotal: 274877906944
                   rxBytesPerSec: 5000000
                   txBytesPerSec: 2000000
+                ports:
+                  - number: 1
+                    label: "LAN to living room switch"
+                    state: up
+                    linkSpeed: gbe1
+                    linkUptime: 172800
+                    vlanConfig:
+                      mode: trunk
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                      taggedVlans:
+                        scope: all
+                    traffic:
+                      rxBytesTotal: 87960930222
+                      txBytesTotal: 43980465111
+                      rxBytesPerSec: 1250000
+                      txBytesPerSec: 600000
+                    connectedTo:
+                      kind: device
+                      id: "unifi.switch-living-room"
+                      uri: "/network/devices/unifi.switch-living-room"
+                      name: "Switch Living Room"
+                  - number: 2
+                    state: down
+                    vlanConfig:
+                      mode: access
+                      nativeVlan:
+                        id: "unifi.default"
+                        uri: "/network/vlans/unifi.default"
+                        name: "Default"
+                        vlanId: 1
+                    traffic:
+                      rxBytesTotal: 0
+                      txBytesTotal: 0
+                      rxBytesPerSec: 0
+                      txBytesPerSec: 0
+                wans:
+                  - id: "unifi.wan1"
+                    uri: "/network/wans/unifi.wan1"
+                    name: "WAN 1"
+                  - id: "unifi.wan2"
+                    uri: "/network/wans/unifi.wan2"
+                    name: "WAN 2"
             unknown:
               summary: A device whose role the controller does not recognise.
               value:
