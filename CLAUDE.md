@@ -18,7 +18,7 @@ make preview       # Live-reload docs preview on http://localhost:8080
 make breaking BASE=origin/main  # oasdiff breaking-change detection
 ```
 
-All tools run via `npx` with pinned versions (no global installs needed). Docker is only needed for `make docs-image` and `make breaking`.
+Run `mise install` first: it provides the pinned node and oasdiff from `mise.toml`. redocly and spectral run via `npx` at versions pinned in the Makefile, so consumer repos can run `make -C spec bundle` with only node. After changing a version in `mise.toml`, run `mise lock` and commit `mise.lock`. Docker is only needed for `make docs-image`.
 
 ## Spec conventions
 
@@ -68,8 +68,8 @@ analyzes commits, determines the next SemVer, patches `info.version` in
 Use the `BREAKING CHANGE` footer (or `!` shorthand) only when the change is a
 true breaking change: removal or rename of a field, endpoint, or required
 parameter, or restriction of a previously allowed value. Determine this by
-inspecting the spec diff — do **not** run `make breaking` (requires Docker and
-is unreliable in agent environments). The CI `breaking-changes` job (in `lint.yaml`) runs oasdiff automatically on
+inspecting the spec diff. `make breaking BASE=origin/main` runs the same oasdiff
+check as the CI `breaking-changes` job (in `lint.yaml`), which runs automatically on
 pull requests; it already ignores endpoints annotated with
 `x-stability-level: draft`.
 

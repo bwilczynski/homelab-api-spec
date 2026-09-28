@@ -1,0 +1,7 @@
+# Toolchain for local development and CI (jdx/mise-action). redocly and
+# spectral stay on npx with versions pinned in the Makefile: homelab-api and
+# homelab-cli run `make -C spec bundle` through their submodule without this
+# file's tools installed.
+[tools]
+node = "24.21.0"
+"github:oasdiff/oasdiff" = "1.14.0"

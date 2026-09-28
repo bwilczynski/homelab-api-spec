@@ -1,11 +1,12 @@
 # Makefile for homelab-api-spec
 #
-# Requires: node (npx), docker. No global installs; every tool runs
-# via `npx` so CI and local match. Pinned versions keep output stable.
+# Requires: mise (`mise install` provides node and oasdiff, see mise.toml).
+# redocly and spectral run via `npx` at the pinned versions below, so
+# `make -C spec bundle` also works from repos that only have node.
+# Docker is only needed for `make docs-image`.
 
 SPECTRAL_VERSION ?= 6.15.0
 REDOCLY_VERSION  ?= 1.25.15
-OASDIFF_VERSION  ?= v1.11.7
 
 SPEC        := openapi/openapi.yaml
 BUNDLE_DIR  := dist
@@ -56,15 +57,19 @@ preview:
 docs-image:
 	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
 
-# Breaking-change detection against a git ref. Usage:
+# Breaking-change detection against a git ref (CI passes the PR base SHA).
+# Both sides are bundled with the same redocly version before diffing.
+# Usage:
 #   make breaking BASE=origin/main
-BASE ?= origin/main
+BASE      ?= origin/main
+BASE_DIR  := $(BUNDLE_DIR)/base
+BASE_YAML := $(BUNDLE_DIR)/base.bundled.yaml
 breaking: bundle
 	@echo "Comparing bundled spec against $(BASE)..."
-	@git show $(BASE):$(SPEC) > $(BUNDLE_DIR)/base.yaml 2>/dev/null || \
-	  (echo "Could not read $(SPEC) from $(BASE); skipping." && exit 0)
-	docker run --rm -v $(PWD)/$(BUNDLE_DIR):/specs tufin/oasdiff:$(OASDIFF_VERSION) \
-	  breaking /specs/base.yaml /specs/openapi.bundled.yaml
+	rm -rf $(BASE_DIR) && mkdir -p $(BASE_DIR)
+	git archive $(BASE) openapi redocly.yaml | tar -x -C $(BASE_DIR)
+	cd $(BASE_DIR) && npx --yes @redocly/cli@$(REDOCLY_VERSION) bundle $(SPEC) -o $(CURDIR)/$(BASE_YAML)
+	oasdiff breaking $(BASE_YAML) $(BUNDLE_YAML) --fail-on ERR --flatten-allof
 
 clean:
 	rm -rf $(BUNDLE_DIR)

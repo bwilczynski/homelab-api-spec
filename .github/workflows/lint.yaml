@@ -6,6 +6,9 @@ on:
       - "openapi/**"
       - ".spectral.yaml"
       - "redocly.yaml"
+      - "Makefile"
+      - "mise.toml"
+      - "mise.lock"
       - ".github/workflows/lint.yaml"
   push:
     branches: [main]
@@ -19,9 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: jdx/mise-action@v4
         with:
-          node-version: "20"
+          install_args: node
       - name: Spectral lint (bundled)
         run: make lint-spectral-bundled
 
@@ -30,9 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: jdx/mise-action@v4
         with:
-          node-version: "20"
+          install_args: node
       - name: Redocly lint
         run: make lint-redocly
       - name: Bundle (smoke test)
@@ -46,20 +49,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Bundle head spec
-        run: make bundle
-      - name: Bundle base spec
-        run: |
-          git worktree add /tmp/base "${{ github.event.pull_request.base.sha }}"
-          cd /tmp/base
-          npx --yes @redocly/cli@1.25.15 bundle openapi/openapi.yaml -o $GITHUB_WORKSPACE/dist/base.bundled.yaml
+      - uses: jdx/mise-action@v4
       - name: oasdiff breaking changes
-        uses: oasdiff/oasdiff-action/breaking@v0.0.39
-        with:
-          base: dist/base.bundled.yaml
-          revision: dist/openapi.bundled.yaml
-          fail-on: ERR
-          flatten-allof: true
+        run: make breaking BASE=${{ github.event.pull_request.base.sha }}

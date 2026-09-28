@@ -2,7 +2,8 @@
 # nginx. The image has no runtime dependencies on node or the source
 # tree — it ships a single pre-rendered HTML plus the bundled spec.
 
-FROM node:20-alpine AS builder
+# Keep in sync with node in mise.toml.
+FROM node:24.21.0-alpine AS builder
 WORKDIR /build
 COPY openapi ./openapi
 COPY redocly.yaml ./

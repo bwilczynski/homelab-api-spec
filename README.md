@@ -32,8 +32,9 @@ Makefile                          # lint / bundle / build / preview / breaking
 
 ## Prerequisites
 
-- Node 20+ (tools run via `npx`, nothing is installed globally)
-- Docker (only for `make docs-image` and `make breaking`)
+- [mise](https://mise.jdx.dev) — run `mise install` to get the pinned node and oasdiff from `mise.toml`
+  (redocly and spectral then run via `npx` at versions pinned in the Makefile)
+- Docker (only for `make docs-image`)
 
 ## Common commands
 
