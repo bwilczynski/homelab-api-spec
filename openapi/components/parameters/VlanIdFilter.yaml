@@ -6,8 +6,9 @@ description: |
   its `vlanConfig.nativeVlan.vlanId` equals this value, OR when the
   value appears in `vlanConfig.taggedVlans.items[*].vlanId`, OR when
   the port is a trunk with `vlanConfig.taggedVlans.scope == "all"`.
-  Ports without a `vlanConfig` never match.
+  Ports without a `vlanConfig` never match. Valid VLAN IDs are 1–4094.
 schema:
   type: integer
   minimum: 1
+  maximum: 4094
 example: 20
